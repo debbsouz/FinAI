@@ -1,9 +1,7 @@
-// Dados
 let gastos = [];
 let pieChart = null;
 let barChart = null;
 
-// Regras de categorização
 const regrasCategorias = {
   "Alimentação": ["ifood", "restaurante", "mercado", "supermercado", "pão", "café", "almoço", "janta", "lanche"],
   "Transporte": ["uber", "99", "taxi", "ônibus", "metro", "gasolina", "estacionamento", "combustível"],
@@ -19,9 +17,7 @@ function categorizarGasto(descricao) {
   const desc = descricao.toLowerCase();
   for (let categoria in regrasCategorias) {
     for (let palavra of regrasCategorias[categoria]) {
-      if (desc.includes(palavra)) {
-        return categoria;
-      }
+      if (desc.includes(palavra)) return categoria;
     }
   }
   return "Outros";
@@ -29,9 +25,7 @@ function categorizarGasto(descricao) {
 
 function carregarGastos() {
   const salvos = localStorage.getItem('gastos');
-  if (salvos) {
-    gastos = JSON.parse(salvos);
-  }
+  if (salvos) gastos = JSON.parse(salvos);
   renderizarTudo();
 }
 
@@ -76,7 +70,7 @@ function removerGasto(id) {
 }
 
 function atualizarTotal() {
-  const total = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
+  const total = gastos.reduce((acc, g) => acc + g.valor, 0);
   document.getElementById('totalGasto').textContent = 
     'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
 }
@@ -117,9 +111,7 @@ function renderizarResumoCategorias() {
   const container = document.getElementById('resumoCategorias');
   const porCategoria = {};
 
-  gastos.forEach(g => {
-    porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor;
-  });
+  gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
 
   let html = '';
   Object.keys(porCategoria).sort().forEach(cat => {
@@ -137,49 +129,34 @@ function renderizarResumoCategorias() {
 function gerarInsights() {
   const container = document.getElementById('insights');
   if (gastos.length === 0) {
-    container.innerHTML = `<p class="text-zinc-500">Adicione alguns gastos para receber insights inteligentes.</p>`;
+    container.innerHTML = `<p class="text-zinc-500">Adicione gastos para a IA gerar insights.</p>`;
     return;
   }
 
   const total = gastos.reduce((acc, g) => acc + g.valor, 0);
   const porCategoria = {};
-  gastos.forEach(g => {
-    porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor;
-  });
+  gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
 
   const categoriaMaisAlta = Object.keys(porCategoria).reduce((a, b) => 
     porCategoria[a] > porCategoria[b] ? a : b
   );
 
-  let html = '';
-
-  // Insight principal
-  html += `
+  let html = `
     <div class="flex gap-4 bg-zinc-800 p-5 rounded-2xl">
       <i class="fas fa-chart-pie text-violet-400 text-2xl mt-1"></i>
       <div>
         <p class="font-medium">Maior gasto em <span class="text-violet-400">${categoriaMaisAlta}</span></p>
-        <p class="text-zinc-400">Você gastou R$ ${porCategoria[categoriaMaisAlta].toLocaleString('pt-BR', { minimumFractionDigits: 2 })} nesta categoria (${((porCategoria[categoriaMaisAlta] / total) * 100).toFixed(0)}% do total).</p>
+        <p class="text-zinc-400">R$ ${porCategoria[categoriaMaisAlta].toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (${((porCategoria[categoriaMaisAlta] / total) * 100).toFixed(0)}% do total)</p>
       </div>
     </div>`;
 
-  // Insight secundário
-  if (total > 1500) {
+  if (total > 2000) {
     html += `
-      <div class="flex gap-4 bg-amber-900/30 p-5 rounded-2xl border border-amber-700/50">
+      <div class="flex gap-4 bg-amber-900/40 p-5 rounded-2xl border border-amber-700/50">
         <i class="fas fa-exclamation-triangle text-amber-400 text-2xl mt-1"></i>
         <div>
-          <p class="font-medium text-amber-300">Seus gastos estão altos este mês</p>
-          <p class="text-amber-400/80">Considere revisar os gastos recorrentes em ${categoriaMaisAlta}.</p>
-        </div>
-      </div>`;
-  } else if (Object.keys(porCategoria).length > 4) {
-    html += `
-      <div class="flex gap-4 bg-emerald-900/30 p-5 rounded-2xl border border-emerald-700/50">
-        <i class="fas fa-check-circle text-emerald-400 text-2xl mt-1"></i>
-        <div>
-          <p class="font-medium text-emerald-300">Bom equilíbrio</p>
-          <p class="text-emerald-400/80">Seus gastos estão bem distribuídos entre as categorias.</p>
+          <p class="font-medium text-amber-300">Atenção: gastos elevados</p>
+          <p class="text-amber-400/80">Considere reduzir despesas em ${categoriaMaisAlta}.</p>
         </div>
       </div>`;
   }
@@ -189,9 +166,7 @@ function gerarInsights() {
 
 function atualizarGraficos() {
   const porCategoria = {};
-  gastos.forEach(g => {
-    porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor;
-  });
+  gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
 
   const labels = Object.keys(porCategoria);
   const valores = Object.values(porCategoria);
@@ -215,23 +190,12 @@ function atualizarGraficos() {
   if (barChart) barChart.destroy();
   barChart = new Chart(ctxBar, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Valor gasto (R$)',
-        data: valores,
-        backgroundColor: '#8b5cf6',
-        borderRadius: 8
-      }]
-    },
+    data: { labels, datasets: [{ label: 'Valor gasto (R$)', data: valores, backgroundColor: '#8b5cf6', borderRadius: 8 }] },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
-      scales: {
-        y: { ticks: { color: '#71717a' } },
-        x: { ticks: { color: '#71717a' } }
-      }
+      scales: { y: { ticks: { color: '#71717a' } }, x: { ticks: { color: '#71717a' } } }
     }
   });
 }
@@ -242,6 +206,35 @@ function renderizarTudo() {
   renderizarResumoCategorias();
   gerarInsights();
   atualizarGraficos();
+}
+
+// === Funções extras ===
+function exportarCSV() {
+  if (gastos.length === 0) {
+    alert('Não há gastos para exportar.');
+    return;
+  }
+
+  let csv = 'Data,Descrição,Categoria,Valor\n';
+  gastos.forEach(g => {
+    csv += `${g.data},${g.descricao.replace(/,/g, ' ')},${g.categoria},${g.valor}\n`;
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `gastos_ia_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function limparTodosDados() {
+  if (confirm('Tem certeza que deseja excluir TODOS os gastos? Esta ação não pode ser desfeita.')) {
+    gastos = [];
+    localStorage.removeItem('gastos');
+    renderizarTudo();
+  }
 }
 
 // Inicialização
