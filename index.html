@@ -11,6 +11,7 @@
 
   <div class="max-w-7xl mx-auto p-8">
     
+    <!-- Header -->
     <header class="flex items-center justify-between mb-12">
       <div class="flex items-center gap-4">
         <div class="w-9 h-9 bg-violet-600 rounded-2xl flex items-center justify-center text-xl font-semibold">
@@ -31,6 +32,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
+      <!-- Formulário -->
       <div class="lg:col-span-5">
         <div class="bg-zinc-900 rounded-3xl p-8">
           <h2 class="text-2xl font-semibold mb-6">Novo gasto</h2>
@@ -59,14 +61,11 @@
                 </div>
               </div>
 
-              <div>
-                <label class="block text-zinc-400 text-sm mb-2">Data</label>
-                <input 
-                  id="data" 
-                  type="date"
-                  class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-violet-500 transition-colors">
-              </div>
-            </div>
+<label for="data" class="block text-zinc-400 text-sm mb-2">Data</label>
+<input 
+  id="data" 
+  type="date"
+  class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-violet-500 transition-colors">
 
             <button 
               onclick="adicionarGasto()"
@@ -77,9 +76,17 @@
         </div>
       </div>
 
+      <!-- Lista de gastos -->
       <div class="lg:col-span-7">
-        <div class="bg-zinc-900 rounded-3xl p-8 h-full flex items-center justify-center">
-          <p class="text-zinc-500">Resumo e gráficos aparecerão aqui nos próximos passos</p>
+        <div class="bg-zinc-900 rounded-3xl p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-semibold">Últimos gastos</h2>
+            <span id="totalGasto" class="text-xl font-semibold text-emerald-400">R$ 0,00</span>
+          </div>
+          
+          <div id="listaGastos" class="space-y-3">
+            <!-- Preenchido via JavaScript -->
+          </div>
         </div>
       </div>
 
@@ -88,28 +95,113 @@
   </div>
 
 <script>
-  function adicionarGasto() {
-    const descricao = document.getElementById('descricao').value.trim();
-    const valor = parseFloat(document.getElementById('valor').value);
-    const data = document.getElementById('data').value;
+// Array para armazenar os gastos
+let gastos = [];
 
-    if (!descricao || !valor || !data) {
-      alert('Preencha todos os campos');
-      return;
-    }
+// Carrega os gastos salvos ao iniciar
+function carregarGastos() {
+  const salvos = localStorage.getItem('gastos');
+  if (salvos) {
+    gastos = JSON.parse(salvos);
+  }
+  renderizarLista();
+  atualizarTotal();
+}
 
-    console.log('Novo gasto adicionado:', { descricao, valor, data });
+// Salva os gastos no localStorage
+function salvarGastos() {
+  localStorage.setItem('gastos', JSON.stringify(gastos));
+}
 
-    document.getElementById('descricao').value = '';
-    document.getElementById('valor').value = '';
-    document.getElementById('data').value = '';
+// Adiciona um novo gasto
+function adicionarGasto() {
+  const descricao = document.getElementById('descricao').value.trim();
+  const valorStr = document.getElementById('valor').value;
+  const data = document.getElementById('data').value;
+
+  if (!descricao || !valorStr || !data) {
+    alert('Por favor, preencha todos os campos.');
+    return;
   }
 
-  window.onload = function() {
-    const hoje = new Date().toISOString().split('T')[0];
-    document.getElementById('data').value = hoje;
-  };
+  const valor = parseFloat(valorStr);
+
+  gastos.unshift({
+    id: Date.now(),
+    descricao: descricao,
+    valor: valor,
+    data: data
+  });
+
+  salvarGastos();
+  renderizarLista();
+  atualizarTotal();
+
+  // Limpa o formulário
+  document.getElementById('descricao').value = '';
+  document.getElementById('valor').value = '';
+}
+
+// Remove um gasto
+function removerGasto(id) {
+  if (confirm('Excluir este gasto?')) {
+    gastos = gastos.filter(g => g.id !== id);
+    salvarGastos();
+    renderizarLista();
+    atualizarTotal();
+  }
+}
+
+// Atualiza o valor total
+function atualizarTotal() {
+  const total = gastos.reduce((acc, gasto) => acc + gasto.valor, 0);
+  document.getElementById('totalGasto').textContent = 
+    'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+}
+
+// Renderiza a lista de gastos
+function renderizarLista() {
+  const container = document.getElementById('listaGastos');
+  
+  if (gastos.length === 0) {
+    container.innerHTML = `
+      <div class="text-center py-12 text-zinc-500">
+        Nenhum gasto registrado ainda.
+      </div>`;
+    return;
+  }
+
+  let html = '';
+  
+  gastos.forEach(gasto => {
+    html += `
+      <div class="flex items-center justify-between bg-zinc-800 rounded-2xl px-6 py-5 group">
+        <div>
+          <p class="font-medium">${gasto.descricao}</p>
+          <p class="text-zinc-400 text-sm">${new Date(gasto.data).toLocaleDateString('pt-BR')}</p>
+        </div>
+        <div class="flex items-center gap-6">
+          <span class="font-semibold text-lg">R$ ${gasto.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+          <button 
+            onclick="removerGasto(${gasto.id})"
+            class="text-red-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+      </div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// Inicialização
+window.onload = function() {
+  const hoje = new Date().toISOString().split('T')[0];
+  document.getElementById('data').value = hoje;
+  
+  carregarGastos();
+};
 </script>
 
 </body>
-</html>
+</html> 
