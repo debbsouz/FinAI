@@ -283,3 +283,126 @@ window.onload = function() {
   document.getElementById('data').value = hoje;
   carregarDados();
 };
+
+// ==================== INTEGRAÇÃO COM GEMINI (LLM REAL) ====================
+
+let geminiAPIKey = localStorage.getItem('geminiAPIKey') || '';
+
+function configurarAPIKey() {
+  const key = prompt('Cole sua Gemini API Key aqui (crie em aistudio.google.com):', geminiAPIKey);
+  if (key !== null) {
+    geminiAPIKey = key.trim();
+    localStorage.setItem('geminiAPIKey', geminiAPIKey);
+    alert('Chave salva! Agora a IA está usando modelo real.');
+    gerarAnaliseIA(); // Atualiza análise
+  }
+}
+
+// Função principal que chama o Gemini
+async function chamarGemini(prompt) {
+  if (!geminiAPIKey) {
+    return "Configure sua Gemini API Key primeiro (clique no botão de chave).";
+  }
+
+  try {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiAPIKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{
+          parts: [{ text: prompt }]
+        }]
+      })
+    });
+
+    const data = await response.json();
+    
+    if (data.candidates && data.candidates[0]) {
+      return data.candidates[0].content.parts[0].text.trim();
+    } else {
+      return "Não consegui gerar uma resposta no momento. Tente novamente.";
+    }
+  } catch (error) {
+    console.error(error);
+    return "Erro ao conectar com a IA. Verifique sua chave API ou conexão.";
+  }
+}
+
+// Nova análise com LLM real
+async function gerarAnaliseIA() {
+  const container = document.getElementById('insights');
+  const total = calcularTotalGasto();
+
+  if (gastos.length === 0) {
+    container.innerHTML = `<p class="text-zinc-500">Adicione alguns gastos para a IA analisar seu comportamento financeiro.</p>`;
+    return;
+  }
+
+  // Prompt inteligente com todos os dados
+  let prompt = `Você é uma analista financeira pessoal experiente e direta.
+
+Aqui estão meus gastos deste mês:
+Total gasto: R$ ${total.toLocaleString('pt-BR')}
+
+`;
+
+  const porCategoria = {};
+  gastos.forEach(g => {
+    porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor;
+  });
+
+  prompt += "Gastos por categoria:\n";
+  Object.keys(porCategoria).forEach(cat => {
+    prompt += `- ${cat}: R$ ${porCategoria[cat].toLocaleString('pt-BR')}\n`;
+  });
+
+  prompt += `\nOrçamento mensal definido: R$ ${orcamentoMensal.toLocaleString('pt-BR')}\n\n`;
+  prompt += `Faça uma análise curta, honesta e útil (máximo 4-5 frases). Foque no que está bom, no que precisa melhorar e dê 1 sugestão prática. Use linguagem natural, como se estivesse conversando comigo.`;
+
+  container.innerHTML = `<p class="text-violet-400">Pensando com a IA...</p>`;
+
+  const resposta = await chamarGemini(prompt);
+
+  container.innerHTML = `
+    <div class="bg-zinc-800 border border-violet-500/30 rounded-2xl p-6">
+      <p class="text-violet-300 mb-3">Análise inteligente</p>
+      <p class="leading-relaxed whitespace-pre-wrap">${resposta}</p>
+    </div>
+  `;
+}
+// Função para perguntar qualquer coisa
+async function enviarPerguntaIA() {
+  const input = document.getElementById('perguntaIA');
+  const pergunta = input.value.trim();
+  
+  if (!pergunta) return;
+
+  const container = document.getElementById('insights');
+  container.innerHTML = `<p class="text-violet-400">Pensando...</p>`;
+
+  let prompt = `Você é minha analista financeira pessoal. Aqui está o resumo dos meus gastos:\n\n`;
+
+  const total = calcularTotalGasto();
+  const porCategoria = {};
+  gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
+
+  prompt += `Total gasto: R$ ${total.toLocaleString('pt-BR')}\n`;
+  prompt += `Orçamento mensal: R$ ${orcamentoMensal.toLocaleString('pt-BR')}\n\n`;
+  prompt += `Gastos por categoria:\n`;
+  Object.keys(porCategoria).forEach(cat => {
+    prompt += `- ${cat}: R$ ${porCategoria[cat].toLocaleString('pt-BR')}\n`;
+  });
+
+  prompt += `\nPergunta do usuário: ${pergunta}\n\nResponda de forma clara, útil e direta.`;
+
+  const resposta = await chamarGemini(prompt);
+
+  container.innerHTML = `
+    <div class="bg-zinc-800 border border-violet-500/30 rounded-2xl p-6">
+      <p class="text-violet-300 mb-3">Resposta da IA</p>
+      <p class="leading-relaxed whitespace-pre-wrap">${resposta}</p>
+    </div>
+  `;
+
+  input.value = '';
+}

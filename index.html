@@ -9,7 +9,6 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   
-  <!-- CSS separado -->
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen">
@@ -98,20 +97,34 @@
       <!-- Coluna direita -->
       <div class="xl:col-span-7 space-y-8">
 
-        <!-- Assistente IA -->
-        <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-          <h2 class="text-2xl font-semibold mb-6 flex items-center gap-3">
-            <i class="fas fa-robot text-violet-400"></i>
-            Assistente IA
-          </h2>
-          <div id="insights" class="min-h-[140px] space-y-5"></div>
-        </div>
-
-        <!-- Resumo por categoria -->
-        <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-          <h2 class="text-2xl font-semibold mb-6">Resumo por categoria</h2>
-          <div id="resumoCategorias" class="grid grid-cols-2 sm:grid-cols-4 gap-4"></div>
-        </div>
+ <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-semibold flex items-center gap-3">
+      <i class="fas fa-robot text-violet-400"></i>
+      Assistente IA
+    </h2>
+    <button onclick="configurarAPIKey()" 
+      class="text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+      <i class="fas fa-key"></i>
+      <span>Configurar API Key</span>
+    </button>
+  </div>
+  
+  <div id="insights" class="min-h-[160px] space-y-5"></div>
+  
+  <!-- Input para perguntar à IA -->
+  <div class="mt-6 pt-6 border-t border-zinc-700">
+    <div class="flex gap-3">
+      <input id="perguntaIA" type="text" placeholder="Ex: Como posso reduzir meus gastos com alimentação?" 
+        class="flex-1 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none">
+      <button onclick="enviarPerguntaIA()" 
+        class="bg-violet-600 hover:bg-violet-700 px-8 rounded-2xl font-medium">
+        Perguntar
+      </button>
+    </div>
+    <p class="text-[10px] text-zinc-500 mt-2">A IA analisa seus gastos reais e responde de forma personalizada.</p>
+  </div>
+</div>
 
         <!-- Gráficos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
