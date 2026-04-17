@@ -1,36 +1,45 @@
 let gastos = [];
+let orcamentoMensal = parseFloat(localStorage.getItem('orcamentoMensal')) || 3000;
 let pieChart = null;
 let barChart = null;
 
 const regrasCategorias = {
-  "Alimentação": ["ifood", "restaurante", "mercado", "supermercado", "pão", "café", "almoço", "janta", "lanche"],
-  "Transporte": ["uber", "99", "taxi", "ônibus", "metro", "gasolina", "estacionamento", "combustível"],
-  "Moradia": ["aluguel", "condomínio", "internet", "luz", "água", "gás", "iptu"],
+  "Alimentação": ["ifood", "restaurante", "mercado", "supermercado", "pão", "café", "almoço", "janta"],
+  "Transporte": ["uber", "99", "taxi", "ônibus", "metro", "gasolina", "estacionamento"],
+  "Moradia": ["aluguel", "condomínio", "internet", "luz", "água", "gás"],
   "Lazer": ["netflix", "spotify", "cinema", "show", "bar", "festa", "jogo"],
   "Saúde": ["farmácia", "remédio", "médico", "dentista", "academia"],
-  "Compras": ["shein", "amazon", "magazine", "roupa", "sapato", "loja"],
-  "Educação": ["curso", "faculdade", "livro", "alura", "hotmart"],
+  "Compras": ["shein", "amazon", "magazine", "roupa", "sapato"],
+  "Educação": ["curso", "faculdade", "livro"],
   "Outros": []
 };
 
 function categorizarGasto(descricao) {
   const desc = descricao.toLowerCase();
-  for (let categoria in regrasCategorias) {
-    for (let palavra of regrasCategorias[categoria]) {
-      if (desc.includes(palavra)) return categoria;
-    }
+  for (let cat in regrasCategorias) {
+    if (regrasCategorias[cat].some(p => desc.includes(p))) return cat;
   }
   return "Outros";
 }
 
-function carregarGastos() {
+function carregarDados() {
   const salvos = localStorage.getItem('gastos');
   if (salvos) gastos = JSON.parse(salvos);
+  document.getElementById('orcamentoMensal').value = orcamentoMensal;
   renderizarTudo();
 }
 
 function salvarGastos() {
   localStorage.setItem('gastos', JSON.stringify(gastos));
+}
+
+function salvarOrcamento() {
+  const valor = parseFloat(document.getElementById('orcamentoMensal').value);
+  if (valor && valor > 0) {
+    orcamentoMensal = valor;
+    localStorage.setItem('orcamentoMensal', valor);
+    renderizarTudo();
+  }
 }
 
 function adicionarGasto() {
@@ -39,7 +48,7 @@ function adicionarGasto() {
   const data = document.getElementById('data').value;
 
   if (!descricao || !valorStr || !data) {
-    alert('Preencha todos os campos.');
+    alert('Preencha todos os campos corretamente.');
     return;
   }
 
@@ -69,98 +78,105 @@ function removerGasto(id) {
   }
 }
 
-function atualizarTotal() {
-  const total = gastos.reduce((acc, g) => acc + g.valor, 0);
-  document.getElementById('totalGasto').textContent = 
-    'R$ ' + total.toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+function calcularTotal() {
+  return gastos.reduce((acc, g) => acc + g.valor, 0);
 }
 
 function renderizarLista() {
   const container = document.getElementById('listaGastos');
-  
   if (gastos.length === 0) {
-    container.innerHTML = `<div class="text-center py-12 text-zinc-500">Nenhum gasto registrado ainda.</div>`;
+    container.innerHTML = `<div class="text-center py-16 text-zinc-500">Ainda não há gastos registrados.</div>`;
     return;
   }
 
   let html = '';
-  gastos.forEach(gasto => {
+  gastos.forEach(g => {
     html += `
-      <div class="flex items-center justify-between bg-zinc-800 rounded-2xl px-6 py-5 group">
-        <div class="flex-1">
-          <p class="font-medium">${gasto.descricao}</p>
-          <div class="flex items-center gap-3 mt-1">
-            <span class="text-xs px-3 py-1 bg-zinc-700 rounded-full text-zinc-400">${gasto.categoria}</span>
-            <p class="text-zinc-400 text-sm">${new Date(gasto.data).toLocaleDateString('pt-BR')}</p>
+      <div class="bg-zinc-800 rounded-2xl px-6 py-5 flex items-center justify-between group">
+        <div>
+          <p class="font-medium">${g.descricao}</p>
+          <div class="flex gap-3 text-sm mt-1">
+            <span class="px-3 py-1 bg-zinc-700 rounded-full text-xs">${g.categoria}</span>
+            <span class="text-zinc-400">${new Date(g.data).toLocaleDateString('pt-BR')}</span>
           </div>
         </div>
-        <div class="flex items-center gap-6">
-          <span class="font-semibold text-lg">R$ ${gasto.valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-          <button onclick="removerGasto(${gasto.id})" 
-            class="text-red-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all">
+        <div class="flex items-center gap-8">
+          <span class="text-xl font-semibold">R$ ${g.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
+          <button onclick="removerGasto(${g.id})" class="text-red-400 opacity-0 group-hover:opacity-100 transition-all">
             <i class="fas fa-trash"></i>
           </button>
         </div>
       </div>`;
   });
-
   container.innerHTML = html;
 }
 
 function renderizarResumoCategorias() {
   const container = document.getElementById('resumoCategorias');
   const porCategoria = {};
-
-  gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
-
-  let html = '';
-  Object.keys(porCategoria).sort().forEach(cat => {
-    const valor = porCategoria[cat];
-    html += `
-      <div class="bg-zinc-800 rounded-2xl p-5">
-        <p class="text-sm text-zinc-400">${cat}</p>
-        <p class="text-2xl font-semibold mt-2">R$ ${valor.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-      </div>`;
+  gastos.forEach(g => {
+    porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor;
   });
 
-  container.innerHTML = html || '<p class="text-zinc-500 col-span-4 text-center py-8">Adicione gastos para ver o resumo</p>';
+  let html = '';
+  Object.keys(porCategoria).forEach(cat => {
+    html += `
+      <div class="bg-zinc-800 rounded-2xl p-5">
+        <p class="text-zinc-400 text-sm">${cat}</p>
+        <p class="text-2xl font-semibold mt-1">R$ ${porCategoria[cat].toLocaleString('pt-BR', {minimumFractionDigits: 2})}</p>
+      </div>`;
+  });
+  container.innerHTML = html || '<p class="col-span-4 text-center py-8 text-zinc-500">Adicione gastos para ver o resumo</p>';
 }
 
-function gerarInsights() {
+function renderizarProgressoOrcamento() {
+  const total = calcularTotal();
+  const percentual = orcamentoMensal > 0 ? Math.min((total / orcamentoMensal) * 100, 100) : 0;
+  const container = document.getElementById('progressoOrcamento');
+
+  let cor = percentual > 90 ? 'bg-red-500' : percentual > 70 ? 'bg-amber-500' : 'bg-emerald-500';
+
+  container.innerHTML = `
+    <div class="flex justify-between text-sm mb-2">
+      <span>Gasto atual</span>
+      <span class="font-medium">R$ ${total.toLocaleString('pt-BR')} / R$ ${orcamentoMensal.toLocaleString('pt-BR')}</span>
+    </div>
+    <div class="h-3 bg-zinc-700 rounded-full overflow-hidden">
+      <div class="${cor} h-full transition-all" style="width: ${percentual}%"></div>
+    </div>
+    <p class="text-xs text-zinc-400 mt-2">${percentual.toFixed(0)}% do orçamento utilizado</p>
+  `;
+}
+
+function gerarAnaliseInteligente() {
   const container = document.getElementById('insights');
+  const total = calcularTotal();
   if (gastos.length === 0) {
-    container.innerHTML = `<p class="text-zinc-500">Adicione gastos para a IA gerar insights.</p>`;
+    container.innerHTML = `<p class="text-zinc-500">Adicione alguns gastos para a IA analisar seu comportamento financeiro.</p>`;
     return;
   }
 
-  const total = gastos.reduce((acc, g) => acc + g.valor, 0);
   const porCategoria = {};
   gastos.forEach(g => porCategoria[g.categoria] = (porCategoria[g.categoria] || 0) + g.valor);
 
-  const categoriaMaisAlta = Object.keys(porCategoria).reduce((a, b) => 
-    porCategoria[a] > porCategoria[b] ? a : b
-  );
+  const maiorCategoria = Object.keys(porCategoria).reduce((a, b) => porCategoria[a] > porCategoria[b] ? a : b);
+  const percentualMaior = ((porCategoria[maiorCategoria] / total) * 100).toFixed(0);
 
   let html = `
-    <div class="flex gap-4 bg-zinc-800 p-5 rounded-2xl">
-      <i class="fas fa-chart-pie text-violet-400 text-2xl mt-1"></i>
-      <div>
-        <p class="font-medium">Maior gasto em <span class="text-violet-400">${categoriaMaisAlta}</span></p>
-        <p class="text-zinc-400">R$ ${porCategoria[categoriaMaisAlta].toLocaleString('pt-BR', { minimumFractionDigits: 2 })} (${((porCategoria[categoriaMaisAlta] / total) * 100).toFixed(0)}% do total)</p>
-      </div>
-    </div>`;
+    <div class="bg-zinc-800/70 border border-violet-500/30 rounded-2xl p-6">
+      <p class="text-violet-300 font-medium">Análise deste mês</p>
+      <p class="mt-3">Você está gastando mais em <strong class="text-white">${maiorCategoria}</strong> (${percentualMaior}% do total).</p>
+  `;
 
-  if (total > 2000) {
-    html += `
-      <div class="flex gap-4 bg-amber-900/40 p-5 rounded-2xl border border-amber-700/50">
-        <i class="fas fa-exclamation-triangle text-amber-400 text-2xl mt-1"></i>
-        <div>
-          <p class="font-medium text-amber-300">Atenção: gastos elevados</p>
-          <p class="text-amber-400/80">Considere reduzir despesas em ${categoriaMaisAlta}.</p>
-        </div>
-      </div>`;
+  if (total > orcamentoMensal * 0.85) {
+    html += `<p class="mt-4 text-amber-400">⚠️ Você está próximo de ultrapassar seu orçamento mensal.</p>`;
+  } else if (percentualMaior > 40) {
+    html += `<p class="mt-4 text-emerald-400">Sugestão: Defina um limite específico para ${maiorCategoria.toLowerCase()} para controlar melhor.</p>`;
+  } else {
+    html += `<p class="mt-4 text-emerald-400">Sua distribuição de gastos está relativamente equilibrada.</p>`;
   }
 
+  html += `</div>`;
   container.innerHTML = html;
 }
 
@@ -170,67 +186,49 @@ function atualizarGraficos() {
 
   const labels = Object.keys(porCategoria);
   const valores = Object.values(porCategoria);
-  const cores = ['#8b5cf6', '#ec4899', '#f43f5e', '#f59e0b', '#10b981', '#3b82f6', '#eab308'];
+  const cores = ['#a855f7', '#db2777', '#e11d48', '#f59e0b', '#10b981', '#3b82f6'];
 
-  // Pizza
-  const ctxPie = document.getElementById('pieChart');
+  // Pie
   if (pieChart) pieChart.destroy();
-  pieChart = new Chart(ctxPie, {
+  pieChart = new Chart(document.getElementById('pieChart'), {
     type: 'pie',
     data: { labels, datasets: [{ data: valores, backgroundColor: cores }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { position: 'bottom', labels: { color: '#a1a1aa' } } }
-    }
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { color: '#d1d5db' } } }}
   });
 
-  // Barras
-  const ctxBar = document.getElementById('barChart');
+  // Bar
   if (barChart) barChart.destroy();
-  barChart = new Chart(ctxBar, {
+  barChart = new Chart(document.getElementById('barChart'), {
     type: 'bar',
-    data: { labels, datasets: [{ label: 'Valor gasto (R$)', data: valores, backgroundColor: '#8b5cf6', borderRadius: 8 }] },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { y: { ticks: { color: '#71717a' } }, x: { ticks: { color: '#71717a' } } }
-    }
+    data: { labels, datasets: [{ data: valores, backgroundColor: '#a855f7', borderRadius: 6 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }}
   });
 }
 
 function renderizarTudo() {
-  atualizarTotal();
   renderizarLista();
   renderizarResumoCategorias();
-  gerarInsights();
+  renderizarProgressoOrcamento();
+  gerarAnaliseInteligente();
   atualizarGraficos();
 }
 
-// === Funções extras ===
+// Exportar e Limpar
 function exportarCSV() {
-  if (gastos.length === 0) {
-    alert('Não há gastos para exportar.');
-    return;
-  }
-
+  if (gastos.length === 0) return alert('Não há dados para exportar.');
   let csv = 'Data,Descrição,Categoria,Valor\n';
-  gastos.forEach(g => {
-    csv += `${g.data},${g.descricao.replace(/,/g, ' ')},${g.categoria},${g.valor}\n`;
-  });
-
+  gastos.forEach(g => csv += `${g.data},"${g.descricao}",${g.categoria},${g.valor}\n`);
+  
   const blob = new Blob([csv], { type: 'text/csv' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `gastos_ia_${new Date().toISOString().slice(0,10)}.csv`;
+  a.download = `gastos-ia-${new Date().toISOString().slice(0,10)}.csv`;
   a.click();
-  URL.revokeObjectURL(url);
 }
 
 function limparTodosDados() {
-  if (confirm('Tem certeza que deseja excluir TODOS os gastos? Esta ação não pode ser desfeita.')) {
+  if (confirm('Apagar todos os gastos permanentemente?')) {
     gastos = [];
     localStorage.removeItem('gastos');
     renderizarTudo();
@@ -238,8 +236,7 @@ function limparTodosDados() {
 }
 
 // Inicialização
-window.onload = function() {
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('data').value = hoje;
-  carregarGastos();
+window.onload = () => {
+  document.getElementById('data').value = new Date().toISOString().split('T')[0];
+  carregarDados();
 };

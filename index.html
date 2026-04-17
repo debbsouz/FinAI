@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gastos IA • Controle Financeiro</title>
+  <title>Gastos IA • Controle Financeiro Inteligente</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,118 +18,122 @@
     <!-- Header -->
     <header class="flex items-center justify-between mb-12">
       <div class="flex items-center gap-4">
-        <div class="w-9 h-9 bg-violet-600 rounded-2xl flex items-center justify-center text-xl font-semibold">
+        <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg">
           GI
         </div>
         <div>
-          <h1 class="text-3xl font-semibold tracking-tight">Gastos IA</h1>
-          <p class="text-zinc-400 text-sm">Controle financeiro inteligente</p>
+          <h1 class="text-4xl font-semibold tracking-tighter">Gastos IA</h1>
+          <p class="text-zinc-400">Seu assistente financeiro inteligente</p>
         </div>
       </div>
       
-      <div class="flex items-center gap-6">
+      <div class="flex items-center gap-4">
         <button onclick="exportarCSV()" 
-          class="flex items-center gap-2 px-5 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm transition-colors">
+          class="flex items-center gap-2 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm font-medium transition-all">
           <i class="fas fa-download"></i>
           Exportar CSV
         </button>
         <button onclick="limparTodosDados()" 
-          class="flex items-center gap-2 px-5 py-2.5 bg-red-900/50 hover:bg-red-900 text-red-400 rounded-2xl text-sm transition-colors">
+          class="flex items-center gap-2 px-6 py-3 bg-red-950 hover:bg-red-900 text-red-400 rounded-2xl text-sm font-medium transition-all">
           <i class="fas fa-trash"></i>
-          Limpar tudo
+          Limpar dados
         </button>
       </div>
     </header>
 
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
 
-      <!-- Formulário -->
-      <div class="lg:col-span-5">
+      <!-- Formulário + Orçamento -->
+      <div class="xl:col-span-5 space-y-8">
+        
+        <!-- Novo Gasto -->
         <div class="bg-zinc-900 rounded-3xl p-8">
-          <h2 class="text-2xl font-semibold mb-6">Novo gasto</h2>
-          
+          <h2 class="text-2xl font-semibold mb-6">Registrar gasto</h2>
           <div class="space-y-6">
             <div>
               <label class="block text-zinc-400 text-sm mb-2">Descrição</label>
-              <input id="descricao" type="text" placeholder="Ex: Almoço no restaurante"
-                class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-violet-500">
+              <input id="descricao" type="text" placeholder="Ex: Jantar com amigos no restaurante"
+                class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none focus:border-violet-500 transition-colors">
             </div>
 
             <div class="grid grid-cols-2 gap-6">
               <div>
                 <label class="block text-zinc-400 text-sm mb-2">Valor</label>
                 <div class="relative">
-                  <span class="absolute left-5 top-4 text-zinc-400">R$</span>
+                  <span class="absolute left-6 top-4 text-zinc-400 font-medium">R$</span>
                   <input id="valor" type="number" step="0.01" placeholder="0,00"
-                    class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl pl-12 pr-5 py-4 focus:outline-none focus:border-violet-500">
+                    class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl pl-14 pr-6 py-4 focus:outline-none focus:border-violet-500">
                 </div>
               </div>
-
               <div>
                 <label class="block text-zinc-400 text-sm mb-2">Data</label>
-                <input id="data" type="date"
-                  class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-4 focus:outline-none focus:border-violet-500">
+                <input id="data" type="date" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none focus:border-violet-500">
               </div>
             </div>
 
             <button onclick="adicionarGasto()" 
-              class="w-full bg-violet-600 hover:bg-violet-700 transition-colors text-white font-semibold py-4 rounded-2xl">
+              class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:brightness-110 transition-all font-semibold py-4 rounded-2xl text-lg">
               Adicionar gasto
             </button>
           </div>
         </div>
+
+        <!-- Orçamento Mensal -->
+        <div class="bg-zinc-900 rounded-3xl p-8">
+          <h2 class="text-2xl font-semibold mb-6">Orçamento mensal</h2>
+          <div class="flex gap-4">
+            <input id="orcamentoMensal" type="number" placeholder="Valor do orçamento" 
+              class="flex-1 bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none focus:border-violet-500">
+            <button onclick="salvarOrcamento()" 
+              class="px-8 bg-zinc-700 hover:bg-zinc-600 rounded-2xl font-medium transition-colors">
+              Salvar
+            </button>
+          </div>
+          <div id="progressoOrcamento" class="mt-6"></div>
+        </div>
+
       </div>
 
       <!-- Coluna direita -->
-      <div class="lg:col-span-7 space-y-8">
+      <div class="xl:col-span-7 space-y-8">
 
-        <!-- Insights da IA -->
+        <!-- Assistente IA -->
         <div class="bg-zinc-900 rounded-3xl p-8">
           <h2 class="text-2xl font-semibold mb-6 flex items-center gap-3">
-            <i class="fas fa-lightbulb text-yellow-400"></i>
-            Insights da IA
+            <i class="fas fa-robot text-violet-400"></i>
+            Assistente IA
           </h2>
-          <div id="insights" class="space-y-4 text-sm">
+          <div id="insights" class="min-h-[140px] space-y-5">
+            <!-- Preenchido pela IA -->
           </div>
         </div>
 
         <!-- Resumo por categoria -->
         <div class="bg-zinc-900 rounded-3xl p-8">
           <h2 class="text-2xl font-semibold mb-6">Resumo por categoria</h2>
-          <div id="resumoCategorias" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div id="resumoCategorias" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
           </div>
         </div>
 
         <!-- Gráficos -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div class="bg-zinc-900 rounded-3xl p-8">
-            <h2 class="text-xl font-semibold mb-6">Distribuição de gastos</h2>
-            <div class="h-72">
-              <canvas id="pieChart"></canvas>
-            </div>
+            <h2 class="text-xl font-semibold mb-6">Distribuição</h2>
+            <div class="h-72"><canvas id="pieChart"></canvas></div>
           </div>
-
           <div class="bg-zinc-900 rounded-3xl p-8">
-            <h2 class="text-xl font-semibold mb-6">Gastos por categoria</h2>
-            <div class="h-72">
-              <canvas id="barChart"></canvas>
-            </div>
+            <h2 class="text-xl font-semibold mb-6">Comparação</h2>
+            <div class="h-72"><canvas id="barChart"></canvas></div>
           </div>
         </div>
 
       </div>
-
     </div>
 
-    <!-- Lista de gastos -->
+    <!-- Lista -->
     <div class="mt-12 bg-zinc-900 rounded-3xl p-8">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-semibold">Últimos gastos</h2>
-        <span id="totalGasto" class="text-xl font-semibold text-emerald-400">R$ 0,00</span>
-      </div>
-      
-      <div id="listaGastos" class="space-y-3">
-      </div>
+      <h2 class="text-2xl font-semibold mb-6">Histórico de gastos</h2>
+      <div id="listaGastos" class="space-y-3"></div>
     </div>
 
   </div>
