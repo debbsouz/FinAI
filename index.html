@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gastos IA • Controle Financeiro Inteligente</title>
+  <title>FinAI - Controle Financeiro com IA</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -22,7 +22,7 @@
           FI
         </div>
         <div>
-          <h1 class="text-4xl font-semibold tracking-tighter">FinAI</h1>
+          <h1 class="text-4xl font-semibold tracking-tighter bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">FinAI</h1>
           <p class="text-zinc-400">Seu assistente financeiro inteligente</p>
         </div>
       </div>
@@ -103,14 +103,25 @@
       <i class="fas fa-robot text-violet-400"></i>
       Assistente IA
     </h2>
-    <button onclick="configurarAPIKey()" 
-      class="text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
-      <i class="fas fa-key"></i>
-      <span>Configurar API Key</span>
-    </button>
+    <div class="flex gap-2">
+      <button onclick="gerarAnaliseIA()" 
+        class="text-xs px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-xl flex items-center gap-2 transition-all">
+        <i class="fas fa-magic"></i>
+        <span>Gerar Análise com IA</span>
+      </button>
+      <button onclick="configurarAPIKey()" 
+        class="text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
+        <i class="fas fa-key"></i>
+        <span>API Key</span>
+      </button>
+    </div>
   </div>
   
-  <div id="insights" class="min-h-[160px] space-y-5"></div>
+  <div id="analise-ia" class="space-y-6">
+    <div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">
+      Clique no botão acima para gerar uma análise completa dos seus gastos.
+    </div>
+  </div>
   
   <!-- Input para perguntar à IA -->
   <div class="mt-6 pt-6 border-t border-zinc-700">

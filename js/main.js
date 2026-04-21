@@ -179,28 +179,112 @@ async function chamarGemini(prompt) {
 }
 
 async function gerarAnaliseIA() {
-  const container = document.getElementById('insights');
+  const container = document.getElementById('analise-ia');
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<p class="text-zinc-500">Adicione gastos para a IA analisar.</p>`;
+    container.innerHTML = `<div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione gastos para a IA analisar.</div>`;
     return;
   }
 
-  container.innerHTML = `<p class="text-violet-400">Analisando...</p>`;
-
-  let prompt = `Analise meus gastos de forma simples:
-Total: R$ ${calcularTotalGasto()}
-Orçamento: R$ ${orcamentoMensal}`;
-
-  const resposta = await chamarGemini(prompt);
-
   container.innerHTML = `
-    <div class="bg-zinc-800 border border-violet-500/30 rounded-2xl p-6">
-      <p class="text-violet-300 mb-3">Análise da IA</p>
-      <p>${resposta}</p>
+    <div class="flex flex-col items-center justify-center py-12 space-y-4">
+      <div class="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-violet-400 font-medium animate-pulse">FinAI está analisando suas finanças...</p>
     </div>
   `;
+
+  try {
+    const response = await fetch("http://localhost:3000/api/analysis/analisar", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        dadosFinanceiros: {
+          gastos,
+          orcamentoMensal,
+          totalGasto: calcularTotalGasto()
+        }
+      })
+    });
+
+    const data = await response.json();
+
+    if (!data.success || !data.analise) {
+      throw new Error(data.error || "Falha na análise");
+    }
+
+    const { analise } = data;
+    
+    // Cor do Score
+    const corScore = analise.score_financeiro > 80 ? 'text-emerald-400' : analise.score_financeiro > 60 ? 'text-amber-400' : 'text-red-400';
+    const bgScore = analise.score_financeiro > 80 ? 'bg-emerald-500/10 border-emerald-500/20' : analise.score_financeiro > 60 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-red-500/10 border-red-500/20';
+
+    container.innerHTML = `
+      <!-- Score Card -->
+      <div class="${bgScore} border rounded-3xl p-8 text-center">
+        <p class="text-zinc-400 text-sm uppercase tracking-wider font-bold mb-2">Score Financeiro</p>
+        <div class="text-6xl font-black ${corScore}">${analise.score_financeiro}</div>
+        <p class="text-zinc-300 mt-4 text-sm">${analise.previsao_proximo_mes}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Insights -->
+        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
+          <h3 class="text-violet-400 font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-lightbulb"></i> Insights
+          </h3>
+          <ul class="space-y-3 text-sm text-zinc-300">
+            ${analise.insights.map(i => `<li class="flex gap-2"><span class="text-violet-500">•</span> ${i}</li>`).join('')}
+          </ul>
+        </div>
+
+        <!-- Alertas -->
+        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
+          <h3 class="text-red-400 font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-exclamation-triangle"></i> Alertas
+          </h3>
+          <ul class="space-y-3 text-sm text-zinc-300">
+            ${analise.alertas.map(a => `<li class="flex gap-2"><span class="text-red-500">•</span> ${a}</li>`).join('')}
+          </ul>
+        </div>
+
+        <!-- Sugestões -->
+        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
+          <h3 class="text-emerald-400 font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-check-circle"></i> Sugestões
+          </h3>
+          <ul class="space-y-3 text-sm text-zinc-300">
+            ${analise.sugestoes.map(s => `<li class="flex gap-2"><span class="text-emerald-500">•</span> ${s}</li>`).join('')}
+          </ul>
+        </div>
+
+        <!-- Padrões -->
+        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
+          <h3 class="text-blue-400 font-bold flex items-center gap-2 mb-4">
+            <i class="fas fa-search"></i> Padrões
+          </h3>
+          <ul class="space-y-3 text-sm text-zinc-300">
+            ${analise.padroes_identificados.map(p => `<li class="flex gap-2"><span class="text-blue-500">•</span> ${p}</li>`).join('')}
+          </ul>
+        </div>
+      </div>
+    `;
+
+  } catch (erro) {
+    console.error("Erro IA:", erro);
+    container.innerHTML = `
+      <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center">
+        <i class="fas fa-exclamation-circle text-red-500 text-3xl mb-3"></i>
+        <p class="text-red-400 font-medium">Ops! Não conseguimos gerar a análise.</p>
+        <p class="text-zinc-500 text-sm mt-1">Verifique se o servidor backend está rodando e tente novamente.</p>
+        <button onclick="gerarAnaliseIA()" class="mt-4 text-xs bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-all">
+          Tentar novamente
+        </button>
+      </div>
+    `;
+  }
 }
 
 async function enviarPerguntaIA() {
@@ -228,7 +312,6 @@ function renderizarTudo() {
   renderizarLista();
   renderizarResumoCategorias();
   renderizarProgressoOrcamento();
-  gerarAnaliseIA();
   atualizarGraficos();
 }
 
