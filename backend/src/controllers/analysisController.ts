@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { OpenAIService, FinancialAnalysis } from '../services/OpenAIService';
+import { GeminiService, FinancialAnalysis } from '../services/GeminiService';
 
-const openAIService = new OpenAIService();
+const geminiService = new GeminiService();
 
 export const gerarAnalise = async (req: Request, res: Response) => {
   try {
@@ -11,7 +11,7 @@ export const gerarAnalise = async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Dados financeiros são obrigatórios' });
     }
 
-    const analise: FinancialAnalysis = await openAIService.analisarFinancas(dadosFinanceiros);
+    const analise: FinancialAnalysis = await geminiService.analisarFinancas(dadosFinanceiros);
 
     res.json({
       success: true,

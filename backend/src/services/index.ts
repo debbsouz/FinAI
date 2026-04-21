@@ -1,3 +1,2 @@
 // Serviços da aplicação (lógica de negócio reutilizável)
-export * from './OpenAIService';
-
+export * from './GeminiService';

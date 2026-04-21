@@ -1,11 +1,9 @@
-import OpenAI from 'openai'; 
+import fetch from "node-fetch";
 import dotenv from 'dotenv'; 
 
 dotenv.config(); 
 
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY, 
-}); 
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 export interface FinancialAnalysis { 
   score_financeiro: number;        // 0 a 100 
@@ -16,8 +14,8 @@ export interface FinancialAnalysis {
   padroes_identificados: string[]; 
 } 
 
-export class OpenAIService { 
-  private model = 'gpt-4o-mini'; 
+export class GeminiService { 
+  private model = 'gemini-2.5-flash'; 
 
   async analisarFinancas(dadosFinanceiros: any): Promise<FinancialAnalysis> { 
     const prompt = ` 
@@ -45,31 +43,46 @@ Pense passo a passo antes de responder:
 4. Crie sugestões práticas e mensuráveis. 
 5. Faça uma previsão realista. 
 
-Não inclua nenhuma explicação fora do JSON. 
+Não inclua nenhuma explicação fora do JSON. Certifique-se de que a resposta seja um JSON válido.
 `; 
 
     try { 
-      const completion = await openai.chat.completions.create({ 
-        model: this.model, 
-        messages: [ 
-          { role: "system", content: "Você é um analista financeiro preciso e útil." }, 
-          { role: "user", content: prompt } 
-        ], 
-        temperature: 0.7, 
-        response_format: { type: "json_object" } 
-      }); 
+      const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${this.model}:generateContent?key=${GEMINI_API_KEY}`;
 
-      const content = completion.choices[0].message.content; 
-      if (!content) throw new Error("Resposta vazia da OpenAI"); 
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [{ text: prompt }]
+            }
+          ],
+          generationConfig: {
+            response_mime_type: "application/json"
+          }
+        })
+      });
+
+      const data: any = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || "Erro na API do Gemini");
+      }
+
+      const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!content) throw new Error("Resposta vazia do Gemini"); 
 
       return JSON.parse(content) as FinancialAnalysis; 
     } catch (error) { 
-      console.error("Erro ao analisar finanças com IA:", error); 
+      console.error("Erro ao analisar finanças com Gemini:", error); 
       return { 
         score_financeiro: 50, 
         insights: ["Não foi possível gerar análise no momento."], 
         alertas: [], 
-        sugestoes: ["Verifique sua chave da OpenAI e tente novamente."], 
+        sugestoes: ["Verifique sua chave do Gemini e tente novamente."], 
         previsao_proximo_mes: "Análise indisponível.", 
         padroes_identificados: [] 
       }; 
