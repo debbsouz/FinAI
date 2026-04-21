@@ -1,189 +1,171 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FinAI - Controle Financeiro com IA</title>
+  <title>FinAI - Inteligência Financeira</title>
   
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-zinc-950 text-zinc-100 min-h-screen">
-
-  <div class="max-w-7xl mx-auto p-8">
-    
-    <!-- Header -->
-    <header class="flex items-center justify-between mb-12">
-      <div class="flex items-center gap-4">
-        <div class="w-10 h-10 bg-gradient-to-br from-violet-500 to-fuchsia-500 rounded-2xl flex items-center justify-center text-2xl font-bold shadow-lg">
-          FI
-        </div>
-        <div>
-          <h1 class="text-4xl font-semibold tracking-tighter bg-gradient-to-r from-violet-400 to-fuchsia-400 bg-clip-text text-transparent">FinAI</h1>
-          <p class="text-zinc-400">Seu assistente financeiro inteligente</p>
-        </div>
+<body class="bg-[#09090b] text-zinc-100 font-inter antialiased">
+  
+  <div class="flex min-h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#111113] border-r border-zinc-800 flex flex-col shrink-0">
+      <div class="p-8 border-b border-zinc-800">
+        <h1 class="text-2xl font-black tracking-tighter text-white">FinAI</h1>
+        <p class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">Enterprise Dashboard</p>
       </div>
       
-      <div class="flex items-center gap-4">
-        <button onclick="exportarCSV()" 
-          class="flex items-center gap-2 px-6 py-3 bg-zinc-800 hover:bg-zinc-700 rounded-2xl text-sm font-medium transition-all">
-          <i class="fas fa-download"></i>
-          Exportar CSV
-        </button>
-        <button onclick="limparTodosDados()" 
-          class="flex items-center gap-2 px-6 py-3 bg-red-950 hover:bg-red-900 text-red-400 rounded-2xl text-sm font-medium transition-all">
-          <i class="fas fa-trash"></i>
-          Limpar dados
-        </button>
-      </div>
-    </header>
-
-    <!-- Visão Geral -->
-    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
-        <p class="text-zinc-400 text-sm font-medium mb-1">Total Gasto</p>
-        <h3 id="cardTotalGasto" class="text-3xl font-bold">R$ 0,00</h3>
-        <div id="statusGasto" class="mt-2 text-xs font-medium px-2 py-1 rounded-lg inline-block"></div>
-      </div>
-      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
-        <p class="text-zinc-400 text-sm font-medium mb-1">Orçamento Restante</p>
-        <h3 id="cardOrcamentoRestante" class="text-3xl font-bold text-emerald-400">R$ 0,00</h3>
-        <div class="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
-          <div id="barOrcamentoRestante" class="h-full bg-emerald-500 transition-all" style="width: 100%"></div>
+      <nav class="flex-1 p-6 space-y-2">
+        <a href="#" class="flex items-center gap-3 px-4 py-3 bg-zinc-800 text-white rounded-xl font-medium transition-all group">
+          <i class="fas fa-chart-line text-violet-500"></i>
+          Dashboard
+        </a>
+        <a href="#section-gastos" class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-medium transition-all group">
+          <i class="fas fa-wallet"></i>
+          Gastos
+        </a>
+        <a href="#section-insights" class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-medium transition-all group">
+          <i class="fas fa-bolt"></i>
+          Insights IA
+        </a>
+      </nav>
+      
+      <div class="p-6 border-t border-zinc-800">
+        <div class="flex items-center gap-3 px-2 py-2">
+          <div class="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-xs font-bold">U</div>
+          <div>
+            <p class="text-xs font-semibold text-white">Usuário Pro</p>
+            <p class="text-[10px] text-zinc-500">Enterprise Plan</p>
+          </div>
         </div>
       </div>
-      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
-        <p class="text-zinc-400 text-sm font-medium mb-1">Score Combinado</p>
-        <div class="flex items-end gap-3">
-          <h3 id="cardScoreLocal" class="text-3xl font-bold text-violet-400">0</h3>
-          <span class="text-zinc-500 text-sm mb-1">/ 100</span>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto scroll-smooth">
+      <!-- Topbar -->
+      <header class="h-20 bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-800 flex items-center justify-between px-12 sticky top-0 z-50">
+        <h2 class="text-xl font-semibold text-white">Dashboard Overview</h2>
+        <div class="flex items-center gap-4">
+          <button onclick="exportarCSV()" class="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg text-xs font-semibold transition-all flex items-center gap-2">
+            <i class="fas fa-download"></i> Exportar
+          </button>
+          <button onclick="limparTodosDados()" class="px-4 py-2 bg-red-900/10 hover:bg-red-900/20 text-red-400 rounded-lg text-xs font-semibold transition-all">
+            Limpar Banco
+          </button>
         </div>
-        <p class="text-[10px] text-zinc-500 mt-2 italic">Baseado no seu comportamento local</p>
-      </div>
-    </section>
+      </header>
 
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
-
-      <!-- Coluna esquerda: Formulário + Orçamento -->
-      <div class="xl:col-span-5 space-y-8">
+      <div class="max-w-7xl mx-auto p-12 space-y-12">
         
-        <!-- Novo Gasto -->
-        <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-          <h2 class="text-2xl font-semibold mb-6">Registrar novo gasto</h2>
-          <div class="space-y-6">
-            <div>
-              <label class="block text-zinc-400 text-sm mb-2">Descrição</label>
-              <input id="descricao" type="text" placeholder="Ex: Jantar com amigos no restaurante"
-                class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none">
+        <!-- Summary Cards -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/20 transition-all shadow-sm">
+            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-4">Total Gasto</p>
+            <div class="flex items-end justify-between">
+              <h3 id="cardTotalGasto" class="text-4xl font-black text-white">R$ 0,00</h3>
+              <span id="statusGasto" class="text-[10px] font-black uppercase px-2 py-1 rounded bg-emerald-500/10 text-emerald-500 tracking-tighter">Healthy</span>
+            </div>
+          </div>
+          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/20 transition-all shadow-sm">
+            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-4">Orçamento Disponível</p>
+            <div class="flex flex-col gap-4">
+              <h3 id="cardOrcamentoRestante" class="text-4xl font-black text-white">R$ 0,00</h3>
+              <div class="h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+                <div id="barOrcamentoRestante" class="h-full bg-violet-500 transition-all" style="width: 100%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/20 transition-all shadow-sm">
+            <p class="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-4">Eficiência Financeira</p>
+            <div class="flex items-baseline gap-2">
+              <h3 id="cardScoreLocal" class="text-4xl font-black text-violet-500">0</h3>
+              <span class="text-zinc-600 font-bold">/ 100</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-12">
+          <!-- Coluna Esquerda: Cadastro e Gráficos -->
+          <div class="xl:col-span-4 space-y-12">
+            <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800">
+              <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest">Novo Lançamento</h4>
+              <div class="space-y-4">
+                <input type="text" id="descricao" placeholder="Descrição do gasto" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-4 focus:outline-none focus:border-violet-500 transition-all text-sm">
+                <input type="number" id="valor" placeholder="Valor (R$)" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-4 focus:outline-none focus:border-violet-500 transition-all text-sm">
+                <input type="date" id="data" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-5 py-4 focus:outline-none focus:border-violet-500 transition-all text-sm text-zinc-400">
+                <button onclick="adicionarGasto()" class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-xl transition-all shadow-lg shadow-violet-600/20">Registrar</button>
+              </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-6">
-              <div>
-                <label class="block text-zinc-400 text-sm mb-2">Valor</label>
-                <div class="relative">
-                  <span class="absolute left-6 top-4 text-zinc-400 font-medium">R$</span>
-                  <input id="valor" type="number" step="0.01" placeholder="0,00"
-                    class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl pl-14 pr-6 py-4 focus:outline-none">
+            <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800">
+              <h4 class="text-sm font-bold text-white mb-6 uppercase tracking-widest">Distribuição</h4>
+              <div class="h-64"><canvas id="pieChart"></canvas></div>
+            </div>
+          </div>
+
+          <!-- Coluna Direita: Insights e Lista -->
+          <div class="xl:col-span-8 space-y-12">
+            <!-- IA Insights -->
+            <section id="section-insights" class="bg-[#111113] p-10 rounded-2xl border border-zinc-800 shadow-xl overflow-hidden relative">
+              <div class="flex items-center justify-between mb-8">
+                <div>
+                  <h2 class="text-2xl font-bold text-white">Insights Inteligentes</h2>
+                  <p class="text-xs text-zinc-500 mt-1">Análise automatizada de padrões financeiros</p>
+                </div>
+                <button onclick="gerarAnaliseIA()" class="px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white font-bold rounded-xl transition-all text-sm shadow-lg shadow-violet-600/10">Gerar Análise</button>
+              </div>
+
+              <div id="analise-ia" class="min-h-[120px] bg-zinc-900/30 rounded-2xl border border-zinc-800/50 p-8">
+                <p id="insights" class="text-zinc-500 text-sm italic text-center">Inicie a análise para visualizar os insights automatizados.</p>
+              </div>
+
+              <div class="mt-8 flex gap-4">
+                <input id="perguntaIA" type="text" placeholder="Consultar assistente financeiro..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-6 py-4 focus:outline-none focus:border-violet-500 transition-all text-sm">
+                <button onclick="enviarPerguntaIA()" class="bg-zinc-800 hover:bg-zinc-700 px-8 rounded-xl font-bold transition-all text-sm text-white">Consultar</button>
+              </div>
+            </section>
+
+            <!-- Gastos Table -->
+            <section id="section-gastos" class="bg-[#111113] rounded-2xl border border-zinc-800 overflow-hidden">
+              <div class="p-8 border-b border-zinc-800 flex justify-between items-center">
+                <h4 class="text-sm font-bold text-white uppercase tracking-widest">Histórico de Gastos</h4>
+                <div class="flex gap-4">
+                  <input id="orcamentoMensal" type="number" onchange="alterarOrcamento(this.value)" class="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs w-32 focus:outline-none focus:border-violet-500" placeholder="Limite Mensal">
                 </div>
               </div>
-              <div>
-                <label class="block text-zinc-400 text-sm mb-2">Data</label>
-                <input id="data" type="date" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none">
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                  <thead class="bg-zinc-900/50 text-zinc-500 font-bold uppercase text-[10px] tracking-widest border-b border-zinc-800">
+                    <tr>
+                      <th class="px-8 py-5">Descrição</th>
+                      <th class="px-8 py-5">Categoria</th>
+                      <th class="px-8 py-5">Data</th>
+                      <th class="px-8 py-5 text-right">Valor</th>
+                      <th class="px-8 py-5 text-center">Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody id="listaGastos" class="divide-y divide-zinc-800">
+                    <!-- JS Insert -->
+                  </tbody>
+                </table>
               </div>
-            </div>
-
-            <button onclick="adicionarGasto()" 
-              class="w-full bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:brightness-110 font-semibold py-4 rounded-2xl text-lg shadow-lg">
-              Adicionar gasto
-            </button>
-          </div>
-        </div>
-
-        <!-- Orçamento Mensal -->
-        <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-          <h2 class="text-2xl font-semibold mb-6">Orçamento mensal</h2>
-          <div class="flex gap-4">
-            <input id="orcamentoMensal" type="number" placeholder="Valor do orçamento" 
-              class="flex-1 bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 focus:outline-none">
-            <button onclick="salvarOrcamento()" 
-              class="px-8 bg-zinc-700 hover:bg-zinc-600 rounded-2xl font-medium transition-colors">
-              Salvar
-            </button>
-          </div>
-          <div id="progressoOrcamento" class="mt-6"></div>
-        </div>
-
-      </div>
-
-      <!-- Coluna direita -->
-      <div class="xl:col-span-7 space-y-8">
-
- <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-  <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-semibold flex items-center gap-3">
-      <i class="fas fa-robot text-violet-400"></i>
-      Assistente IA
-    </h2>
-    <div class="flex gap-2">
-      <button onclick="gerarAnaliseIA()" 
-        class="text-xs px-4 py-2 bg-violet-600 hover:bg-violet-700 rounded-xl flex items-center gap-2 transition-all">
-        <i class="fas fa-magic"></i>
-        <span>Gerar Análise com IA</span>
-      </button>
-      <button onclick="configurarAPIKey()" 
-        class="text-xs px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-xl flex items-center gap-2">
-        <i class="fas fa-key"></i>
-        <span>API Key</span>
-      </button>
-    </div>
-  </div>
-  
-  <div id="analise-ia" class="space-y-6">
-    <div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">
-      Clique no botão acima para gerar uma análise completa dos seus gastos.
-    </div>
-  </div>
-  
-  <!-- Input para perguntar à IA -->
-  <div class="mt-6 pt-6 border-t border-zinc-700">
-    <div class="flex gap-3">
-      <input id="perguntaIA" type="text" placeholder="Ex: Como posso reduzir meus gastos com alimentação?" 
-        class="flex-1 bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 focus:outline-none">
-      <button onclick="enviarPerguntaIA()" 
-        class="bg-violet-600 hover:bg-violet-700 px-8 rounded-2xl font-medium">
-        Perguntar
-      </button>
-    </div>
-    <p class="text-[10px] text-zinc-500 mt-2">A IA analisa seus gastos reais e responde de forma personalizada.</p>
-  </div>
-</div>
-
-        <!-- Gráficos -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-            <h2 class="text-xl font-semibold mb-6">Distribuição de gastos</h2>
-            <div class="h-72"><canvas id="pieChart"></canvas></div>
-          </div>
-          <div class="bg-zinc-900 rounded-3xl p-8 card-hover">
-            <h2 class="text-xl font-semibold mb-6">Gastos por categoria</h2>
-            <div class="h-72"><canvas id="barChart"></canvas></div>
+            </section>
           </div>
         </div>
 
       </div>
-    </div>
-
-    <!-- Histórico -->
-    <div class="mt-12 bg-zinc-900 rounded-3xl p-8 card-hover">
-      <h2 class="text-2xl font-semibold mb-6">Histórico de gastos</h2>
-      <div id="listaGastos" class="space-y-3"></div>
-    </div>
-
+    </main>
   </div>
 
   <script src="js/main.js"></script>
+  <script src="js/charts.js"></script>
 </body>
 </html>

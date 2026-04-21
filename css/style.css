@@ -2,44 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+:root {
+  --primary: #8b5cf6;
+  --primary-hover: #7c3aed;
+  --bg-dark: #09090b;
+  --card-bg: #111113;
+  --border-color: #27272a;
 }
 
-input, button {
-  transition: all 0.2s ease;
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a transparent;
 }
 
-.rounded-3xl {
-  border-radius: 1.5rem;
-}
-
-/* Custom focus styles */
-input:focus {
-  box-shadow: 0 0 0 4px rgba(167, 139, 250, 0.15);
-  border-color: rgb(167 139 250);
-}
-
-/* Scrollbar custom */
 ::-webkit-scrollbar {
   width: 6px;
 }
-::-webkit-scrollbar-track {
-  background: #27272a;
-}
+
 ::-webkit-scrollbar-thumb {
-  background: #52525b;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #71717a;
+  background-color: #27272a;
+  border-radius: 20px;
 }
 
-/* Card hover effect */
-.card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
 }
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.4);
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* SaaS Refinements */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+
+/* Custom Chart Tooltip Styles */
+#chartjs-tooltip {
+  background: rgba(17, 17, 19, 0.9) !important;
+  backdrop-filter: blur(4px);
+  border: 1px solid #27272a !important;
+  border-radius: 8px !important;
+}
+
+/* Table Hover */
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: rgba(39, 39, 42, 0.3);
 }

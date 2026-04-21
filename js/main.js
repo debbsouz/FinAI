@@ -106,28 +106,32 @@ function renderizarLista() {
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<div class="text-center py-16 text-zinc-500">Nenhum gasto registrado ainda.</div>`;
+    container.innerHTML = `<tr><td colspan="5" class="text-center py-20 text-zinc-500 font-medium">Nenhuma transação encontrada no período.</td></tr>`;
     return;
   }
 
   let html = '';
   gastos.forEach(g => {
     html += `
-      <div class="bg-zinc-800 rounded-2xl px-6 py-5 flex justify-between items-center group">
-        <div>
-          <p class="font-medium">${g.descricao}</p>
-          <div class="flex gap-3 mt-1 text-sm">
-            <span class="px-3 py-1 bg-zinc-700 rounded-full">${g.categoria}</span>
-            <span class="text-zinc-400">${new Date(g.data).toLocaleDateString('pt-BR')}</span>
-          </div>
-        </div>
-        <div class="flex items-center gap-8">
-          <span class="text-xl font-semibold">R$ ${g.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</span>
-          <button onclick="removerGasto(${g.id})" class="text-red-400 opacity-0 group-hover:opacity-100">
-            <i class="fas fa-trash"></i>
+      <tr class="group border-b border-zinc-800/50 last:border-0">
+        <td class="px-8 py-5">
+          <p class="font-semibold text-zinc-100">${g.descricao}</p>
+        </td>
+        <td class="px-8 py-5">
+          <span class="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 rounded-full text-[10px] font-bold uppercase tracking-wider">${g.categoria}</span>
+        </td>
+        <td class="px-8 py-5 text-zinc-500 font-medium">
+          ${new Date(g.data).toLocaleDateString('pt-BR')}
+        </td>
+        <td class="px-8 py-5 text-right font-bold text-white">
+          R$ ${g.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
+        </td>
+        <td class="px-8 py-5 text-center">
+          <button onclick="removerGasto(${g.id})" class="w-8 h-8 rounded-lg bg-red-500/5 text-red-500/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
+            <i class="fas fa-trash-alt text-xs"></i>
           </button>
-        </div>
-      </div>`;
+        </td>
+      </tr>`;
   });
 
   container.innerHTML = html;
@@ -247,30 +251,27 @@ async function gerarAnaliseIA() {
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione gastos para a IA analisar.</div>`;
+    container.innerHTML = `<div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione dados para análise.</div>`;
     return;
   }
 
-  // Desabilitar botão e mostrar loading
   if (btnAnalise) {
     btnAnalise.disabled = true;
     btnAnalise.classList.add('opacity-50', 'cursor-not-allowed');
-    btnAnalise.innerHTML = `<i class="fas fa-spinner animate-spin"></i><span>Analisando...</span>`;
+    btnAnalise.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i><span>Processando</span>`;
   }
 
   container.innerHTML = `
-    <div class="flex flex-col items-center justify-center py-12 space-y-4">
-      <div class="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-violet-400 font-medium animate-pulse">FinAI está analisando suas finanças...</p>
+    <div class="flex flex-col items-center justify-center py-12 space-y-4 text-center">
+      <div class="w-10 h-10 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">Sincronizando Inteligência</p>
     </div>
   `;
 
   try {
     const response = await fetch("http://localhost:3000/api/analysis/analisar", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         dadosFinanceiros: {
           gastos,
@@ -281,85 +282,47 @@ async function gerarAnaliseIA() {
     });
 
     const data = await response.json();
-
-    if (!data.success || !data.analise) {
-      throw new Error(data.error || "Falha na análise");
-    }
+    if (!data.success || !data.analise) throw new Error("Falha na análise");
 
     const { analise } = data;
     
-    // Cor do Score
-    const corScore = analise.score_financeiro > 80 ? 'text-emerald-400' : analise.score_financeiro > 60 ? 'text-amber-400' : 'text-red-400';
-    const bgScore = analise.score_financeiro > 80 ? 'bg-emerald-500/10 border-emerald-500/20' : analise.score_financeiro > 60 ? 'bg-amber-500/10 border-amber-500/20' : 'bg-red-500/10 border-red-500/20';
-
     container.innerHTML = `
-      <!-- Score Card -->
-      <div class="${bgScore} border rounded-3xl p-8 text-center">
-        <p class="text-zinc-400 text-sm uppercase tracking-wider font-bold mb-2">Score da IA</p>
-        <div class="text-6xl font-black ${corScore}">${analise.score_financeiro}</div>
-        <p class="text-zinc-300 mt-4 text-sm">${analise.previsao_proximo_mes}</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Insights -->
-        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
-          <h3 class="text-violet-400 font-bold flex items-center gap-2 mb-4">
-            <i class="fas fa-lightbulb"></i> Insights
-          </h3>
-          <ul class="space-y-3 text-sm text-zinc-300">
-            ${analise.insights.map(i => `<li class="flex gap-2"><span class="text-violet-500">•</span> ${i}</li>`).join('')}
-          </ul>
+      <div class="space-y-8 animate-in fade-in duration-700">
+        <div class="text-center pb-8 border-b border-zinc-800/50">
+          <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Financial Health Score</p>
+          <div class="text-6xl font-black text-white">${analise.score_financeiro}</div>
         </div>
 
-        <!-- Alertas -->
-        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
-          <h3 class="text-red-400 font-bold flex items-center gap-2 mb-4">
-            <i class="fas fa-exclamation-triangle"></i> Alertas
-          </h3>
-          <ul class="space-y-3 text-sm text-zinc-300">
-            ${analise.alertas.map(a => `<li class="flex gap-2"><span class="text-red-500">•</span> ${a}</li>`).join('')}
-          </ul>
-        </div>
-
-        <!-- Sugestões -->
-        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
-          <h3 class="text-emerald-400 font-bold flex items-center gap-2 mb-4">
-            <i class="fas fa-check-circle"></i> Sugestões
-          </h3>
-          <ul class="space-y-3 text-sm text-zinc-300">
-            ${analise.sugestoes.map(s => `<li class="flex gap-2"><span class="text-emerald-500">•</span> ${s}</li>`).join('')}
-          </ul>
-        </div>
-
-        <!-- Padrões -->
-        <div class="bg-zinc-800/50 rounded-2xl p-6 border border-zinc-700">
-          <h3 class="text-blue-400 font-bold flex items-center gap-2 mb-4">
-            <i class="fas fa-search"></i> Padrões
-          </h3>
-          <ul class="space-y-3 text-sm text-zinc-300">
-            ${analise.padroes_identificados.map(p => `<li class="flex gap-2"><span class="text-blue-500">•</span> ${p}</li>`).join('')}
-          </ul>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-black text-violet-500 uppercase tracking-widest">Estratégico</h5>
+            <ul class="space-y-3">
+              ${analise.insights.map(i => `<li class="text-xs text-zinc-400 leading-relaxed flex gap-2"><span class="text-violet-500">•</span> ${i}</li>`).join('')}
+            </ul>
+          </div>
+          <div class="space-y-4">
+            <h5 class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Otimização</h5>
+            <ul class="space-y-3">
+              ${analise.sugestoes.map(s => `<li class="text-xs text-zinc-400 leading-relaxed flex gap-2"><span class="text-emerald-500">•</span> ${s}</li>`).join('')}
+            </ul>
+          </div>
         </div>
       </div>
     `;
 
   } catch (erro) {
-    console.error("Erro IA:", erro);
     container.innerHTML = `
-      <div class="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 text-center">
-        <i class="fas fa-exclamation-circle text-red-500 text-3xl mb-3"></i>
-        <p class="text-red-400 font-medium">Ops! Não conseguimos gerar a análise.</p>
-        <p class="text-zinc-500 text-sm mt-1">Verifique se o servidor backend está rodando e tente novamente.</p>
-        <button onclick="gerarAnaliseIA()" class="mt-4 text-xs bg-red-500/20 hover:bg-red-500/30 text-red-400 px-4 py-2 rounded-lg transition-all">
-          Tentar novamente
-        </button>
+      <div class="text-center py-8">
+        <p class="text-zinc-500 text-xs font-medium italic text-zinc-400 leading-relaxed">
+          ${gerarRespostaLocal("fallback")}
+        </p>
       </div>
     `;
   } finally {
     if (btnAnalise) {
       btnAnalise.disabled = false;
       btnAnalise.classList.remove('opacity-50', 'cursor-not-allowed');
-      btnAnalise.innerHTML = `<i class="fas fa-magic"></i><span>Gerar Análise com IA</span>`;
+      btnAnalise.innerHTML = `Gerar Análise`;
     }
   }
 }
@@ -370,14 +333,18 @@ async function enviarPerguntaIA() {
   if (!pergunta) return;
 
   const container = document.getElementById('insights');
-  container.innerHTML = `<p class="text-violet-400">Pensando...</p>`;
+  container.innerHTML = `
+    <div class="flex items-center gap-3 py-4">
+      <div class="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Processando consulta</p>
+    </div>
+  `;
 
   const resposta = await chamarGemini(pergunta);
 
   container.innerHTML = `
-    <div class="bg-zinc-800 border border-violet-500/30 rounded-2xl p-6">
-      <p class="text-violet-300 mb-3">Resposta da IA</p>
-      <p>${resposta}</p>
+    <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 animate-in slide-in-from-bottom-2 duration-500">
+      <p class="text-xs text-zinc-300 leading-relaxed">${resposta}</p>
     </div>
   `;
 
