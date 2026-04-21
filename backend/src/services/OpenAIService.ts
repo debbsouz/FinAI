@@ -1,0 +1,78 @@
+import OpenAI from 'openai'; 
+import dotenv from 'dotenv'; 
+
+dotenv.config(); 
+
+const openai = new OpenAI({ 
+  apiKey: process.env.OPENAI_API_KEY, 
+}); 
+
+export interface FinancialAnalysis { 
+  score_financeiro: number;        // 0 a 100 
+  insights: string[]; 
+  alertas: string[]; 
+  sugestoes: string[]; 
+  previsao_proximo_mes: string; 
+  padroes_identificados: string[]; 
+} 
+
+export class OpenAIService { 
+  private model = 'gpt-4o-mini'; 
+
+  async analisarFinancas(dadosFinanceiros: any): Promise<FinancialAnalysis> { 
+    const prompt = ` 
+Você é um consultor financeiro pessoal experiente, direto e acionável. 
+
+Analise os seguintes dados financeiros do usuário e responda **estritamente** no formato JSON abaixo. 
+
+Dados financeiros: 
+${JSON.stringify(dadosFinanceiros, null, 2)} 
+
+Responda apenas com um objeto JSON válido com exatamente estas chaves: 
+{ 
+  "score_financeiro": number (0-100), 
+  "insights": array de strings (máximo 5 insights importantes), 
+  "alertas": array de strings (gastos excessivos, riscos, etc.), 
+  "sugestoes": array de strings (ações concretas e realistas para melhorar), 
+  "previsao_proximo_mes": string (previsão breve do próximo mês), 
+  "padroes_identificados": array de strings (padrões de consumo detectados) 
+} 
+
+Pense passo a passo antes de responder: 
+1. Identifique padrões de gastos por categoria e período. 
+2. Calcule o score financeiro considerando orçamento, diversificação de gastos e tendências. 
+3. Liste alertas reais e urgentes. 
+4. Crie sugestões práticas e mensuráveis. 
+5. Faça uma previsão realista. 
+
+Não inclua nenhuma explicação fora do JSON. 
+`; 
+
+    try { 
+      const completion = await openai.chat.completions.create({ 
+        model: this.model, 
+        messages: [ 
+          { role: "system", content: "Você é um analista financeiro preciso e útil." }, 
+          { role: "user", content: prompt } 
+        ], 
+        temperature: 0.7, 
+        response_format: { type: "json_object" } 
+      }); 
+
+      const content = completion.choices[0].message.content; 
+      if (!content) throw new Error("Resposta vazia da OpenAI"); 
+
+      return JSON.parse(content) as FinancialAnalysis; 
+    } catch (error) { 
+      console.error("Erro ao analisar finanças com IA:", error); 
+      return { 
+        score_financeiro: 50, 
+        insights: ["Não foi possível gerar análise no momento."], 
+        alertas: [], 
+        sugestoes: ["Verifique sua chave da OpenAI e tente novamente."], 
+        previsao_proximo_mes: "Análise indisponível.", 
+        padroes_identificados: [] 
+      }; 
+    } 
+  } 
+}

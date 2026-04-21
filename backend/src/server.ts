@@ -1,6 +1,8 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import fetch from "node-fetch";
+import analysisRoutes from './routes/analysisRoutes.js';
 
 dotenv.config();
 
@@ -8,11 +10,12 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/analysis', analysisRoutes);
 
 const PORT = process.env.PORT || 3000;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
-app.post("/ia", async (req, res) => {
+app.post("/ia", async (req: Request, res: Response) => {
   try {
     const { prompt } = req.body;
 
@@ -29,14 +32,14 @@ app.post("/ia", async (req, res) => {
       body: JSON.stringify({
         model: "gpt-4o-mini",
         messages: [
-          { role: "system", content: "Você é uma assistente financeira clara e objetiva." },
+          { role: "system", content: "Você é uma especialista financeira moderna. Fale de forma clara, inteligente e levemente motivadora. Seja direta e útil." },
           { role: "user", content: prompt }
         ],
         temperature: 0.7
       })
     });
 
-    const data = await response.json();
+    const data: any = await response.json();
 
     if (!response.ok) {
       return res.status(response.status).json(data);
@@ -44,10 +47,11 @@ app.post("/ia", async (req, res) => {
 
     const texto = data.choices?.[0]?.message?.content || "Sem resposta";
 
-    res.json({ resposta: texto });
+    return res.json({ resposta: texto });
 
   } catch (error) {
-    res.status(500).json({ error: "Erro no servidor" });
+    console.error("Erro no servidor:", error);
+    return res.status(500).json({ error: "Erro no servidor" });
   }
 });
 
