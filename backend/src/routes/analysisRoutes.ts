@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { gerarAnalise } from '../controllers/analysisController.js';
+import { gerarAnalise } from '../controllers/analysisController';
 
 const router = Router();
 

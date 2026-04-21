@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import fetch from "node-fetch";
-import analysisRoutes from './routes/analysisRoutes.js';
+import analysisRoutes from './routes/analysisRoutes';
 
 dotenv.config();
 

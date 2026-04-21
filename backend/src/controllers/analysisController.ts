@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { OpenAIService, FinancialAnalysis } from '../services/OpenAIService.js';
+import { OpenAIService, FinancialAnalysis } from '../services/OpenAIService';
 
 const openAIService = new OpenAIService();
 
