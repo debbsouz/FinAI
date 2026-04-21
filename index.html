@@ -41,6 +41,30 @@
       </div>
     </header>
 
+    <!-- Visão Geral -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
+        <p class="text-zinc-400 text-sm font-medium mb-1">Total Gasto</p>
+        <h3 id="cardTotalGasto" class="text-3xl font-bold">R$ 0,00</h3>
+        <div id="statusGasto" class="mt-2 text-xs font-medium px-2 py-1 rounded-lg inline-block"></div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
+        <p class="text-zinc-400 text-sm font-medium mb-1">Orçamento Restante</p>
+        <h3 id="cardOrcamentoRestante" class="text-3xl font-bold text-emerald-400">R$ 0,00</h3>
+        <div class="mt-2 h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+          <div id="barOrcamentoRestante" class="h-full bg-emerald-500 transition-all" style="width: 100%"></div>
+        </div>
+      </div>
+      <div class="bg-zinc-900 rounded-3xl p-8 border border-zinc-800 card-hover">
+        <p class="text-zinc-400 text-sm font-medium mb-1">Score Combinado</p>
+        <div class="flex items-end gap-3">
+          <h3 id="cardScoreLocal" class="text-3xl font-bold text-violet-400">0</h3>
+          <span class="text-zinc-500 text-sm mb-1">/ 100</span>
+        </div>
+        <p class="text-[10px] text-zinc-500 mt-2 italic">Baseado no seu comportamento local</p>
+      </div>
+    </section>
+
     <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
 
       <!-- Coluna esquerda: Formulário + Orçamento -->
