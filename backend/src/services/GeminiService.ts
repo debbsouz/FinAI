@@ -104,7 +104,7 @@ Sua linguagem deve ser profissional, técnica e objetiva. Não utilize linguagem
       score_financeiro: 50, 
       insights: ["Não foi possível gerar análise no momento."], 
       alertas: [], 
-      sugestoes: ["A IA está com alta demanda. Tente novamente em instantes."], 
+      sugestoes: ["O serviço de consultoria está com alta demanda. Tente novamente em instantes."], 
       previsao_proximo_mes: "Análise indisponível.", 
       padroes_identificados: [] 
     }; 

@@ -21,39 +21,36 @@ const PORT = process.env.PORT || 3000;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Servidor FinAI rodando 🚀");
+  res.send("FinAI API - Status: Operational");
 });
 
 app.get("/health", (req: Request, res: Response) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-/**
- * Função de resposta local inteligente (Fallback)
- */
 function gerarRespostaLocal(prompt: string): string {
   const p = prompt.toLowerCase();
 
   if (p.includes("gasto") || p.includes("valor") || p.includes("dinheiro")) {
-    return "Identificar e mitigar gastos recorrentes de baixo valor pode otimizar seu fluxo de caixa anual significativamente.";
+    return "A redução de despesas operacionais variáveis pode impactar positivamente seu balanço mensal.";
   }
   
   if (p.includes("economizar") || p.includes("poupar") || p.includes("investir")) {
-    return "A alocação de capital em ativos de liquidez imediata é o primeiro passo para a construção de uma reserva de emergência sólida.";
+    return "Manter um aporte constante em ativos de alta liquidez é recomendável para estabilidade financeira.";
   }
 
   if (p.includes("comida") || p.includes("alimentação") || p.includes("restaurante")) {
-    return "Despesas com alimentação fora do domicílio representam uma das maiores variáveis de ajuste orçamentário imediato.";
+    return "Otimizar gastos com alimentação através de planejamento prévio permite maior previsibilidade orçamentária.";
   }
 
   if (p.includes("lazer") || p.includes("diversão") || p.includes("viagem")) {
-    return "O planejamento antecipado de despesas com lazer permite a manutenção da qualidade de vida sem comprometer a saúde financeira.";
+    return "O planejamento antecipado de custos com entretenimento evita o comprometimento de recursos essenciais.";
   }
 
-  return "A análise contínua de hábitos de consumo é fundamental para a manutenção da eficiência financeira a longo prazo.";
+  return "O monitoramento contínuo de transações é fundamental para a governança das finanças pessoais.";
 }
 
-app.post("/ia", async (req: Request, res: Response) => {
+app.post("/consultar", async (req: Request, res: Response) => {
   const { prompt } = req.body;
 
   if (!prompt) {

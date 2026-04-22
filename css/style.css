@@ -10,63 +10,106 @@
   --border-color: #27272a;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #27272a transparent;
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: #fafafa;
 }
 
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
 
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 ::-webkit-scrollbar-thumb {
-  background-color: #27272a;
-  border-radius: 20px;
+  background: #27272a;
+  border-radius: 10px;
 }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-dark);
-}
-
+/* Typography */
 .font-inter {
   font-family: 'Inter', sans-serif;
 }
 
-/* SaaS Refinements */
-input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
-  opacity: 0.5;
-  cursor: pointer;
+/* Custom Effects */
+.glass {
+  background: rgba(17, 17, 19, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.shadow-sm {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+.card-hover:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 20px 40px -20px rgba(139, 92, 246, 0.15);
+  transform: translateY(-2px);
 }
 
-.shadow-xl {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+/* Custom Buttons */
+.btn-primary {
+  @apply bg-violet-600 hover:bg-violet-500 text-white font-bold transition-all shadow-lg shadow-violet-600/20 active:scale-[0.98];
 }
 
-/* Custom Chart Tooltip Styles */
-#chartjs-tooltip {
-  background: rgba(17, 17, 19, 0.9) !important;
-  backdrop-filter: blur(4px);
-  border: 1px solid #27272a !important;
-  border-radius: 8px !important;
+.btn-secondary {
+  @apply bg-zinc-800 hover:bg-zinc-700 text-white font-bold transition-all border border-zinc-700/50 active:scale-[0.98];
 }
 
-/* Table Hover */
-tbody tr {
-  transition: background-color 0.2s ease;
+/* Input Styles */
+input::placeholder {
+  @apply text-zinc-600;
 }
 
-tbody tr:hover {
-  background-color: rgba(39, 39, 42, 0.3);
+input:focus {
+  @apply border-violet-500/50 ring-4 ring-violet-500/5;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #18181b;
+  border-radius: 10px;
+  border: 2px solid #09090b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #27272a;
+}
+
+/* Charts */
+canvas {
+  filter: saturate(1.1);
 }

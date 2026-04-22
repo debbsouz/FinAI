@@ -16,7 +16,7 @@ export const gerarAnalise = async (req: Request, res: Response) => {
     res.json({
       success: true,
       analise,
-      mensagem: "Análise gerada com sucesso pela IA"
+      mensagem: "Análise estratégica consolidada com sucesso"
     });
   } catch (error) {
     res.status(500).json({ 

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinAI | Controle total dos seus gastos com inteligência</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            black: '#09090b',
+                            zinc: '#18181b',
+                            violet: '#8b5cf6',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #fafafa;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(63, 63, 70, 0.3);
+        }
+        .text-gradient {
+            background: linear-gradient(to bottom right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="selection:bg-violet-500/30">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 border-b border-zinc-800/50 glass">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.svg" alt="FinAI Logo" class="w-8 h-8 rounded-lg">
+                <span class="text-xl font-black tracking-tighter text-white">FinAI</span>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+                <a href="#beneficios" class="hover:text-white transition-colors">Benefícios</a>
+                <a href="#funcionamento" class="hover:text-white transition-colors">Como funciona</a>
+                <a href="index.html" class="bg-white text-black px-5 py-2.5 rounded-full font-bold hover:bg-zinc-200 transition-all active:scale-95">Começar agora</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-20 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-[600px] bg-violet-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="text-center max-w-4xl mx-auto animate-fade-in">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 mb-8 animate-float">
+                    <span class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400">Plataforma de Gestão Estratégica</span>
+                </div>
+                
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-8 leading-[0.9] text-gradient">
+                    Controle total dos seus gastos com inteligência
+                </h1>
+                
+                <p class="text-lg md:text-xl text-zinc-400 mb-12 max-w-2xl mx-auto leading-relaxed">
+                    Entenda para onde seu dinheiro está indo e receba insights inteligentes para tomar decisões melhores.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
+                    <a href="index.html" class="w-full sm:w-auto bg-violet-600 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-violet-500 transition-all shadow-xl shadow-violet-600/20 active:scale-[0.98]">
+                        Começar agora
+                    </a>
+                    <a href="#beneficios" class="w-full sm:w-auto glass text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-zinc-800 transition-all active:scale-[0.98]">
+                        Ver recursos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefícios Section -->
+    <section id="beneficios" class="py-24 bg-zinc-950/50 border-y border-zinc-900">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Bloco 1 -->
+                <div class="p-10 rounded-[32px] bg-zinc-900/50 border border-zinc-800/50 hover:border-violet-500/30 transition-all group">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-8 group-hover:bg-violet-500/20 transition-colors">
+                        <i class="fas fa-wallet text-violet-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Controle financeiro simples</h3>
+                    <p class="text-zinc-400 leading-relaxed text-sm">
+                        Interface intuitiva projetada para que você registre e organize suas despesas em segundos, sem complicações.
+                    </p>
+                </div>
+
+                <!-- Bloco 2 -->
+                <div class="p-10 rounded-[32px] bg-zinc-900/50 border border-zinc-800/50 hover:border-violet-500/30 transition-all group">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-8 group-hover:bg-violet-500/20 transition-colors">
+                        <i class="fas fa-chart-pie text-violet-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Visualização clara dos gastos</h3>
+                    <p class="text-zinc-400 leading-relaxed text-sm">
+                        Gráficos dinâmicos e dashboards que mostram exatamente como seu orçamento está sendo distribuído mês a mês.
+                    </p>
+                </div>
+
+                <!-- Bloco 3 -->
+                <div class="p-10 rounded-[32px] bg-zinc-900/50 border border-zinc-800/50 hover:border-violet-500/30 transition-all group">
+                    <div class="w-12 h-12 rounded-xl bg-violet-500/10 flex items-center justify-center mb-8 group-hover:bg-violet-500/20 transition-colors">
+                        <i class="fas fa-microchip text-violet-500 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-4">Insights inteligentes com IA</h3>
+                    <p class="text-zinc-400 leading-relaxed text-sm">
+                        Análise preditiva que identifica padrões ocultos e sugere otimizações reais para sua saúde financeira.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Funcionamento Section -->
+    <section id="funcionamento" class="py-32">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <p class="text-violet-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Fluxo de Trabalho</p>
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">Como funciona</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
+                <!-- Linha conectora (Desktop) -->
+                <div class="hidden md:block absolute top-24 left-1/4 right-1/4 h-[1px] bg-zinc-800 -z-10"></div>
+                
+                <!-- Passo 1 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-zinc-900 border-2 border-zinc-800 flex items-center justify-center mb-8 group-hover:border-violet-500 transition-colors bg-brand-black">
+                        <span class="text-xl font-black text-white">01</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-3">Registre seus gastos</h4>
+                    <p class="text-zinc-500 text-sm leading-relaxed max-w-[240px]">
+                        Adicione suas transações diárias de forma rápida e categorize cada movimentação.
+                    </p>
+                </div>
+
+                <!-- Passo 2 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-zinc-900 border-2 border-zinc-800 flex items-center justify-center mb-8 group-hover:border-violet-500 transition-colors bg-brand-black">
+                        <span class="text-xl font-black text-white">02</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-3">Veja seus padrões</h4>
+                    <p class="text-zinc-500 text-sm leading-relaxed max-w-[240px]">
+                        Acompanhe através de indicadores visuais onde estão os maiores gargalos do seu orçamento.
+                    </p>
+                </div>
+
+                <!-- Passo 3 -->
+                <div class="flex flex-col items-center text-center group">
+                    <div class="w-16 h-16 rounded-full bg-zinc-900 border-2 border-zinc-800 flex items-center justify-center mb-8 group-hover:border-violet-500 transition-colors bg-brand-black">
+                        <span class="text-xl font-black text-white">03</span>
+                    </div>
+                    <h4 class="text-lg font-bold text-white mb-3">Receba recomendações</h4>
+                    <p class="text-zinc-500 text-sm leading-relaxed max-w-[240px]">
+                        Nossa tecnologia processa seus dados e entrega um relatório estratégico de economia.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Destaque Section -->
+    <section class="py-20 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="rounded-[40px] bg-gradient-to-br from-violet-600 to-violet-900 p-12 md:p-20 text-center relative overflow-hidden group">
+                <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20 pointer-events-none"></div>
+                <div class="relative z-10">
+                    <h2 class="text-3xl md:text-5xl font-black tracking-tighter text-white mb-10 max-w-2xl mx-auto leading-[1.1]">
+                        Tome decisões financeiras com mais segurança e clareza
+                    </h2>
+                    <a href="index.html" class="inline-flex items-center gap-2 bg-white text-black px-8 py-4 rounded-2xl font-bold hover:bg-zinc-100 transition-all active:scale-95 group">
+                        Começar gratuitamente
+                        <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rodapé -->
+    <footer class="py-12 border-t border-zinc-900">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-3">
+                <img src="assets/logo.svg" alt="FinAI Logo" class="w-6 h-6 rounded-md opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                <span class="text-sm font-bold text-zinc-500">FinAI</span>
+            </div>
+            <p class="text-xs text-zinc-600 font-medium">
+                © 2026 FinAI. Sistema de Gestão Financeira Estratégica.
+            </p>
+            <div class="flex items-center gap-6">
+                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>

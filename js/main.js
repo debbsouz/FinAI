@@ -1,10 +1,8 @@
-// ==================== VARIÁVEIS GLOBAIS ====================
 let gastos = [];
 let orcamentoMensal = parseFloat(localStorage.getItem('orcamentoMensal')) || 3000;
 let pieChart = null;
 let barChart = null;
 
-// ==================== CATEGORIZAÇÃO ====================
 const regrasCategorias = {
   "Alimentação": ["ifood", "restaurante", "mercado", "supermercado", "pão", "café", "almoço", "janta", "lanche"],
   "Transporte": ["uber", "99", "taxi", "ônibus", "metro", "gasolina", "estacionamento"],
@@ -24,33 +22,28 @@ function categorizarGasto(descricao) {
   return "Outros";
 }
 
-// ==================== SCORE LOCAL ====================
 function calcularScoreLocal() {
   if (gastos.length === 0) return 0;
 
   const total = calcularTotalGasto();
   let score = 100;
 
-  // 1. Penalidade por estourar orçamento (até -50 pontos)
   if (total > orcamentoMensal) {
     const estouro = ((total - orcamentoMensal) / orcamentoMensal) * 100;
     score -= Math.min(estouro, 50);
   } else if (total > orcamentoMensal * 0.8) {
-    score -= 10; // Alerta: acima de 80%
+    score -= 10;
   }
 
-  // 2. Bônus por diversificação (até +20 pontos)
   const categoriasUnicas = new Set(gastos.map(g => g.categoria)).size;
   if (categoriasUnicas >= 5) score += 10;
   else if (categoriasUnicas >= 3) score += 5;
 
-  // 3. Consistência (quantidade de gastos)
   if (gastos.length > 10) score += 5;
 
   return Math.max(0, Math.min(100, Math.round(score)));
 }
 
-// ==================== FUNÇÕES BÁSICAS ====================
 function carregarDados() {
   const salvos = localStorage.getItem('gastos');
   if (salvos) gastos = JSON.parse(salvos);
@@ -58,9 +51,9 @@ function carregarDados() {
   const inputOrcamento = document.getElementById('orcamentoMensal');
   if (inputOrcamento) inputOrcamento.value = orcamentoMensal;
 
-if (typeof atualizarGraficos === "function") {
-  atualizarGraficos();
-}
+  if (typeof atualizarGraficos === "function") {
+    atualizarGraficos();
+  }
 }
 
 function salvarGastos() {
@@ -106,29 +99,29 @@ function renderizarLista() {
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<tr><td colspan="5" class="text-center py-20 text-zinc-500 font-medium">Nenhuma transação encontrada no período.</td></tr>`;
+    container.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-zinc-600 font-medium text-xs tracking-wide">Nenhuma transação registrada no período.</td></tr>`;
     return;
   }
 
   let html = '';
   gastos.forEach(g => {
     html += `
-      <tr class="group border-b border-zinc-800/50 last:border-0">
-        <td class="px-8 py-5">
-          <p class="font-semibold text-zinc-100">${g.descricao}</p>
+      <tr class="group border-b border-zinc-800/50 last:border-0 hover:bg-zinc-800/20 transition-colors">
+        <td class="px-8 py-6">
+          <p class="font-bold text-zinc-200 text-xs uppercase tracking-tight">${g.descricao}</p>
         </td>
-        <td class="px-8 py-5">
-          <span class="px-3 py-1 bg-zinc-900 border border-zinc-800 text-zinc-400 rounded-full text-[10px] font-bold uppercase tracking-wider">${g.categoria}</span>
+        <td class="px-8 py-6">
+          <span class="px-2.5 py-1 bg-zinc-900 border border-zinc-800 text-zinc-500 rounded-md text-[9px] font-black uppercase tracking-[0.1em]">${g.categoria}</span>
         </td>
-        <td class="px-8 py-5 text-zinc-500 font-medium">
-          ${new Date(g.data).toLocaleDateString('pt-BR')}
+        <td class="px-8 py-6 text-zinc-500 font-bold text-[10px] uppercase">
+          ${new Date(g.data).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' })}
         </td>
-        <td class="px-8 py-5 text-right font-bold text-white">
+        <td class="px-8 py-6 text-right font-black text-white text-sm tracking-tighter">
           R$ ${g.valor.toLocaleString('pt-BR', {minimumFractionDigits: 2})}
         </td>
-        <td class="px-8 py-5 text-center">
-          <button onclick="removerGasto(${g.id})" class="w-8 h-8 rounded-lg bg-red-500/5 text-red-500/40 hover:bg-red-500/10 hover:text-red-500 transition-all">
-            <i class="fas fa-trash-alt text-xs"></i>
+        <td class="px-8 py-6 text-center">
+          <button onclick="removerGasto(${g.id})" class="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-600 hover:text-red-400 hover:border-red-400/30 hover:bg-red-400/5 transition-all active:scale-90">
+            <i class="fas fa-trash-alt text-[10px]"></i>
           </button>
         </td>
       </tr>`;
@@ -212,10 +205,10 @@ function renderizarProgressoOrcamento() {
   }
 }
 
-// ==================== IA ====================
-async function chamarGemini(prompt) {
+// ==================== CONSULTORIA ESTRATÉGICA ====================
+async function chamarConsultoria(prompt) {
   try {
-    const resposta = await fetch("http://localhost:3000/ia", {
+    const resposta = await fetch("http://localhost:3000/consultar", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -229,42 +222,42 @@ async function chamarGemini(prompt) {
       return data.resposta;
     }
 
-    throw new Error("Sem resposta da API");
+    throw new Error("Sem resposta do serviço");
 
   } catch (erro) {
-    console.error("Erro IA:", erro);
+    console.error("Erro Consultoria:", erro);
 
     // fallback inteligente (simulação)
     const total = calcularTotalGasto();
 
     if (total > orcamentoMensal) {
-      return "Você está gastando acima do seu orçamento. Tente reduzir despesas variáveis como alimentação e lazer.";
+      return "O volume de despesas atual excede o teto orçamentário. Recomenda-se a revisão imediata de custos variáveis.";
     }
 
-    return "Seus gastos estão sob controle, mas você pode economizar reduzindo pequenos gastos do dia a dia.";
+    return "A estrutura de gastos apresenta estabilidade. Manter a disciplina atual é fundamental para a preservação de capital.";
   }
 }
 
-async function gerarAnaliseIA() {
-  const container = document.getElementById('analise-ia');
-  const btnAnalise = document.querySelector('button[onclick="gerarAnaliseIA()"]');
+async function gerarRelatorio() {
+  const container = document.getElementById('relatorio-estrategico');
+  const btnRelatorio = document.querySelector('button[onclick="gerarRelatorio()"]');
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<div id="insights" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione dados para análise.</div>`;
+    container.innerHTML = `<div id="diagnostico" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione dados para análise estratégica.</div>`;
     return;
   }
 
-  if (btnAnalise) {
-    btnAnalise.disabled = true;
-    btnAnalise.classList.add('opacity-50', 'cursor-not-allowed');
-    btnAnalise.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i><span>Processando</span>`;
+  if (btnRelatorio) {
+    btnRelatorio.disabled = true;
+    btnRelatorio.classList.add('opacity-50', 'cursor-not-allowed');
+    btnRelatorio.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i><span>Processando</span>`;
   }
 
   container.innerHTML = `
     <div class="flex flex-col items-center justify-center py-12 space-y-4 text-center">
       <div class="w-10 h-10 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-400 text-xs font-bold uppercase tracking-widest animate-pulse">Sincronizando Inteligência</p>
+      <p class="text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Consolidando Diagnóstico Estratégico</p>
     </div>
   `;
 
@@ -287,23 +280,40 @@ async function gerarAnaliseIA() {
     const { analise } = data;
     
     container.innerHTML = `
-      <div class="space-y-8 animate-in fade-in duration-700">
-        <div class="text-center pb-8 border-b border-zinc-800/50">
-          <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-2">Financial Health Score</p>
-          <div class="text-6xl font-black text-white">${analise.score_financeiro}</div>
+      <div class="space-y-10 animate-slide-up">
+        <div class="flex flex-col items-center pb-10 border-b border-zinc-800/50">
+          <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-3">Eficiência de Capital</p>
+          <div class="relative">
+            <div class="text-7xl font-black text-white tracking-tighter">${analise.score_financeiro}</div>
+            <div class="absolute -top-1 -right-4 w-2 h-2 rounded-full bg-violet-500 animate-pulse"></div>
+          </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="space-y-4">
-            <h5 class="text-[10px] font-black text-violet-500 uppercase tracking-widest">Estratégico</h5>
-            <ul class="space-y-3">
-              ${analise.insights.map(i => `<li class="text-xs text-zinc-400 leading-relaxed flex gap-2"><span class="text-violet-500">•</span> ${i}</li>`).join('')}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div class="space-y-6">
+            <div class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div>
+              <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diagnóstico de Performance</h5>
+            </div>
+            <ul class="space-y-4">
+              ${analise.insights.map(i => `
+                <li class="group">
+                  <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${i}</p>
+                </li>
+              `).join('')}
             </ul>
           </div>
-          <div class="space-y-4">
-            <h5 class="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Otimização</h5>
-            <ul class="space-y-3">
-              ${analise.sugestoes.map(s => `<li class="text-xs text-zinc-400 leading-relaxed flex gap-2"><span class="text-emerald-500">•</span> ${s}</li>`).join('')}
+          <div class="space-y-6">
+            <div class="flex items-center gap-2">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+              <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diretrizes de Otimização</h5>
+            </div>
+            <ul class="space-y-4">
+              ${analise.sugestoes.map(s => `
+                <li class="group">
+                  <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${s}</p>
+                </li>
+              `).join('')}
             </ul>
           </div>
         </div>
@@ -319,28 +329,28 @@ async function gerarAnaliseIA() {
       </div>
     `;
   } finally {
-    if (btnAnalise) {
-      btnAnalise.disabled = false;
-      btnAnalise.classList.remove('opacity-50', 'cursor-not-allowed');
-      btnAnalise.innerHTML = `Gerar Análise`;
+    if (btnRelatorio) {
+      btnRelatorio.disabled = false;
+      btnRelatorio.classList.remove('opacity-50', 'cursor-not-allowed');
+      btnRelatorio.innerHTML = `Gerar Relatório`;
     }
   }
 }
 
-async function enviarPerguntaIA() {
-  const input = document.getElementById('perguntaIA');
+async function enviarConsulta() {
+  const input = document.getElementById('perguntaConsulta');
   const pergunta = input.value.trim();
   if (!pergunta) return;
 
-  const container = document.getElementById('insights');
+  const container = document.getElementById('diagnostico');
   container.innerHTML = `
     <div class="flex items-center gap-3 py-4">
       <div class="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Processando consulta</p>
+      <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Processando requisição</p>
     </div>
   `;
 
-  const resposta = await chamarGemini(pergunta);
+  const resposta = await chamarConsultoria(pergunta);
 
   container.innerHTML = `
     <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 animate-in slide-in-from-bottom-2 duration-500">
