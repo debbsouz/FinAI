@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações | FinAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #09090b; color: #fafafa; -webkit-font-smoothing: antialiased; }
+        .glass { background: rgba(24, 24, 27, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(63, 63, 70, 0.3); }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen p-6 selection:bg-violet-500/30">
+    <script>
+        const session = JSON.parse(localStorage.getItem('session'));
+        if (!session) window.location.href = 'login.html';
+    </script>
+
+    <div class="max-w-2xl mx-auto space-y-8 fade-in py-12">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="dashboard.html" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <h1 class="text-2xl font-black tracking-tight text-white">Configurações</h1>
+            </div>
+        </div>
+
+        <div class="glass p-8 rounded-[32px] shadow-2xl space-y-8">
+            <form id="configForm" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Nome Completo</label>
+                        <input type="text" id="nome" required
+                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">E-mail</label>
+                        <input type="email" id="email" required
+                            class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="submitBtn"
+                        class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                        <span>Salvar alterações</span>
+                        <i id="loader" class="fas fa-circle-notch fa-spin hidden"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div id="successMsg" class="hidden p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-[13px] text-emerald-400 text-center font-bold uppercase tracking-widest">
+                Alterações salvas com sucesso!
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const user = JSON.parse(localStorage.getItem('session'));
+        document.getElementById('nome').value = user.nome;
+        document.getElementById('email').value = user.email;
+
+        document.getElementById('configForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const loader = document.getElementById('loader');
+            const successMsg = document.getElementById('successMsg');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+            loader.classList.remove('hidden');
+
+            const updatedUser = {
+                ...user,
+                nome: document.getElementById('nome').value,
+                email: document.getElementById('email').value
+            };
+
+            setTimeout(() => {
+                localStorage.setItem('usuario', JSON.stringify(updatedUser));
+                localStorage.setItem('session', JSON.stringify(updatedUser));
+                
+                btn.disabled = false;
+                btn.classList.remove('opacity-70');
+                loader.classList.add('hidden');
+                successMsg.classList.remove('hidden');
+
+                setTimeout(() => {
+                    successMsg.classList.add('hidden');
+                }, 3000);
+            }, 800);
+        });
+    </script>
+</body>
+</html>

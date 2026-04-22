@@ -11,6 +11,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    const session = JSON.parse(localStorage.getItem('session'));
+    if (!session) window.location.href = 'login.html';
+
+    function getInitials(name) {
+      return name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+    }
+
+    function logout() {
+      localStorage.removeItem('session');
+      window.location.href = 'login.html';
+    }
+
+    function toggleUserMenu() {
+      const menu = document.getElementById('userMenu');
+      menu.classList.toggle('hidden');
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.closest('#userArea')) {
+        const menu = document.getElementById('userMenu');
+        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+      }
+    }
+  </script>
 </head>
 <body class="bg-[#09090b] text-zinc-100 font-inter antialiased">
   
@@ -44,12 +69,28 @@
         </a>
       </nav>
       
-      <div class="p-6 border-t border-zinc-800 mt-auto">
-        <div class="flex items-center gap-3 px-2 py-2">
-          <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-black text-violet-400 border border-zinc-700/50">JD</div>
+      <div class="p-6 border-t border-zinc-800 mt-auto relative" id="userArea">
+        <div onclick="toggleUserMenu()" class="flex items-center gap-3 px-2 py-2 cursor-pointer hover:bg-zinc-800/50 rounded-xl transition-all">
+          <div id="userInitials" class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-black text-violet-400 border border-zinc-700/50">JD</div>
           <div>
-            <p class="text-[11px] font-black text-white uppercase tracking-wider">John Doe</p>
-            <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-tight">Premium Plan</p>
+            <p id="userName" class="text-[11px] font-black text-white uppercase tracking-wider truncate max-w-[120px]">John Doe</p>
+            <p id="userPlan" class="text-[9px] text-zinc-600 font-bold uppercase tracking-tight">Premium Plan</p>
+          </div>
+        </div>
+
+        <!-- User Dropdown Menu -->
+        <div id="userMenu" class="hidden absolute bottom-full left-6 right-6 mb-2 bg-[#111113] border border-zinc-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in z-50">
+          <div class="p-2 space-y-1">
+            <a href="config.html" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all">
+              <i class="fas fa-user-circle"></i> Meu perfil
+            </a>
+            <a href="config.html" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all">
+              <i class="fas fa-cog"></i> Configurações
+            </a>
+            <div class="border-t border-zinc-800 my-1"></div>
+            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all">
+              <i class="fas fa-sign-out-alt"></i> Sair
+            </button>
           </div>
         </div>
       </div>
@@ -198,5 +239,14 @@
 
   <script src="js/main.js"></script>
   <script src="js/charts.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (session) {
+        document.getElementById('userName').textContent = session.nome;
+        document.getElementById('userPlan').textContent = session.plano || 'Free';
+        document.getElementById('userInitials').textContent = getInitials(session.nome);
+      }
+    });
+  </script>
 </body>
 </html>

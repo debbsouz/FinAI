@@ -98,6 +98,7 @@
                 const storedUser = JSON.parse(localStorage.getItem('usuario'));
                 
                 if (storedUser && storedUser.email === email && storedUser.password === password) {
+                    localStorage.setItem('session', JSON.stringify(storedUser));
                     window.location.href = 'dashboard.html';
                 } else {
                     btn.disabled = false;

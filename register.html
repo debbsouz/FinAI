@@ -83,13 +83,15 @@
             loader.classList.remove('hidden');
 
             const usuario = {
-                name: document.getElementById('name').value,
+                nome: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                password: document.getElementById('password').value
+                password: document.getElementById('password').value,
+                plano: 'Free'
             };
 
             setTimeout(() => {
                 localStorage.setItem('usuario', JSON.stringify(usuario));
+                localStorage.setItem('session', JSON.stringify(usuario));
                 window.location.href = 'dashboard.html';
             }, 1000);
         });
