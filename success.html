@@ -3,18 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pagamento Confirmado | FinAI</title>
+  <title>Pagamento Confirmado - FinAI</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #f6f9fc;
-    }
     @keyframes checkmark {
       0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.2); opacity: 1; }
+      50% { transform: scale(1.2); }
       100% { transform: scale(1); opacity: 1; }
     }
     .animate-checkmark {
@@ -22,51 +17,76 @@
     }
   </style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-  <div class="max-w-md w-full bg-white rounded-2xl shadow-2xl p-12 text-center space-y-8 animate-slide-in">
-    <div class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center mx-auto animate-checkmark">
-      <i class="fas fa-check text-4xl"></i>
-    </div>
+<body class="bg-[#09090b] text-white min-h-screen flex items-center justify-center p-6">
+  <div class="w-full max-w-md bg-[#111113] border border-zinc-800 rounded-[32px] p-12 text-center space-y-8 shadow-2xl">
     
-    <div class="space-y-2">
-      <h1 class="text-3xl font-black text-[#30313d] tracking-tight">Pagamento Confirmado!</h1>
-      <p class="text-gray-500">Parabéns, agora você é um usuário <strong>FinAI Pro</strong>.</p>
+    <!-- Ícone de Sucesso -->
+    <div class="relative mx-auto w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center border border-emerald-500/30 animate-checkmark">
+      <i class="fas fa-check text-4xl text-emerald-500"></i>
+      <div class="absolute inset-0 rounded-full bg-emerald-500/10 animate-pulse"></div>
     </div>
 
-    <div class="bg-gray-50 rounded-xl p-6 text-left space-y-4">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-400">Plano</span>
-        <span class="font-bold text-[#30313d]">Professional (Mensal)</span>
+    <!-- Textos -->
+    <div class="space-y-3">
+      <h1 class="text-3xl font-black tracking-tight">Pagamento confirmado com sucesso</h1>
+      <p class="text-zinc-400 text-sm font-medium">Seu acesso <span class="text-violet-400 font-bold">Pro</span> já está liberado</p>
+    </div>
+
+    <!-- Divisor -->
+    <div class="h-px bg-zinc-800 w-full"></div>
+
+    <!-- Benefícios Liberados -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
+        <i class="fas fa-chart-line text-violet-500 mb-2"></i>
+        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Insights IA</p>
       </div>
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-400">Valor</span>
-        <span class="font-bold text-[#30313d]">R$ 19,90</span>
-      </div>
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-400">Status</span>
-        <span class="font-bold text-emerald-500 uppercase tracking-widest text-[10px]">Ativo</span>
+      <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
+        <i class="fas fa-file-export text-violet-500 mb-2"></i>
+        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Relatórios</p>
       </div>
     </div>
 
-    <div class="pt-4">
-      <a href="dashboard.html" class="block w-full bg-[#635bff] hover:bg-[#5851e0] text-white font-bold py-4 rounded-lg transition-all shadow-lg text-center">
-        Acessar meu Dashboard
-      </a>
-    </div>
-
-    <p class="text-xs text-gray-400">
-      Um recibo foi enviado para o seu e-mail.
-    </p>
+    <!-- Botão -->
+    <button onclick="irParaDashboard()" class="w-full bg-white text-black hover:bg-zinc-200 font-black py-5 rounded-2xl transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-3 group">
+      <span>Ir para o dashboard</span>
+      <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+    </button>
   </div>
 
   <script>
-    // Garantir que o status Pro está salvo (reforço)
-    localStorage.setItem("pagamento_confirmado", "true");
-    const session = JSON.parse(localStorage.getItem('session'));
-    if (session) {
-      const updatedUser = { ...session, plano: 'Pro' };
-      localStorage.setItem('usuario', JSON.stringify(updatedUser));
-      localStorage.setItem('session', JSON.stringify(updatedUser));
+    // Ação ao carregar: Ativar Plano Pro
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Marcar pagamento como confirmado
+      localStorage.setItem("pagamento_confirmado", "true");
+      
+      // 2. Marcar plano como Pro (conforme solicitado explicitamente)
+      localStorage.setItem("plano", "Pro");
+
+      // 3. Atualizar objeto de sessão e usuário se existirem
+      const session = JSON.parse(localStorage.getItem('session'));
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+      if (session) {
+        session.plano = 'Pro';
+        localStorage.setItem('session', JSON.stringify(session));
+      }
+      if (usuario) {
+        usuario.plano = 'Pro';
+        localStorage.setItem('usuario', JSON.stringify(usuario));
+      }
+
+      console.log("Plano Pro ativado no localStorage.");
+    });
+
+    function irParaDashboard() {
+      const btn = document.querySelector('button');
+      btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i>';
+      btn.disabled = true;
+      
+      setTimeout(() => {
+        window.location.href = 'dashboard.html';
+      }, 500);
     }
   </script>
 </body>
