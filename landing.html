@@ -28,6 +28,7 @@
                         'grow-up': 'growUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                         'cursor-move': 'cursorMove 8s infinite ease-in-out',
                         'click-ping': 'clickPing 8s infinite',
+                        'donut-reveal': 'donutReveal 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
                         fadeIn: {
@@ -56,6 +57,10 @@
                         clickPing: {
                             '0%, 34%, 36%, 100%': { transform: 'scale(0)', opacity: '0' },
                             '35%': { transform: 'scale(2)', opacity: '0.5' },
+                        },
+                        donutReveal: {
+                            '0%': { 'stroke-dashoffset': '251' },
+                            '100%': { 'stroke-dashoffset': 'var(--offset)' },
                         }
                     }
                 }
@@ -182,40 +187,83 @@
                                     </div>
                                 </div>
 
-                                <div class="h-56 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-8 flex flex-col hover:bg-zinc-800/40 transition-all duration-500 group/chart relative overflow-hidden">
+                                <div class="h-64 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-8 flex flex-col hover:bg-zinc-800/40 transition-all duration-500 group/chart relative overflow-hidden">
                                     <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-violet-500/20 to-transparent"></div>
-                                    <div class="flex justify-between items-center mb-10">
+                                    <div class="flex justify-between items-center mb-6">
                                         <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Distribuição de Gastos</div>
-                                        <div class="flex gap-2">
-                                            <div class="w-2 h-2 rounded-full bg-violet-500"></div>
-                                            <div class="w-2 h-2 rounded-full bg-violet-500/30"></div>
+                                        <div class="flex items-center gap-2">
+                                            <div class="w-2 h-2 rounded-full bg-violet-500 animate-pulse"></div>
+                                            <span class="text-[8px] font-bold text-zinc-600 uppercase tracking-widest">Tempo Real</span>
                                         </div>
                                     </div>
-                                    <div class="flex-1 flex items-end justify-between gap-4 px-4">
-                                        <div class="flex flex-col items-center gap-4 flex-1">
-                                            <div class="w-full relative group/bar">
-                                                <div class="absolute inset-0 bg-violet-500 blur-xl opacity-0 group-hover/bar:opacity-20 transition-opacity"></div>
-                                                <div class="w-full bg-gradient-to-t from-violet-600 to-violet-400 rounded-t-xl animate-grow-up relative z-10 shadow-[0_0_20px_rgba(139,92,246,0.2)]" style="height: 100%"></div>
+                                    
+                                    <div class="flex-1 flex items-center justify-between gap-8">
+                                        <!-- Gráfico Donut SVG -->
+                                        <div class="relative w-40 h-40">
+                                            <svg viewBox="0 0 100 100" class="w-full h-full -rotate-90">
+                                                <!-- Background Circle -->
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#18181b" stroke-width="12" />
+                                                
+                                                <!-- Alimentação (51%) -->
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#8b5cf6" stroke-width="12" 
+                                                    stroke-dasharray="128.2 251.3" stroke-dashoffset="0" stroke-linecap="round"
+                                                    class="animate-donut-reveal transition-all duration-500 hover:stroke-[14px] cursor-pointer"
+                                                    style="--offset: 0" />
+                                                
+                                                <!-- Transporte (21.9%) -->
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#7c3aed" stroke-width="12" 
+                                                    stroke-dasharray="55 251.3" stroke-dashoffset="-128.2" stroke-linecap="round"
+                                                    class="animate-donut-reveal delay-100 transition-all duration-500 hover:stroke-[14px] cursor-pointer"
+                                                    style="--offset: -128.2" />
+                                                
+                                                <!-- Lazer (16.7%) -->
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#6d28d9" stroke-width="12" 
+                                                    stroke-dasharray="41.9 251.3" stroke-dashoffset="-183.2" stroke-linecap="round"
+                                                    class="animate-donut-reveal delay-200 transition-all duration-500 hover:stroke-[14px] cursor-pointer"
+                                                    style="--offset: -183.2" />
+                                                
+                                                <!-- Outros (10.4%) -->
+                                                <circle cx="50" cy="50" r="40" fill="transparent" stroke="#4c1d95" stroke-width="12" 
+                                                    stroke-dasharray="26.2 251.3" stroke-dashoffset="-225.1" stroke-linecap="round"
+                                                    class="animate-donut-reveal delay-300 transition-all duration-500 hover:stroke-[14px] cursor-pointer"
+                                                    style="--offset: -225.1" />
+                                            </svg>
+                                            <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                                                <span class="text-[10px] font-black text-zinc-500 uppercase tracking-tighter">Total</span>
+                                                <span class="text-lg font-black text-white leading-none">R$ 1.920</span>
                                             </div>
-                                            <span class="text-[9px] font-black text-zinc-500 uppercase tracking-tighter">Alim.</span>
                                         </div>
-                                        <div class="flex flex-col items-center gap-4 flex-1">
-                                            <div class="w-full relative group/bar">
-                                                <div class="w-full bg-gradient-to-t from-violet-600/60 to-violet-400/60 rounded-t-xl animate-grow-up delay-100 relative z-10" style="height: 45%"></div>
+
+                                        <!-- Legenda e Tooltips Simulados -->
+                                        <div class="flex-1 space-y-3">
+                                            <div class="flex items-center justify-between group/item cursor-help">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-2 h-2 rounded-full bg-violet-500"></div>
+                                                    <span class="text-[10px] font-bold text-zinc-400">Alimentação</span>
+                                                </div>
+                                                <span class="text-[10px] font-black text-white">R$ 980</span>
                                             </div>
-                                            <span class="text-[9px] font-black text-zinc-500 uppercase tracking-tighter">Trans.</span>
-                                        </div>
-                                        <div class="flex flex-col items-center gap-4 flex-1">
-                                            <div class="w-full relative group/bar">
-                                                <div class="w-full bg-gradient-to-t from-violet-600/40 to-violet-400/40 rounded-t-xl animate-grow-up delay-200 relative z-10" style="height: 35%"></div>
+                                            <div class="flex items-center justify-between group/item cursor-help">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-2 h-2 rounded-full bg-violet-600"></div>
+                                                    <span class="text-[10px] font-bold text-zinc-400">Transporte</span>
+                                                </div>
+                                                <span class="text-[10px] font-black text-white">R$ 420</span>
                                             </div>
-                                            <span class="text-[9px] font-black text-zinc-500 uppercase tracking-tighter">Lazer</span>
-                                        </div>
-                                        <div class="flex flex-col items-center gap-4 flex-1">
-                                            <div class="w-full relative group/bar">
-                                                <div class="w-full bg-zinc-800 rounded-t-xl animate-grow-up delay-300 relative z-10" style="height: 20%"></div>
+                                            <div class="flex items-center justify-between group/item cursor-help">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-2 h-2 rounded-full bg-violet-700"></div>
+                                                    <span class="text-[10px] font-bold text-zinc-400">Lazer</span>
+                                                </div>
+                                                <span class="text-[10px] font-black text-white">R$ 320</span>
                                             </div>
-                                            <span class="text-[9px] font-black text-zinc-500 uppercase tracking-tighter">Outros</span>
+                                            <div class="flex items-center justify-between group/item cursor-help">
+                                                <div class="flex items-center gap-2">
+                                                    <div class="w-2 h-2 rounded-full bg-zinc-800"></div>
+                                                    <span class="text-[10px] font-bold text-zinc-400">Outros</span>
+                                                </div>
+                                                <span class="text-[10px] font-black text-white">R$ 200</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
