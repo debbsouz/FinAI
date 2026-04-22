@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planos | FinAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #fafafa;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(63, 63, 70, 0.3);
+        }
+        .pro-card {
+            background: linear-gradient(145deg, rgba(139, 92, 246, 0.1) 0%, rgba(109, 40, 217, 0.1) 100%);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-20 px-6 selection:bg-violet-500/30">
+    
+    <div class="max-w-5xl mx-auto space-y-16">
+        <!-- Header -->
+        <div class="text-center space-y-4">
+            <a href="index.html" class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors mb-8 group">
+                <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
+                <span class="text-xs font-bold uppercase tracking-widest">Voltar ao dashboard</span>
+            </a>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter text-white">Escolha sua jornada</h1>
+            <p class="text-zinc-500 max-w-lg mx-auto">Potencialize sua gestão financeira com a inteligência artificial do FinAI.</p>
+        </div>
+
+        <!-- Pricing Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <!-- Free Plan -->
+            <div class="glass p-10 rounded-[40px] flex flex-col space-y-8 hover:border-zinc-700 transition-all group">
+                <div class="space-y-2">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Essential</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-5xl font-black text-white">Grátis</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 flex-1">
+                    <li class="flex items-center gap-3 text-sm text-zinc-400">
+                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-zinc-500"></i>
+                        </div>
+                        Controle de gastos ilimitado
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-400">
+                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-zinc-500"></i>
+                        </div>
+                        Gráficos de visão geral
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-400 opacity-40">
+                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
+                            <i class="fas fa-times text-[10px]"></i>
+                        </div>
+                        Insights com IA
+                    </li>
+                </ul>
+
+                <button disabled class="w-full py-5 rounded-2xl border border-zinc-800 text-zinc-500 font-bold cursor-not-allowed">
+                    Plano Atual
+                </button>
+            </div>
+
+            <!-- Pro Plan -->
+            <div class="pro-card p-10 rounded-[40px] flex flex-col space-y-8 relative overflow-hidden group shadow-2xl shadow-violet-500/10 scale-105 border-violet-500/50">
+                <div class="absolute top-0 right-0 p-6">
+                    <span class="bg-violet-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Recomendado</span>
+                </div>
+
+                <div class="space-y-2 relative z-10">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-violet-400">Professional</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-5xl font-black text-white">R$ 29</span>
+                        <span class="text-zinc-500 text-sm font-bold">/mês</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 flex-1 relative z-10">
+                    <li class="flex items-center gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-violet-400"></i>
+                        </div>
+                        Tudo do Essential
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-violet-400"></i>
+                        </div>
+                        Insights com IA em tempo real
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-violet-400"></i>
+                        </div>
+                        Recomendações avançadas
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                            <i class="fas fa-check text-[10px] text-violet-400"></i>
+                        </div>
+                        Suporte prioritário
+                    </li>
+                </ul>
+
+                <a href="https://wa.me/5551995245630?text=Olá,%20tenho%20interesse%20em%20assinar%20o%20plano%20Pro%20do%20FinAI" 
+                   class="w-full py-5 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-black text-center shadow-xl shadow-violet-600/20 transition-all active:scale-[0.98] relative z-10">
+                    Assinar plano Pro
+                </a>
+                
+                <!-- Background decoration -->
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-violet-600/20 blur-[60px] rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <p class="text-center text-[10px] font-bold text-zinc-600 uppercase tracking-[0.3em]">
+            Pagamento seguro via WhatsApp Business
+        </p>
+    </div>
+
+</body>
+</html>
