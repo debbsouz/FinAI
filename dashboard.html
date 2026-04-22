@@ -324,6 +324,16 @@
   <script src="js/charts.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Sincronizar status PRO do localStorage
+      const pagamentoConfirmado = localStorage.getItem("pagamento_confirmado") === "true";
+      let session = JSON.parse(localStorage.getItem('session'));
+      
+      if (pagamentoConfirmado && session && session.plano !== 'Pro') {
+        session.plano = 'Pro';
+        localStorage.setItem('session', JSON.stringify(session));
+        localStorage.setItem('usuario', JSON.stringify(session));
+      }
+
       if (session) {
         const isPro = session.plano === 'Pro';
         
@@ -338,14 +348,31 @@
           badge.classList.add('bg-violet-600/20', 'text-violet-400', 'border-violet-500/30');
           document.getElementById('upgradeBtn').classList.add('hidden');
           
-          // Mostrar badge PRO no topo
           const topBadge = document.getElementById('topPlanBadge');
           if (topBadge) topBadge.classList.remove('hidden');
 
-          // Adicionar destaque visual premium nos cards de análise
           const analysisSection = document.getElementById('section-insights');
           if (analysisSection) {
             analysisSection.classList.add('pro-feature-glow');
+          }
+        } else {
+          // Bloqueio visual para não-Pro
+          const insightsContent = document.getElementById('section-insights');
+          if (insightsContent) {
+            const overlay = document.createElement('div');
+            overlay.className = 'absolute inset-0 bg-black/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6 rounded-2xl';
+            overlay.innerHTML = `
+              <div class="w-16 h-16 bg-violet-600/20 rounded-2xl flex items-center justify-center mb-4 border border-violet-500/30">
+                <i class="fas fa-lock text-2xl text-violet-500"></i>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-2">Recurso Premium</h3>
+              <p class="text-zinc-400 text-sm mb-6 max-w-[280px]">O Relatório Estratégico com IA está disponível apenas para usuários <strong>FinAI Pro</strong>.</p>
+              <button onclick="toggleUpgradeModal()" class="bg-violet-600 hover:bg-violet-500 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-violet-600/20">
+                Fazer Upgrade Agora
+              </button>
+            `;
+            insightsContent.style.position = 'relative';
+            insightsContent.appendChild(overlay);
           }
         }
       }
