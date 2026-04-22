@@ -268,22 +268,29 @@ function renderizarResumoCategorias() {
   container.innerHTML = html || `<p class="col-span-4 text-center py-8 text-zinc-500">Adicione gastos para ver o resumo</p>`;
 }
 
+let ultimaAtualizacao = new Date();
+
 function renderizarProgressoOrcamento() {
   const container = document.getElementById('progressoOrcamento');
-  // Se não tiver o container de progresso antigo, apenas processamos os cards novos do dashboard
+  const topMonthlySpend = document.getElementById('topMonthlySpend');
   
   const total = calcularTotalGasto();
-  const percentualOrcamento = orcamentoMensal > 0 ? Math.min((total / orcamentoMensal) * 100, 100) : 0;
+  const percentualOrcamento = orcamentoMensal > 0 ? (total / orcamentoMensal) * 100 : 0;
+  const percentualExibicao = Math.min(percentualOrcamento, 100);
   
+  if (topMonthlySpend) {
+    topMonthlySpend.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} gastos este mês`;
+  }
+
   if (container) {
-    const cor = percentualOrcamento > 85 ? 'bg-red-500' : percentualOrcamento > 65 ? 'bg-amber-500' : 'bg-emerald-500';
+    const cor = percentualExibicao > 85 ? 'bg-red-500' : percentualExibicao > 65 ? 'bg-amber-500' : 'bg-emerald-500';
     container.innerHTML = `
       <div class="flex justify-between text-sm mb-2">
         <span>Gasto atual</span>
         <span>R$ ${total.toLocaleString('pt-BR')} / R$ ${orcamentoMensal.toLocaleString('pt-BR')}</span>
       </div>
       <div class="h-3 bg-zinc-700 rounded-full overflow-hidden">
-        <div class="${cor} h-full transition-all" style="width: ${percentualOrcamento}%"></div>
+        <div class="${cor} h-full transition-all" style="width: ${percentualExibicao}%"></div>
       </div>
     `;
   }
@@ -755,6 +762,7 @@ function gerarAnaliseIA() {
 }
 
 function renderizarTudo() {
+  ultimaAtualizacao = new Date();
   renderizarLista();
   renderizarProgressoOrcamento();
   renderizarStatusWhatsapp();

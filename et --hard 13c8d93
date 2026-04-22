@@ -1,0 +1,45 @@
+[33m13c8d93[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m)[m redesenhei seção de análise financeira para estilo minimalista, removendo excessos de texto, exibindo apenas um insight principal e um alerta dinâmico, com visual limpo, tipografia simples e atualização automática baseada nos dados
+[33mb667f2f[m adicionei plano Família com suporte a conta compartilhada, permitindo vincular usuários e simular compartilhamento de gastos, com indicação visual no dashboard e sem necessidade de backend real
+[33m9d4788e[m reorganizei sidebar com estrutura profissional de SaaS, incluindo status de plano com badge dinâmico, dropdown de conta com ações (upgrade, anual, trial e cancelamento), navegação principal mantida, seção de indicação, opções de exportação e reset, além de área de usuário com logout no final
+[33mb3cee8d[m melhora exibição do usuário no dashboard, movendo perfil para o topo da sidebar com layout compacto, avatar/iniciais, nome e plano, além de menu interativo com opções de configurações e logout
+[33m543dd31[m implementa sidebar responsiva estilo SaaS, mantendo fixa no desktop e adaptando para mobile com menu colapsável acionado por botão, animação suave com overlay, além de fechamento ao clicar fora ou no botão interno
+[33m18daacf[m implementei funcionalidade premium de notificações via WhatsApp para usuários Pro, com seção dedicada no dashboard, botão de ativação que abre link direto com mensagem pré-definida, persistência do número e status por usuário, feedback visual com mudança de estado e mensagens simuladas, além de animações e experiência contínua após reload
+[33m1896ced[m implementei sistema de saldo disponível com valor inicial por usuário, cálculo automático baseado nos gastos, atualização em tempo real ao adicionar/remover despesas, exibição no dashboard com indicação visual (positivo/negativo) e possibilidade de edição manual, garantindo persistência por usuário
+[33mc020e67[m corrigi persistência para isolar dados por usuário, utilizando identificador via usuario_logado e padronizando chaves no localStorage (gastos, plano, saldo, score por email), ajustando carregamento dinâmico e limpeza no logout
+[33m1484d5e[m implementei página de sucesso pós-pagamento com confirmação visual, mensagem de acesso liberado, botão para retorno ao dashboard e atualização do plano para Pro no localStorage, completando o fluxo de pagamento
+[33ma53ff2a[m implementei sistema de análise inteligente local baseado nos gastos do usuário, calculando totais e percentuais por categoria, identificando padrões de consumo e gerando feedback textual com base em regras, atuando como fallback offline para IA externa
+[33me42f70a[m implementei sistema de score financeiro baseado nos hábitos de gastos, com cálculo dinâmico (percentual do orçamento, categorias e frequência), pontuação inicial de 100 com regras de ajuste, exibição no dashboard com barra progressiva e cores indicativas, além de feedback textual inteligente conforme comportamento do usuário
+[33m6b99a44[m implementei verificação de acesso ao plano Pro baseada em pagamento confirmado, liberando funcionalidades premium apenas para usuários autorizados, com bloqueio de recursos, proteção visual, badge Pro, remoção do botão de upgrade e persistência via localStorage
+[33mff975b3[m implementei página de checkout estilo Stripe para simulação de pagamento do plano Pro, com layout dividido (resumo + formulário), inputs modernos, validação de cartão, fluxo de pagamento com loading e redirecionamento para sucesso, além de persistência do status no localStorage
+[33mefe1909[m corrigi atualização dos gráficos para refletir gastos adicionados, garantindo fluxo completo (salvar, listar, resumir e renderizar), criando/ajustando função atualizarGraficos, integrando ao renderizarTudo, adicionando debug de dados e evitando duplicação ao destruir gráficos antes de recriar
+[33mf6595db[m implementei sistema de upgrade para Pro no dashboard, adicionando estado de plano (Free/Pro), botão de upgrade com modal de benefícios, ativação simulada via localStorage, atualização em tempo real da interface, mudanças visuais para usuários Pro e melhorias de UX com animações, loading e feedback de sucesso, mantendo persistência após reload
+[33maf0e75f[m implementa sistema de usuário no dashboard, substituindo dados estáticos por informações do usuário logado, com controle de sessão via localStorage, exibição dinâmica de nome, iniciais e plano, menu com logout, página de configurações com edição de dados e proteção de rotas para acesso seguro
+[33m6f1b342[m Implementei um fluxo completo de autenticação no frontend, com login, cadastro e recuperação de senha, incluindo validação simples, simulação de usuário e melhorias de UX
+[33m4329936[m ajuste no rodapé da landing page
+[33m50f94f3[m criei uma página de planos e pagamento simples
+[33m3c33f27[m Adicionei um botão de contato via WhatsApp à landing page
+[33m25b4b5e[m adicionei pagina de login
+[33medf1693[m refinamento da logo
+[33m385d66e[m criei grafico de dados na landing page
+[33m765f1f4[m - adicionei cards com valores de gastos simulados - implementei seção de análise com insights financeiros - inclui indicador de última análise - melhorei layout da área de demonstração - adicionei elementos visuais para simular uso real do sistema
+[33m3f224cd[m melhorei seção de demonstração com dados reais, gráficos e interações visuais
+[33m93cedab[m - seção hero mais clara com proposta de valor - inclui seção de benefícios do produto - adicionei explicação de como funciona - criei estrutura inspirada em SaaS real - melhorei organização visual da landing
+[33m12a624a[m criação da landing page
+[33m8810af2[m transformei FinAI em SaaS corporativo minimalista com layout dashboard, sidebar fixa e IA estratégica
+[33mf98b471[m - integração com Gemini - fallback local em caso de falha da API - tratamento de timeout - resposta sempre garantida no formato padrão - melhoria na estabilidade da IA
+[33m0174b68[m ajustei imports typescript removendo extensões .js e configurei commonjs para compatibilidade
+[33m47c07de[m adicionei score financeiro local + melhorei dashboard com cards de visão geral
+[33mb0a194a[m integrei análise IA no frontend com Tailwind + exibição de score, insights, alertas e sugestões
+[33m3d7474b[m criar OpenAIService com análise estruturada em JSON + controller e rota de análise
+[33md70de85[m[33m ([m[1;32mmain[m[33m)[m integra OpenAI com variáveis de ambiente e melhora segurança da API
+[33med07306[m integra Gemini API
+[33me1fb6c3[m melhora análise da IA + finaliza detalhes visuais
+[33m272e5f7[m separa CSS em arquivo externo + ajustes de estilo
+[33m1b358aa[m adiciona orçamento mensal + análise inteligente avançada + design
+[33m7b17f83[m finaliza funcionalidades + exportar CSV + limpar dados
+[33mcf71605[m adiciona insights inteligentes da IA
+[33meb7bc2c[m melhora seção de gráficos e resumo visual
+[33mbcf0f5d[m separa arquivos HTML, CSS e JavaScript
+[33m3c9b900[m local e lista de gastos
+[33m7e430cf[m adiciona formulário para registrar novos gastos
+[33m3c408e5[m inicializa estrutura básica do projeto

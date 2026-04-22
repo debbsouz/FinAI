@@ -233,18 +233,22 @@
         </button>
       </header>
 
-      <!-- Topbar -->
-      <header class="hidden lg:flex h-20 bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-800 items-center justify-between px-12 sticky top-0 z-50">
-        <div class="flex items-center gap-4">
-          <h2 class="text-xl font-semibold text-white tracking-tight">Análise Consolidada</h2>
-          <div id="topPlanBadge" class="hidden px-2 py-0.5 rounded bg-violet-600 text-white text-[10px] font-black uppercase tracking-widest shadow-[0_0_10px_rgba(139,92,246,0.5)]">PRO</div>
+      <!-- Topbar (SaaS Refactored) -->
+      <header class="hidden lg:flex h-20 bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-800/50 items-center justify-between px-12 sticky top-0 z-50">
+        <div class="flex flex-col">
+          <h2 class="text-xl font-bold text-white tracking-tight">Visão Geral</h2>
+          <p class="text-[10px] font-medium text-zinc-500 uppercase tracking-widest mt-0.5">Resumo financeiro do período atual</p>
         </div>
-        <div class="flex items-center gap-4">
-          <button onclick="exportarCSV()" class="btn-secondary px-4 py-2 rounded-lg text-xs flex items-center gap-2">
-            <i class="fas fa-file-export"></i> Exportar Dados
-          </button>
-          <button onclick="limparTodosDados()" class="px-4 py-2 bg-zinc-900/50 hover:bg-red-900/10 text-zinc-600 hover:text-red-400 rounded-lg text-xs font-semibold transition-all border border-zinc-800 active:scale-[0.98]">
-            Resetar Sistema
+        
+        <div class="flex items-center gap-6">
+          <div class="flex flex-col items-end">
+            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Gasto mensal</span>
+            <p id="topMonthlySpend" class="text-sm font-semibold text-white mt-0.5">R$ 0,00 gastos este mês</p>
+          </div>
+          
+          <button onclick="renderizarTudo()" class="px-4 py-2 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-400 hover:text-white text-[11px] font-bold uppercase tracking-widest rounded-lg border border-zinc-800/80 transition-all active:scale-95 flex items-center gap-2">
+            <i class="fas fa-sync-alt text-[9px]"></i>
+            Atualizar
           </button>
         </div>
       </header>
