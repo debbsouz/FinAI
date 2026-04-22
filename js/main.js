@@ -108,19 +108,39 @@ function carregarDados() {
   const session = JSON.parse(localStorage.getItem('session'));
   const nameEl = document.getElementById('userNameSidebar');
   const avatarEl = document.getElementById('userAvatar');
-  const planEl = document.getElementById('userPlanBadge');
+  const planNameEl = document.getElementById('planNameSidebar');
+  const planIconEl = document.getElementById('planIcon');
+  
+  // Elementos do Dropdown de Plano
+  const btnTrial = document.getElementById('btnTrial7Days');
+  const btnAnnual = document.getElementById('btnAnnualPlan');
+  const btnCancel = document.getElementById('btnCancelPlan');
 
   if (session) {
     if (nameEl) nameEl.innerText = session.name || 'Usuário';
     if (avatarEl && session.name) {
       avatarEl.innerText = session.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
     }
-    if (planEl) {
-      const isProUser = isPro();
-      planEl.innerText = isProUser ? 'Pro Plan' : 'Free Plan';
-      planEl.className = isProUser 
-        ? "text-[9px] font-black uppercase tracking-widest text-violet-400" 
-        : "text-[9px] font-black uppercase tracking-widest text-zinc-500";
+    
+    const isProUser = isPro();
+    if (planNameEl) {
+      planNameEl.innerText = isProUser ? 'Conta Premium' : 'Plano Free';
+    }
+    
+    if (planIconEl) {
+      planIconEl.innerHTML = isProUser ? '<i class="fas fa-crown text-violet-400"></i>' : '<i class="fas fa-layer-group"></i>';
+      planIconEl.className = isProUser 
+        ? "w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center text-xs border border-violet-500/20 shadow-[0_0_10px_rgba(139,92,246,0.2)]"
+        : "w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-400";
+    }
+
+    // Ajustar opções do dropdown baseado no plano
+    if (isProUser) {
+      if (btnTrial) btnTrial.classList.add('hidden');
+      if (btnCancel) btnCancel.classList.remove('hidden');
+    } else {
+      if (btnTrial) btnTrial.classList.remove('hidden');
+      if (btnCancel) btnCancel.classList.add('hidden');
     }
   }
 }
@@ -651,13 +671,76 @@ function limparTodosDados() {
 }
 
 // ==================== FINAL ====================
+// ==================== ANÁLISE PREDITIVA IA ====================
+function gerarAnaliseIA() {
+  const total = calcularVolume();
+  const percOrcamento = orcamentoMensal > 0 ? (total / orcamentoMensal) : 0;
+  const gastosPorCategoria = gastos.reduce((acc, g) => {
+    acc[g.categoria] = (acc[g.categoria] || 0) + g.valor;
+    return acc;
+  }, {});
+
+  let analises = [];
+
+  // 1. Análise de Nível de Gasto
+  const msgsNivel = {
+    alto: [
+      "Seu nível de consumo está elevado. Reduzir despesas pode evitar pressão financeira.",
+      "Atenção: seus gastos estão acelerados. Considere revisar compras supérfluas.",
+      "Detectamos um volume de despesas acima da média. Momento de cautela estratégica."
+    ],
+    equilibrado: [
+      "Você mantém um bom controle financeiro. Continue monitorando seus hábitos.",
+      "Gestão equilibrada detectada. Seu padrão de consumo está sob controle.",
+      "Parabéns pela disciplina. Suas finanças estão seguindo o planejado."
+    ],
+    saudavel: [
+      "Seu padrão de gastos está saudável. Existe margem para investimento ou reserva.",
+      "Excelente saúde financeira. Você está gastando menos do que poderia.",
+      "Momento ideal para poupar. Seu consumo está abaixo da capacidade atual."
+    ]
+  };
+
+  if (percOrcamento > 0.8 || (orcamentoMensal === 0 && total > 2000)) {
+    analises.push(msgsNivel.alto[Math.floor(Math.random() * msgsNivel.alto.length)]);
+  } else if (percOrcamento > 0.4) {
+    analises.push(msgsNivel.equilibrado[Math.floor(Math.random() * msgsNivel.equilibrado.length)]);
+  } else {
+    analises.push(msgsNivel.saudavel[Math.floor(Math.random() * msgsNivel.saudavel.length)]);
+  }
+
+  // 2. Análise por Categoria
+  if (gastosPorCategoria['Alimentação'] > (total * 0.4)) {
+    analises.push("Os gastos com alimentação estão acima do ideal para seu perfil.");
+  }
+  if (gastosPorCategoria['Lazer'] > (total * 0.25)) {
+    analises.push("Os gastos com lazer podem impactar seu equilíbrio financeiro a longo prazo.");
+  }
+  if (gastosPorCategoria['Transporte'] > (total * 0.3)) {
+    analises.push("Identificamos custo elevado com deslocamento. Vale analisar alternativas.");
+  }
+
+  // 3. Insight de Orçamento
+  if (orcamentoMensal > 0 && total > orcamentoMensal) {
+    analises.push("Seu teto de gastos foi ultrapassado. Sugerimos realocar recursos imediatamente.");
+  }
+
+  const analiseFinal = analises.join(' ');
+  const displayIA = document.getElementById('analiseIAContent');
+  if (displayIA) {
+    displayIA.innerText = analiseFinal || "Adicione alguns gastos para que eu possa gerar uma análise estratégica personalizada.";
+  }
+}
+
 function renderizarTudo() {
   renderizarLista();
-  renderizarResumoCategorias();
   renderizarProgressoOrcamento();
   renderizarStatusWhatsapp();
+  gerarAnaliseIA();
   if (typeof atualizarGraficos === "function") {
     atualizarGraficos();
+  }
+}
   } else {
     console.warn('Função atualizarGraficos não encontrada.');
   }

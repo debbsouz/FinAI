@@ -55,17 +55,17 @@
       }
     }
 
-    function toggleUserMenu() {
-      const dropdown = document.getElementById('userDropdown');
+    function togglePlanMenu() {
+      const dropdown = document.getElementById('planDropdown');
       dropdown.classList.toggle('hidden');
     }
 
-    // Fechar dropdown ao clicar fora
+    // Fechar dropdowns ao clicar fora
     document.addEventListener('click', (e) => {
-      const userArea = document.querySelector('.relative');
-      const dropdown = document.getElementById('userDropdown');
-      if (!userArea.contains(e.target) && !dropdown.classList.contains('hidden')) {
-        dropdown.classList.add('hidden');
+      const planArea = document.querySelector('.relative');
+      const planDropdown = document.getElementById('planDropdown');
+      if (planArea && !planArea.contains(e.target) && !planDropdown.classList.contains('hidden')) {
+        planDropdown.classList.add('hidden');
       }
     });
 
@@ -113,78 +113,101 @@
            </button>
          </div>
 
-         <!-- User Area -->
+         <!-- Plan Area -->
          <div class="relative">
-           <button onclick="toggleUserMenu()" class="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 hover:bg-zinc-800/80 transition-all group">
-             <div id="userAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-xs font-black text-white shadow-lg shadow-violet-500/10">
-               --
+           <button onclick="togglePlanMenu()" class="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 hover:bg-zinc-800/80 transition-all group">
+             <div id="planIcon" class="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-400">
+               <i class="fas fa-layer-group"></i>
              </div>
              <div class="flex-1 text-left overflow-hidden">
-               <p id="userNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Carregando...</p>
-               <span id="userPlanBadge" class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Free</span>
+               <p id="planNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Plano Free</p>
+               <span class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Gerenciar Assinatura</span>
              </div>
              <i class="fas fa-chevron-down text-[10px] text-zinc-600 group-hover:text-zinc-400 transition-colors"></i>
            </button>
 
-           <!-- Dropdown Menu -->
-           <div id="userDropdown" class="hidden absolute top-full left-0 w-full mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 py-2 animate-fade-in">
-             <button onclick="location.href='settings.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
-               <i class="fas fa-cog w-4"></i>
-               Configurações
+           <!-- Plan Dropdown -->
+           <div id="planDropdown" class="hidden absolute top-full left-0 w-full mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 py-2 animate-fade-in">
+             <button onclick="location.href='plans.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
+               <i class="fas fa-exchange-alt w-4"></i>
+               Alterar plano
+             </button>
+             <button onclick="window.location.href='checkout.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
+               <i class="fas fa-calendar-check w-4"></i>
+               Assinar plano anual
+             </button>
+             <button id="btnTrial7Days" onclick="window.location.href='checkout.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-all">
+               <i class="fas fa-magic w-4"></i>
+               Testar 7 dias grátis
              </button>
              <div class="h-px bg-zinc-800 my-1 mx-2"></div>
-             <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
-               <i class="fas fa-sign-out-alt w-4"></i>
-               Sair da conta
+             <button onclick="alert('Funcionalidade de cancelamento em breve.')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-500 hover:text-zinc-400 hover:bg-zinc-800 transition-all">
+               <i class="fas fa-times-circle w-4"></i>
+               Cancelar plano
              </button>
            </div>
          </div>
        </div>
       
-      <nav class="flex-1 p-6 space-y-2">
-        <a href="#" class="flex items-center gap-3 px-4 py-3 bg-violet-600/10 text-violet-400 rounded-xl font-medium transition-all group">
-          <i class="fas fa-chart-line"></i>
-          Visão Geral
-        </a>
-        <a href="#section-gastos" class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-medium transition-all group">
-          <i class="fas fa-list-ul"></i>
-          Transações
-        </a>
-        <a href="#section-insights" class="flex items-center gap-3 px-4 py-3 text-zinc-400 hover:bg-zinc-800 hover:text-white rounded-xl font-medium transition-all group">
-          <i class="fas fa-lightbulb"></i>
-          Relatório Estratégico
-        </a>
-        <button id="upgradeBtn" onclick="toggleUpgradeModal()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-zinc-800 text-zinc-400 hover:text-white transition-all group">
-          <i class="fas fa-crown text-violet-500 group-hover:scale-110 transition-transform"></i>
-          <span class="text-sm font-medium">Upgrade para Pro</span>
-        </button>
-      </nav>
-      
-      <div class="p-6 border-t border-zinc-800 mt-auto relative" id="userArea">
-        <div onclick="toggleUserMenu()" class="flex items-center gap-3 px-2 py-2 cursor-pointer hover:bg-zinc-800/50 rounded-xl transition-all">
-          <div id="userInitials" class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-black text-violet-400 border border-zinc-700/50">JD</div>
-          <div>
-            <p id="userName" class="text-[11px] font-black text-white uppercase tracking-wider truncate max-w-[120px]">John Doe</p>
-            <div id="userPlanBadge" class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-black uppercase tracking-widest bg-zinc-900 text-zinc-600 border border-zinc-800 mt-1">Free</div>
-          </div>
-        </div>
+       <div class="flex-1 overflow-y-auto py-6 px-4 space-y-8 scrollbar-hide">
+         <!-- Main Navigation -->
+         <nav class="space-y-1">
+           <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest mb-4 px-2">Menu Principal</p>
+           <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-violet-600/10 text-violet-400 text-xs font-bold border border-violet-500/20 group">
+             <i class="fas fa-chart-line w-4 group-hover:scale-110 transition-transform"></i>
+             Visão Geral
+           </a>
+           <a href="#section-gastos" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group">
+             <i class="fas fa-exchange-alt w-4 group-hover:scale-110 transition-transform"></i>
+             Transações
+           </a>
+           <a href="#section-ai" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group">
+             <i class="fas fa-brain w-4 group-hover:scale-110 transition-transform"></i>
+             Relatório Estratégico
+           </a>
+         </nav>
 
-        <!-- User Dropdown Menu -->
-        <div id="userMenu" class="hidden absolute bottom-full left-6 right-6 mb-2 bg-[#111113] border border-zinc-800 rounded-xl shadow-2xl overflow-hidden animate-fade-in z-50">
-          <div class="p-2 space-y-1">
-            <a href="config.html" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all">
-              <i class="fas fa-user-circle"></i> Meu perfil
-            </a>
-            <a href="config.html" class="flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-all">
-              <i class="fas fa-cog"></i> Configurações
-            </a>
-            <div class="border-t border-zinc-800 my-1"></div>
-            <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-[11px] font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-all">
-              <i class="fas fa-sign-out-alt"></i> Sair
-            </button>
-          </div>
-        </div>
-      </div>
+         <!-- Referral Block -->
+         <div class="p-4 rounded-xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 relative overflow-hidden group">
+           <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:scale-110 transition-transform">
+             <i class="fas fa-gift text-3xl text-violet-500"></i>
+           </div>
+           <p class="text-[10px] font-black text-white uppercase tracking-wider mb-1">Indique e ganhe</p>
+           <p class="text-[10px] text-zinc-500 leading-tight mb-3">Ganhe desconto ao indicar amigos para o FinAI.</p>
+           <button class="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-[10px] font-black text-white uppercase tracking-widest rounded-lg transition-colors">
+             Convidar
+           </button>
+         </div>
+
+         <!-- System Tools -->
+         <nav class="space-y-1">
+           <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest mb-4 px-2">Sistema</p>
+           <button onclick="exportarCSV()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group text-left">
+             <i class="fas fa-download w-4 group-hover:scale-110 transition-transform"></i>
+             Exportar dados
+           </button>
+           <button onclick="limparTodosDados()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400/60 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all group text-left">
+             <i class="fas fa-undo-alt w-4 group-hover:scale-110 transition-transform"></i>
+             Resetar sistema
+           </button>
+         </nav>
+       </div>
+
+       <!-- User Footer -->
+       <div class="p-4 border-t border-zinc-800 bg-zinc-900/20">
+         <div class="flex items-center gap-3 p-2 rounded-xl">
+           <div id="userAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-xs font-black text-white shadow-lg shadow-violet-500/10">
+             --
+           </div>
+           <div class="flex-1 overflow-hidden">
+             <p id="userNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Usuário</p>
+             <button onclick="logout()" class="text-[9px] font-black text-zinc-600 uppercase tracking-widest hover:text-red-400 transition-colors flex items-center gap-1">
+               <i class="fas fa-sign-out-alt"></i>
+               Sair da conta
+             </button>
+           </div>
+         </div>
+       </div>
     </aside>
 
     <!-- Main Content -->
@@ -262,6 +285,28 @@
                 <div id="barScoreLocal" class="h-full bg-violet-500 transition-all duration-1000" style="width: 0%"></div>
               </div>
               <p id="textScoreLocal" class="text-[10px] text-zinc-500 font-medium italic leading-tight">Adicione dados para calcular seu score.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- AI Insight Card -->
+        <section id="section-ai" class="bg-gradient-to-br from-[#111113] to-zinc-900 p-8 rounded-2xl border border-zinc-800 shadow-xl relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
+            <i class="fas fa-robot text-5xl text-violet-500"></i>
+          </div>
+          <div class="relative z-10">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-8 h-8 rounded-lg bg-violet-600/20 flex items-center justify-center border border-violet-500/30">
+                <i class="fas fa-bolt text-violet-400 text-xs"></i>
+              </div>
+              <h4 class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Análise Preditiva FinAI</h4>
+            </div>
+            <p id="analiseIAContent" class="text-lg md:text-xl font-medium text-zinc-200 leading-relaxed tracking-tight italic">
+              Analisando seus padrões financeiros para gerar insights estratégicos...
+            </p>
+            <div class="mt-8 flex items-center gap-4">
+              <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="text-[10px] font-bold text-emerald-500/80 uppercase tracking-widest">IA Conectada • Dados em Tempo Real</span>
             </div>
           </div>
         </section>
