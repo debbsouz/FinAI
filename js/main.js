@@ -103,6 +103,26 @@ function carregarDados() {
   if (typeof atualizarGraficos === "function") {
     atualizarGraficos();
   }
+
+  // Atualizar Info do Usuário na Sidebar
+  const session = JSON.parse(localStorage.getItem('session'));
+  const nameEl = document.getElementById('userNameSidebar');
+  const avatarEl = document.getElementById('userAvatar');
+  const planEl = document.getElementById('userPlanBadge');
+
+  if (session) {
+    if (nameEl) nameEl.innerText = session.name || 'Usuário';
+    if (avatarEl && session.name) {
+      avatarEl.innerText = session.name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+    }
+    if (planEl) {
+      const isProUser = isPro();
+      planEl.innerText = isProUser ? 'Pro Plan' : 'Free Plan';
+      planEl.className = isProUser 
+        ? "text-[9px] font-black uppercase tracking-widest text-violet-400" 
+        : "text-[9px] font-black uppercase tracking-widest text-zinc-500";
+    }
+  }
 }
 
 function salvarGastos() {

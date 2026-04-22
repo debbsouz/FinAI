@@ -55,6 +55,20 @@
       }
     }
 
+    function toggleUserMenu() {
+      const dropdown = document.getElementById('userDropdown');
+      dropdown.classList.toggle('hidden');
+    }
+
+    // Fechar dropdown ao clicar fora
+    document.addEventListener('click', (e) => {
+      const userArea = document.querySelector('.relative');
+      const dropdown = document.getElementById('userDropdown');
+      if (!userArea.contains(e.target) && !dropdown.classList.contains('hidden')) {
+        dropdown.classList.add('hidden');
+      }
+    });
+
     async function activatePro() {
       const btn = document.getElementById('btnActivatePro');
       const loader = btn.querySelector('.fa-spinner');
@@ -88,19 +102,44 @@
   <div class="flex min-h-screen overflow-hidden">
     <!-- Sidebar -->
     <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-[#111113] border-r border-zinc-800 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static">
-      <div class="p-8 border-b border-zinc-800 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img src="assets/logo.svg" alt="FinAI Logo" class="w-10 h-10">
-          <div>
-            <h1 class="text-2xl font-black tracking-tighter text-white leading-none">FinAI</h1>
-            <p class="text-[9px] text-zinc-600 font-bold uppercase tracking-widest mt-1">Strategic Control</p>
-          </div>
-        </div>
-        <!-- Close Button (Mobile only) -->
-        <button onclick="closeMobileMenu()" class="lg:hidden p-2 text-zinc-500 hover:text-white transition-colors">
-          <i class="fas fa-times text-xl"></i>
-        </button>
-      </div>
+       <div class="p-6 border-b border-zinc-800">
+         <div class="flex items-center justify-between mb-6">
+           <div class="flex items-center gap-3">
+             <img src="assets/logo.svg" alt="FinAI Logo" class="w-8 h-8">
+             <h1 class="text-xl font-black tracking-tighter text-white leading-none">FinAI</h1>
+           </div>
+           <button onclick="closeMobileMenu()" class="lg:hidden p-2 text-zinc-500 hover:text-white transition-colors">
+             <i class="fas fa-times text-lg"></i>
+           </button>
+         </div>
+
+         <!-- User Area -->
+         <div class="relative">
+           <button onclick="toggleUserMenu()" class="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 hover:bg-zinc-800/80 transition-all group">
+             <div id="userAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-xs font-black text-white shadow-lg shadow-violet-500/10">
+               --
+             </div>
+             <div class="flex-1 text-left overflow-hidden">
+               <p id="userNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Carregando...</p>
+               <span id="userPlanBadge" class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Free</span>
+             </div>
+             <i class="fas fa-chevron-down text-[10px] text-zinc-600 group-hover:text-zinc-400 transition-colors"></i>
+           </button>
+
+           <!-- Dropdown Menu -->
+           <div id="userDropdown" class="hidden absolute top-full left-0 w-full mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 py-2 animate-fade-in">
+             <button onclick="location.href='settings.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
+               <i class="fas fa-cog w-4"></i>
+               Configurações
+             </button>
+             <div class="h-px bg-zinc-800 my-1 mx-2"></div>
+             <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all">
+               <i class="fas fa-sign-out-alt w-4"></i>
+               Sair da conta
+             </button>
+           </div>
+         </div>
+       </div>
       
       <nav class="flex-1 p-6 space-y-2">
         <a href="#" class="flex items-center gap-3 px-4 py-3 bg-violet-600/10 text-violet-400 rounded-xl font-medium transition-all group">
