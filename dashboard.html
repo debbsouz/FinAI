@@ -159,9 +159,13 @@
             </div>
             <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Saldo Disponível</p>
             <div class="flex flex-col gap-4">
-              <h3 id="cardOrcamentoRestante" class="text-4xl font-black text-white tracking-tighter">R$ 0,00</h3>
+              <h3 id="cardSaldoDisponivel" class="text-4xl font-black text-white tracking-tighter">R$ 0,00</h3>
+              <div class="flex items-center gap-2">
+                <span class="text-[9px] font-bold text-zinc-600 uppercase">Saldo Inicial:</span>
+                <input id="inputSaldoInicial" type="number" onchange="alterarSaldoInicial(this.value)" class="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-[10px] w-20 focus:outline-none focus:border-violet-500/50 text-white font-bold" placeholder="0.00">
+              </div>
               <div class="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
-                <div id="barOrcamentoRestante" class="h-full bg-violet-600 transition-all duration-1000 shadow-[0_0_10px_rgba(139,92,246,0.5)]" style="width: 100%"></div>
+                <div id="barSaldoDisponivel" class="h-full bg-violet-600 transition-all duration-1000 shadow-[0_0_10px_rgba(139,92,246,0.5)]" style="width: 100%"></div>
               </div>
             </div>
           </div>

@@ -3,16 +3,24 @@ const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
 
 let gastos = JSON.parse(localStorage.getItem(`gastos_${usuarioEmail}`)) || [];
 let orcamentoMensal = parseFloat(localStorage.getItem(`orcamento_${usuarioEmail}`)) || 3000.00;
+let saldoInicial = parseFloat(localStorage.getItem(`saldo_${usuarioEmail}`)) || 0.00;
 let pieChart = null;
 let barChart = null;
 
 function salvarDados() {
   localStorage.setItem(`gastos_${usuarioEmail}`, JSON.stringify(gastos));
   localStorage.setItem(`orcamento_${usuarioEmail}`, orcamentoMensal.toString());
+  localStorage.setItem(`saldo_${usuarioEmail}`, saldoInicial.toString());
 }
 
 function alterarOrcamento(valor) {
   orcamentoMensal = parseFloat(valor) || 0;
+  salvarDados();
+  renderizarTudo();
+}
+
+function alterarSaldoInicial(valor) {
+  saldoInicial = parseFloat(valor) || 0;
   salvarDados();
   renderizarTudo();
 }
@@ -83,11 +91,14 @@ function calcularScoreLocal() {
 }
 
 function carregarDados() {
-  const salvos = localStorage.getItem('gastos');
+  const salvos = localStorage.getItem(`gastos_${usuarioEmail}`);
   if (salvos) gastos = JSON.parse(salvos);
 
   const inputOrcamento = document.getElementById('orcamentoMensal');
   if (inputOrcamento) inputOrcamento.value = orcamentoMensal;
+
+  const inputSaldo = document.getElementById('inputSaldoInicial');
+  if (inputSaldo) inputSaldo.value = saldoInicial;
 
   if (typeof atualizarGraficos === "function") {
     atualizarGraficos();
@@ -189,50 +200,52 @@ function renderizarResumoCategorias() {
 
 function renderizarProgressoOrcamento() {
   const container = document.getElementById('progressoOrcamento');
-  if (!container) return;
-
+  // Se não tiver o container de progresso antigo, apenas processamos os cards novos do dashboard
+  
   const total = calcularTotalGasto();
-  const percentual = orcamentoMensal > 0 ? Math.min((total / orcamentoMensal) * 100, 100) : 0;
-  const cor = percentual > 85 ? 'bg-red-500' : percentual > 65 ? 'bg-amber-500' : 'bg-emerald-500';
-
-  container.innerHTML = `
-    <div class="flex justify-between text-sm mb-2">
-      <span>Gasto atual</span>
-      <span>R$ ${total.toLocaleString('pt-BR')} / R$ ${orcamentoMensal.toLocaleString('pt-BR')}</span>
-    </div>
-    <div class="h-3 bg-zinc-700 rounded-full overflow-hidden">
-      <div class="${cor} h-full transition-all" style="width: ${percentual}%"></div>
-    </div>
-  `;
+  const percentualOrcamento = orcamentoMensal > 0 ? Math.min((total / orcamentoMensal) * 100, 100) : 0;
+  
+  if (container) {
+    const cor = percentualOrcamento > 85 ? 'bg-red-500' : percentualOrcamento > 65 ? 'bg-amber-500' : 'bg-emerald-500';
+    container.innerHTML = `
+      <div class="flex justify-between text-sm mb-2">
+        <span>Gasto atual</span>
+        <span>R$ ${total.toLocaleString('pt-BR')} / R$ ${orcamentoMensal.toLocaleString('pt-BR')}</span>
+      </div>
+      <div class="h-3 bg-zinc-700 rounded-full overflow-hidden">
+        <div class="${cor} h-full transition-all" style="width: ${percentualOrcamento}%"></div>
+      </div>
+    `;
+  }
 
   // Atualizar Cards de Visão Geral
   const cardTotal = document.getElementById('cardTotalGasto');
-  const cardRestante = document.getElementById('cardOrcamentoRestante');
+  const cardSaldo = document.getElementById('cardSaldoDisponivel');
   const cardScore = document.getElementById('cardScoreLocal');
   const statusGasto = document.getElementById('statusGasto');
-  const barRestante = document.getElementById('barOrcamentoRestante');
+  const barSaldo = document.getElementById('barSaldoDisponivel');
 
   if (cardTotal) cardTotal.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
   
-  if (cardRestante) {
-    const restante = Math.max(0, orcamentoMensal - total);
-    cardRestante.innerText = `R$ ${restante.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-    cardRestante.className = restante > 0 ? "text-3xl font-bold text-emerald-400" : "text-3xl font-bold text-red-400";
-  }
-
-  if (barRestante) {
-    const percRestante = orcamentoMensal > 0 ? Math.max(0, ((orcamentoMensal - total) / orcamentoMensal) * 100) : 0;
-    barRestante.style.width = `${percRestante}%`;
-    barRestante.className = percRestante > 20 ? "h-full bg-emerald-500 transition-all" : "h-full bg-red-500 transition-all";
+  if (cardSaldo) {
+    const saldoDisponivel = saldoInicial - total;
+    cardSaldo.innerText = `R$ ${saldoDisponivel.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+    cardSaldo.className = saldoDisponivel >= 0 ? "text-4xl font-black text-emerald-400 tracking-tighter" : "text-4xl font-black text-red-400 tracking-tighter";
+    
+    if (barSaldo) {
+        const percSaldo = saldoInicial > 0 ? Math.max(0, Math.min((saldoDisponivel / saldoInicial) * 100, 100)) : 0;
+        barSaldo.style.width = `${percSaldo}%`;
+        barSaldo.className = saldoDisponivel >= 0 ? "h-full bg-emerald-500 transition-all shadow-[0_0_10px_rgba(16,185,129,0.5)]" : "h-full bg-red-500 transition-all";
+    }
   }
 
   if (statusGasto) {
     if (total > orcamentoMensal) {
       statusGasto.innerText = "Orçamento Estourado";
-      statusGasto.className = "mt-2 text-[10px] font-bold px-2 py-1 rounded-lg inline-block bg-red-500/20 text-red-400 uppercase";
+      statusGasto.className = "text-[9px] font-black uppercase px-2 py-1 rounded-md bg-red-500/20 text-red-400 tracking-tighter border border-red-500/30";
     } else {
       statusGasto.innerText = "Dentro do Limite";
-      statusGasto.className = "mt-2 text-[10px] font-bold px-2 py-1 rounded-lg inline-block bg-emerald-500/20 text-emerald-400 uppercase";
+      statusGasto.className = "text-[9px] font-black uppercase px-2 py-1 rounded-md bg-emerald-500/20 text-emerald-400 tracking-tighter border border-emerald-500/30";
     }
   }
 
@@ -257,7 +270,7 @@ function renderizarProgressoOrcamento() {
     const textScore = document.getElementById('textScoreLocal');
     if (textScore) {
       textScore.innerText = mensagem;
-      textScore.className = "text-[10px] text-zinc-500 mt-2 font-medium italic leading-tight";
+      textScore.className = "text-[10px] text-zinc-500 font-medium italic leading-tight";
     }
   }
 }
@@ -586,6 +599,12 @@ function renderizarTudo() {
     console.warn('Função atualizarGraficos não encontrada.');
   }
 }
+
+// Inicialização
+document.addEventListener('DOMContentLoaded', () => {
+  carregarDados();
+  renderizarTudo();
+});
 
 window.onload = function() {
   const hoje = new Date().toISOString().split('T')[0];
