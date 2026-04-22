@@ -324,6 +324,12 @@ function renderizarProgressoOrcamento() {
     }
   }
 
+  // Atualizar Mini Resumo Sidebar
+  const sidebarTotalGasto = document.getElementById('sidebarTotalGasto');
+  if (sidebarTotalGasto) {
+    sidebarTotalGasto.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  }
+
   if (cardScore) {
     const { score, mensagem } = calcularScoreLocal();
     cardScore.innerText = score;

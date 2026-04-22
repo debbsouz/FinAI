@@ -108,11 +108,13 @@
 
   <div class="flex min-h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-[#111113] border-r border-zinc-800 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static">
-       <div class="p-6 border-b border-zinc-800">
-         <div class="flex items-center justify-between mb-6">
-           <div class="flex items-center gap-3">
-             <img src="assets/logo.svg" alt="FinAI Logo" class="w-8 h-8">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-[#09090b] border-r border-white/5 flex flex-col z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0 lg:static">
+       <div class="p-8 border-b border-white/5">
+         <div class="flex items-center justify-between mb-8">
+           <div class="flex items-center gap-3 group cursor-pointer">
+             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-all duration-300">
+               <i class="fas fa-chart-line text-white text-xs"></i>
+             </div>
              <h1 class="text-xl font-black tracking-tighter text-white leading-none">FinAI</h1>
            </div>
            <button onclick="closeMobileMenu()" class="lg:hidden p-2 text-zinc-500 hover:text-white transition-colors">
@@ -120,96 +122,92 @@
            </button>
          </div>
 
-         <!-- Plan Area -->
-         <div class="relative">
-           <button onclick="togglePlanMenu()" class="w-full flex items-center gap-3 p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 hover:bg-zinc-800/80 transition-all group">
-             <div id="planIcon" class="w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-400">
-               <i class="fas fa-layer-group"></i>
+         <!-- Status Rápido -->
+         <div class="space-y-4">
+           <div class="p-4 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
+             <div class="flex items-center justify-between">
+               <span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Status Geral</span>
+               <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
              </div>
-             <div class="flex-1 text-left overflow-hidden">
-              <div class="flex items-center gap-1.5">
-                <p id="planNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Plano Free</p>
-                <span id="sharedBadgeSidebar" class="hidden px-1.5 py-0.5 rounded-[4px] bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-tighter border border-emerald-500/20">Compartilhada</span>
-              </div>
-              <span class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Gerenciar Assinatura</span>
-            </div>
-             <i class="fas fa-chevron-down text-[10px] text-zinc-600 group-hover:text-zinc-400 transition-colors"></i>
-           </button>
-
-           <!-- Plan Dropdown -->
-           <div id="planDropdown" class="hidden absolute top-full left-0 w-full mt-2 bg-zinc-900 border border-zinc-800 rounded-xl shadow-2xl z-50 py-2 animate-fade-in">
-             <button onclick="location.href='plans.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
-               <i class="fas fa-exchange-alt w-4"></i>
-               Alterar plano
-             </button>
-             <button onclick="window.location.href='checkout.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all">
-               <i class="fas fa-calendar-check w-4"></i>
-               Assinar plano anual
-             </button>
-             <button id="btnTrial7Days" onclick="window.location.href='checkout.html'" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10 transition-all">
-               <i class="fas fa-magic w-4"></i>
-               Testar 7 dias grátis
-             </button>
-             <div class="h-px bg-zinc-800 my-1 mx-2"></div>
-             <button onclick="alert('Funcionalidade de cancelamento em breve.')" class="w-full flex items-center gap-3 px-4 py-2.5 text-xs font-bold text-zinc-500 hover:text-zinc-400 hover:bg-zinc-800 transition-all">
-               <i class="fas fa-times-circle w-4"></i>
-               Cancelar plano
-             </button>
+             <div class="flex items-end justify-between">
+               <div>
+                 <p class="text-[10px] text-zinc-500 font-bold mb-0.5">Total Gasto</p>
+                 <p id="sidebarTotalGasto" class="text-sm font-black text-white">R$ 0,00</p>
+               </div>
+               <div class="text-right">
+                 <p class="text-[9px] text-emerald-500 font-black uppercase tracking-tighter">+2.4%</p>
+               </div>
+             </div>
            </div>
          </div>
        </div>
       
-       <div class="flex-1 overflow-y-auto py-6 px-4 space-y-8 scrollbar-hide">
+       <div class="flex-1 overflow-y-auto py-8 px-6 space-y-10 scrollbar-hide">
          <!-- Main Navigation -->
          <nav class="space-y-1">
-           <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest mb-4 px-2">Menu Principal</p>
-           <a href="#" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-violet-600/10 text-violet-400 text-xs font-bold border border-violet-500/20 group">
-             <i class="fas fa-chart-line w-4 group-hover:scale-110 transition-transform"></i>
-             Visão Geral
+           <p class="text-[9px] font-black text-zinc-600 uppercase tracking-[0.2em] mb-6 px-2">Navegação</p>
+           <a href="#" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-indigo-500/10 text-indigo-400 text-xs font-bold border border-indigo-500/20 group transition-all duration-300">
+             <i class="fas fa-grid-2 w-4 group-hover:scale-110 transition-transform"></i>
+             Dashboard
            </a>
-           <a href="#section-gastos" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group">
-             <i class="fas fa-exchange-alt w-4 group-hover:scale-110 transition-transform"></i>
-             Transações
+           <a href="#section-gastos" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.03] text-xs font-bold transition-all duration-300 group">
+             <i class="fas fa-wallet w-4 group-hover:scale-110 transition-transform"></i>
+             Finanças
            </a>
-           <a href="#section-ai" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group">
-             <i class="fas fa-brain w-4 group-hover:scale-110 transition-transform"></i>
-             Relatório Estratégico
+           <a href="#section-ai" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.03] text-xs font-bold transition-all duration-300 group">
+             <i class="fas fa-chart-pie w-4 group-hover:scale-110 transition-transform"></i>
+             Relatórios
+           </a>
+           <a href="#" onclick="alert('Configurações em breve')" class="flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-500 hover:text-white hover:bg-white/[0.03] text-xs font-bold transition-all duration-300 group">
+             <i class="fas fa-sliders-h w-4 group-hover:scale-110 transition-transform"></i>
+             Configurações
            </a>
          </nav>
 
-         <!-- Referral Block -->
-         <div class="p-4 rounded-xl bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800 relative overflow-hidden group">
-           <div class="absolute top-0 right-0 p-3 opacity-5 group-hover:scale-110 transition-transform">
-             <i class="fas fa-gift text-3xl text-violet-500"></i>
+         <!-- Premium Card -->
+         <div class="relative group">
+           <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+           <div class="relative p-5 rounded-2xl bg-[#111113] border border-white/5 space-y-4">
+             <div class="flex items-start justify-between">
+               <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+                 <i class="fas fa-crown"></i>
+               </div>
+               <span class="px-2 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[8px] font-black uppercase tracking-widest border border-indigo-500/20">Ativo</span>
+             </div>
+             <div>
+               <p class="text-xs font-black text-white mb-1">Plano FinAI Pro</p>
+               <p class="text-[10px] text-zinc-500 leading-relaxed">Acesso ilimitado às análises de inteligência artificial.</p>
+             </div>
+             <button onclick="mostrarModalUpgrade()" class="w-full py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20">
+               Gerenciar Assinatura
+             </button>
            </div>
-           <p class="text-[10px] font-black text-white uppercase tracking-wider mb-1">Indique e ganhe</p>
-           <p class="text-[10px] text-zinc-500 leading-tight mb-3">Ganhe desconto ao indicar amigos para o FinAI.</p>
-           <button class="w-full py-2 bg-zinc-800 hover:bg-zinc-700 text-[10px] font-black text-white uppercase tracking-widest rounded-lg transition-colors">
-             Convidar
-           </button>
          </div>
 
-         <!-- System Tools -->
-         <nav class="space-y-1">
-           <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest mb-4 px-2">Sistema</p>
-           <button onclick="exportarCSV()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800/50 text-xs font-bold transition-all group text-left">
-             <i class="fas fa-download w-4 group-hover:scale-110 transition-transform"></i>
-             Exportar dados
+         <!-- Referral Block -->
+         <div class="p-5 rounded-2xl bg-white/[0.02] border border-white/5 relative overflow-hidden group cursor-pointer hover:border-white/10 transition-all duration-300">
+           <div class="absolute -right-4 -top-4 w-16 h-16 bg-indigo-500/5 rounded-full blur-2xl group-hover:bg-indigo-500/10 transition-all"></div>
+           <div class="flex items-center gap-3 mb-3">
+             <div class="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 text-xs">
+               <i class="fas fa-gift"></i>
+             </div>
+             <p class="text-[10px] font-black text-white uppercase tracking-wider">Indique e ganhe</p>
+           </div>
+           <p class="text-[10px] text-zinc-500 leading-tight mb-4">Ganhe 1 mês grátis indicando amigos para o FinAI.</p>
+           <button class="text-[10px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-300 transition-colors flex items-center gap-2">
+             Convidar agora
+             <i class="fas fa-arrow-right text-[8px]"></i>
            </button>
-           <button onclick="limparTodosDados()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-red-400/60 hover:text-red-400 hover:bg-red-500/10 text-xs font-bold transition-all group text-left">
-             <i class="fas fa-undo-alt w-4 group-hover:scale-110 transition-transform"></i>
-             Resetar sistema
-           </button>
-         </nav>
+         </div>
        </div>
 
-      <!-- User Footer (Logout only) -->
-      <div class="p-4 border-t border-zinc-800 bg-zinc-900/20">
-        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] hover:text-red-400 hover:bg-red-500/5 transition-all duration-300">
-          <i class="fas fa-sign-out-alt"></i>
-          Sair da conta
-        </button>
-      </div>
+       <!-- User Footer (Logout only) -->
+       <div class="p-6 border-t border-white/5 bg-white/[0.01]">
+         <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] hover:text-red-400 hover:bg-red-500/5 transition-all duration-300 group">
+           <i class="fas fa-sign-out-alt group-hover:-translate-x-1 transition-transform"></i>
+           Sair da conta
+         </button>
+       </div>
     </aside>
 
     <!-- Main Content -->
