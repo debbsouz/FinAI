@@ -713,55 +713,44 @@ function gerarAnaliseIA() {
     return acc;
   }, {});
 
-  let analises = [];
+  let insight = "Adicione gastos para uma análise personalizada.";
+  let alerta = "";
 
-  // 1. Análise de Nível de Gasto
-  const msgsNivel = {
-    alto: [
-      "Seu nível de consumo está elevado. Reduzir despesas pode evitar pressão financeira.",
-      "Atenção: seus gastos estão acelerados. Considere revisar compras supérfluas.",
-      "Detectamos um volume de despesas acima da média. Momento de cautela estratégica."
-    ],
-    equilibrado: [
-      "Você mantém um bom controle financeiro. Continue monitorando seus hábitos.",
-      "Gestão equilibrada detectada. Seu padrão de consumo está sob controle.",
-      "Parabéns pela disciplina. Suas finanças estão seguindo o planejado."
-    ],
-    saudavel: [
-      "Seu padrão de gastos está saudável. Existe margem para investimento ou reserva.",
-      "Excelente saúde financeira. Você está gastando menos do que poderia.",
-      "Momento ideal para poupar. Seu consumo está abaixo da capacidade atual."
-    ]
-  };
-
-  if (percOrcamento > 0.8 || (orcamentoMensal === 0 && total > 2000)) {
-    analises.push(msgsNivel.alto[Math.floor(Math.random() * msgsNivel.alto.length)]);
-  } else if (percOrcamento > 0.4) {
-    analises.push(msgsNivel.equilibrado[Math.floor(Math.random() * msgsNivel.equilibrado.length)]);
+  // 1. Definir Insight Principal (Baseado no Score e Volume)
+  if (total === 0) {
+    insight = "Adicione seus primeiros gastos para começar.";
+  } else if (percOrcamento > 0.9) {
+    insight = "Você atingiu quase todo seu limite de gastos mensal.";
+  } else if (percOrcamento > 0.5) {
+    insight = "Seu controle financeiro está equilibrado no momento.";
   } else {
-    analises.push(msgsNivel.saudavel[Math.floor(Math.random() * msgsNivel.saudavel.length)]);
+    insight = "Seu padrão de gastos está saudável e sob controle.";
   }
 
-  // 2. Análise por Categoria
-  if (gastosPorCategoria['Alimentação'] > (total * 0.4)) {
-    analises.push("Os gastos com alimentação estão acima do ideal para seu perfil.");
-  }
-  if (gastosPorCategoria['Lazer'] > (total * 0.25)) {
-    analises.push("Os gastos com lazer podem impactar seu equilíbrio financeiro a longo prazo.");
-  }
-  if (gastosPorCategoria['Transporte'] > (total * 0.3)) {
-    analises.push("Identificamos custo elevado com deslocamento. Vale analisar alternativas.");
-  }
-
-  // 3. Insight de Orçamento
+  // 2. Definir Alerta (Se houver algo crítico)
   if (orcamentoMensal > 0 && total > orcamentoMensal) {
-    analises.push("Seu teto de gastos foi ultrapassado. Sugerimos realocar recursos imediatamente.");
+    alerta = "Seu teto de gastos mensal foi ultrapassado.";
+  } else if (gastosPorCategoria['Alimentação'] > (total * 0.4)) {
+    alerta = "Gastos com alimentação estão acima do ideal.";
+  } else if (gastosPorCategoria['Lazer'] > (total * 0.25)) {
+    alerta = "Atenção aos gastos com lazer este mês.";
   }
 
-  const analiseFinal = analises.join(' ');
-  const displayIA = document.getElementById('analiseIAContent');
-  if (displayIA) {
-    displayIA.innerText = analiseFinal || "Adicione alguns gastos para que eu possa gerar uma análise estratégica personalizada.";
+  // Atualizar UI
+  const displayInsight = document.getElementById('analiseIAInsight');
+  const displayAlertaContainer = document.getElementById('analiseIAAlerta');
+  
+  if (displayInsight) {
+    displayInsight.innerText = insight;
+  }
+
+  if (displayAlertaContainer) {
+    if (alerta) {
+      displayAlertaContainer.classList.remove('hidden');
+      displayAlertaContainer.querySelector('p').innerText = alerta;
+    } else {
+      displayAlertaContainer.classList.add('hidden');
+    }
   }
 }
 

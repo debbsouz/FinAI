@@ -300,23 +300,23 @@
         </section>
 
         <!-- AI Insight Card -->
-        <section id="section-ai" class="bg-gradient-to-br from-[#111113] to-zinc-900 p-8 rounded-2xl border border-zinc-800 shadow-xl relative overflow-hidden group">
-          <div class="absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform duration-500">
-            <i class="fas fa-robot text-5xl text-violet-500"></i>
-          </div>
+        <section id="section-ai" class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 shadow-xl relative overflow-hidden group">
           <div class="relative z-10">
-            <div class="flex items-center gap-3 mb-6">
-              <div class="w-8 h-8 rounded-lg bg-violet-600/20 flex items-center justify-center border border-violet-500/30">
-                <i class="fas fa-bolt text-violet-400 text-xs"></i>
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-6 h-6 rounded-lg bg-violet-600/10 flex items-center justify-center border border-violet-500/20">
+                <i class="fas fa-sparkles text-violet-400 text-[10px]"></i>
               </div>
-              <h4 class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]">Análise Preditiva FinAI</h4>
+              <h4 class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Análise Financeira</h4>
             </div>
-            <p id="analiseIAContent" class="text-lg md:text-xl font-medium text-zinc-200 leading-relaxed tracking-tight italic">
-              Analisando seus padrões financeiros para gerar insights estratégicos...
-            </p>
-            <div class="mt-8 flex items-center gap-4">
-              <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="text-[10px] font-bold text-emerald-500/80 uppercase tracking-widest">IA Conectada • Dados em Tempo Real</span>
+            
+            <div id="analiseIAContainer" class="space-y-3">
+              <p id="analiseIAInsight" class="text-base font-medium text-zinc-200 tracking-tight">
+                Adicione dados para gerar sua análise.
+              </p>
+              <div id="analiseIAAlerta" class="hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20">
+                <i class="fas fa-exclamation-triangle text-red-400 text-[10px]"></i>
+                <p class="text-xs font-bold text-red-400 tracking-tight"></p>
+              </div>
             </div>
           </div>
         </section>
