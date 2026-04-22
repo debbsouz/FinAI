@@ -272,16 +272,11 @@ let ultimaAtualizacao = new Date();
 
 function renderizarProgressoOrcamento() {
   const container = document.getElementById('progressoOrcamento');
-  const topMonthlySpend = document.getElementById('topMonthlySpend');
   
   const total = calcularTotalGasto();
   const percentualOrcamento = orcamentoMensal > 0 ? (total / orcamentoMensal) * 100 : 0;
   const percentualExibicao = Math.min(percentualOrcamento, 100);
   
-  if (topMonthlySpend) {
-    topMonthlySpend.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })} gastos este mês`;
-  }
-
   if (container) {
     const cor = percentualExibicao > 85 ? 'bg-red-500' : percentualExibicao > 65 ? 'bg-amber-500' : 'bg-emerald-500';
     container.innerHTML = `
@@ -761,16 +756,83 @@ function gerarAnaliseIA() {
   }
 }
 
+function renderizarPerfilUsuario() {
+  const elNome = document.getElementById('userNameHeader');
+  const elAvatar = document.getElementById('userAvatarHeader');
+  const elEmailDropdown = document.getElementById('userEmailDropdown');
+  
+  if (usuarioEmail && usuarioEmail !== "default") {
+    // Atualizar email no dropdown
+    if (elEmailDropdown) elEmailDropdown.innerText = usuarioEmail;
+
+    // Pegar a parte antes do @ do email, remover pontos e capitalizar
+    let nome = usuarioEmail.split('@')[0];
+    
+    // Formatação Premium: "Debora Souza" em vez de "deborasouza.p"
+    nome = nome.split(/[._-]/).map(parte => parte.charAt(0).toUpperCase() + parte.slice(1)).join(' ');
+    
+    if (elNome) elNome.innerText = nome;
+    
+    if (elAvatar) {
+      const iniciais = nome.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+      elAvatar.innerHTML = `<span class="text-xs font-black text-white tracking-tighter">${iniciais}</span>`;
+      elAvatar.classList.add('bg-gradient-to-br', 'from-indigo-500', 'to-violet-600', 'border-none');
+    }
+  }
+}
+
+// Controle de Dropdowns
+function toggleDropdown(id) {
+  const dropdowns = ['notificationsDropdown', 'settingsDropdown', 'userDropdown'];
+  dropdowns.forEach(dId => {
+    const el = document.getElementById(dId);
+    if (dId === id) {
+      el.classList.toggle('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  });
+}
+
+// Fechar dropdowns ao clicar fora
+window.addEventListener('click', (e) => {
+  const dropdowns = ['notificationsDropdown', 'settingsDropdown', 'userDropdown'];
+  dropdowns.forEach(id => {
+    const dropdown = document.getElementById(id);
+    const button = dropdown.previousElementSibling; // O botão que abre o dropdown
+    
+    // Se o clique não foi no dropdown nem no botão dele, fecha
+    if (!dropdown.contains(e.target) && !button.contains(e.target)) {
+      dropdown.classList.add('hidden');
+    }
+  });
+});
+
+// Efeito de transparência no scroll para o Header
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('header.sticky');
+  if (header) {
+    if (window.scrollY > 20) {
+      header.classList.remove('bg-[#09090b]/40');
+      header.classList.add('bg-[#09090b]/80', 'h-16', 'border-white/10');
+      header.classList.remove('h-20');
+    } else {
+      header.classList.add('bg-[#09090b]/40');
+      header.classList.remove('bg-[#09090b]/80', 'h-16', 'border-white/10');
+      header.classList.add('h-20');
+    }
+  }
+});
+
 function renderizarTudo() {
   ultimaAtualizacao = new Date();
+  renderizarPerfilUsuario();
   renderizarLista();
   renderizarProgressoOrcamento();
   renderizarStatusWhatsapp();
   gerarAnaliseIA();
   if (typeof atualizarGraficos === "function") {
     atualizarGraficos();
-  }
-}
   } else {
     console.warn('Função atualizarGraficos não encontrada.');
   }
@@ -778,12 +840,10 @@ function renderizarTudo() {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', () => {
+  const hoje = new Date().toISOString().split('T')[0];
+  const inputData = document.getElementById('data');
+  if (inputData) inputData.value = hoje;
+  
   carregarDados();
   renderizarTudo();
 });
-
-window.onload = function() {
-  const hoje = new Date().toISOString().split('T')[0];
-  document.getElementById('data').value = hoje;
-  carregarDados();
-};

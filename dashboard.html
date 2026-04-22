@@ -203,53 +203,180 @@
          </nav>
        </div>
 
-       <!-- User Footer -->
-       <div class="p-4 border-t border-zinc-800 bg-zinc-900/20">
-         <div class="flex items-center gap-3 p-2 rounded-xl">
-           <div id="userAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center text-xs font-black text-white shadow-lg shadow-violet-500/10">
-             --
-           </div>
-           <div class="flex-1 overflow-hidden">
-             <p id="userNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Usuário</p>
-             <button onclick="logout()" class="text-[9px] font-black text-zinc-600 uppercase tracking-widest hover:text-red-400 transition-colors flex items-center gap-1">
-               <i class="fas fa-sign-out-alt"></i>
-               Sair da conta
-             </button>
-           </div>
-         </div>
-       </div>
+      <!-- User Footer (Logout only) -->
+      <div class="p-4 border-t border-zinc-800 bg-zinc-900/20">
+        <button onclick="logout()" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em] hover:text-red-400 hover:bg-red-500/5 transition-all duration-300">
+          <i class="fas fa-sign-out-alt"></i>
+          Sair da conta
+        </button>
+      </div>
     </aside>
 
     <!-- Main Content -->
     <main class="flex-1 overflow-y-auto scroll-smooth bg-zinc-950/30">
       <!-- Top Bar (Mobile only) -->
-      <header class="lg:hidden p-6 border-b border-zinc-800 flex items-center justify-between bg-[#111113]">
+      <header class="lg:hidden p-6 border-b border-zinc-800/50 flex items-center justify-between bg-[#09090b]">
         <div class="flex items-center gap-3">
-          <img src="assets/logo.svg" alt="FinAI Logo" class="w-8 h-8">
+          <div class="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center shadow-lg shadow-indigo-600/20">
+            <i class="fas fa-chart-line text-white text-xs"></i>
+          </div>
           <h1 class="text-xl font-black tracking-tighter text-white">FinAI</h1>
         </div>
-        <button onclick="toggleMobileMenu()" class="p-2 text-zinc-400 hover:text-white transition-colors">
-          <i class="fas fa-bars text-xl"></i>
-        </button>
+        <div class="flex items-center gap-4">
+          <button class="text-zinc-500 hover:text-zinc-300">
+            <i class="far fa-bell text-lg"></i>
+          </button>
+          <button onclick="toggleMobileMenu()" class="p-2 text-zinc-400 hover:text-white transition-colors">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
       </header>
 
-      <!-- Topbar (SaaS Refactored) -->
-      <header class="hidden lg:flex h-20 bg-[#09090b]/80 backdrop-blur-md border-b border-zinc-800/50 items-center justify-between px-12 sticky top-0 z-50">
-        <div class="flex flex-col">
-          <h2 class="text-xl font-bold text-white tracking-tight">Visão Geral</h2>
-          <p class="text-[10px] font-medium text-zinc-500 uppercase tracking-widest mt-0.5">Resumo financeiro do período atual</p>
-        </div>
-        
-        <div class="flex items-center gap-6">
-          <div class="flex flex-col items-end">
-            <span class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Gasto mensal</span>
-            <p id="topMonthlySpend" class="text-sm font-semibold text-white mt-0.5">R$ 0,00 gastos este mês</p>
+      <!-- Topbar (Premium Glassmorphism) -->
+      <header class="hidden lg:flex h-20 bg-[#09090b]/40 backdrop-blur-[12px] border-b border-white/5 items-center justify-between px-12 sticky top-0 z-50 shadow-2xl shadow-black/20 transition-all duration-300">
+        <!-- Lado Esquerdo: Identidade -->
+        <div class="flex items-center gap-4 group cursor-pointer">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-all duration-300">
+            <i class="fas fa-chart-line text-white text-base"></i>
           </div>
-          
-          <button onclick="renderizarTudo()" class="px-4 py-2 bg-zinc-900/50 hover:bg-zinc-800 text-zinc-400 hover:text-white text-[11px] font-bold uppercase tracking-widest rounded-lg border border-zinc-800/80 transition-all active:scale-95 flex items-center gap-2">
-            <i class="fas fa-sync-alt text-[9px]"></i>
-            Atualizar
-          </button>
+          <div class="flex flex-col">
+            <h1 class="text-xl font-black tracking-tighter text-white group-hover:text-indigo-400 transition-colors">FinAI</h1>
+            <span class="text-[8px] font-black text-zinc-500 uppercase tracking-[0.3em] -mt-1">Premium Dashboard</span>
+          </div>
+        </div>
+
+        <!-- Centro: Navegação -->
+        <nav class="flex items-center gap-10">
+          <a href="#" class="text-[11px] font-bold uppercase tracking-widest text-white border-b-2 border-indigo-500 pb-1 hover:text-indigo-400 transition-all duration-300">Dashboard</a>
+          <a href="#section-gastos" class="text-[11px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white hover:scale-105 transition-all duration-300">Finanças</a>
+          <a href="#section-ai" class="text-[11px] font-bold uppercase tracking-widest text-zinc-500 hover:text-white hover:scale-105 transition-all duration-300">Relatórios</a>
+        </nav>
+        
+        <!-- Lado Direito: Ações + Usuário -->
+        <div class="flex items-center gap-6">
+          <div class="flex items-center gap-4 pr-6 border-r border-white/5">
+            <!-- Notificações -->
+            <div class="relative">
+              <button onclick="toggleDropdown('notificationsDropdown')" class="text-zinc-500 hover:text-white hover:scale-110 transition-all duration-300 relative group p-2">
+                <i class="far fa-bell text-lg"></i>
+                <span id="notifBadge" class="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full border-2 border-[#09090b] animate-pulse"></span>
+              </button>
+              
+              <!-- Dropdown de Notificações -->
+              <div id="notificationsDropdown" class="hidden absolute right-0 mt-3 w-80 bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-[60] overflow-hidden animate-dropdown">
+                <div class="p-4 border-b border-white/5 flex items-center justify-between">
+                  <h3 class="text-xs font-black text-white uppercase tracking-widest">Notificações</h3>
+                  <span class="text-[9px] font-bold text-zinc-500 uppercase">3 Novas</span>
+                </div>
+                <div id="notifList" class="max-h-80 overflow-y-auto">
+                  <!-- Exemplo de notificação -->
+                  <div class="p-4 border-b border-white/5 hover:bg-white/[0.02] transition-colors cursor-pointer group">
+                    <div class="flex gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500">
+                        <i class="fas fa-wallet text-xs"></i>
+                      </div>
+                      <div>
+                        <p class="text-[11px] text-white font-bold leading-tight">Orçamento Próximo ao Limite</p>
+                        <p class="text-[10px] text-zinc-500 mt-1">Você atingiu 85% do seu orçamento mensal.</p>
+                        <p class="text-[8px] text-zinc-600 mt-2 uppercase font-black">Há 2 horas</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="p-4 border-b border-white/5 hover:bg-white/[0.02] transition-colors cursor-pointer group">
+                    <div class="flex gap-3">
+                      <div class="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-500">
+                        <i class="fas fa-check-circle text-xs"></i>
+                      </div>
+                      <div>
+                        <p class="text-[11px] text-white font-bold leading-tight">Análise Semanal Pronta</p>
+                        <p class="text-[10px] text-zinc-500 mt-1">Sua nova análise estratégica de IA está disponível.</p>
+                        <p class="text-[8px] text-zinc-600 mt-2 uppercase font-black">Há 5 horas</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button class="w-full p-3 text-[10px] font-black text-zinc-500 hover:text-white uppercase tracking-widest bg-white/[0.02] transition-colors">
+                  Ver todas as notificações
+                </button>
+              </div>
+            </div>
+
+            <!-- Atalhos Rápidos (Ações Rápidas) -->
+            <div class="relative">
+              <button onclick="toggleDropdown('settingsDropdown')" class="text-zinc-500 hover:text-white hover:scale-110 transition-all duration-300 p-2 relative group">
+                <i class="far fa-plus-square text-lg"></i>
+                <span class="absolute -top-1 -right-1 w-2 h-2 bg-white/10 rounded-full border border-white/5 opacity-0 group-hover:opacity-100 transition-opacity"></span>
+              </button>
+              
+              <!-- Dropdown de Atalhos -->
+              <div id="settingsDropdown" class="hidden absolute right-0 mt-3 w-56 bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-[60] overflow-hidden animate-dropdown">
+                <div class="p-4 border-b border-white/5">
+                  <h3 class="text-xs font-black text-white uppercase tracking-widest">Ações Rápidas</h3>
+                </div>
+                <div class="p-2">
+                  <button onclick="exportarCSV()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                    <i class="fas fa-file-export w-4 text-zinc-500 group-hover:text-indigo-400"></i>
+                    Exportar Relatório
+                  </button>
+                  <button onclick="document.getElementById('modalGasto').classList.remove('hidden')" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                    <i class="fas fa-plus-circle w-4 text-zinc-500 group-hover:text-indigo-400"></i>
+                    Novo Gasto
+                  </button>
+                  <div class="h-px bg-white/5 my-2 mx-2"></div>
+                  <button onclick="limparTodosDados()" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-red-400/60 hover:text-red-400 hover:bg-red-500/5 text-[11px] font-bold transition-all group">
+                    <i class="fas fa-trash-alt w-4"></i>
+                    Limpar Banco de Dados
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Perfil do Usuário -->
+          <div class="relative">
+            <div onclick="toggleDropdown('userDropdown')" class="flex items-center gap-4 pl-2 group cursor-pointer active:scale-95 transition-all duration-200">
+              <div class="flex flex-col items-end">
+                <p id="userNameHeader" class="text-xs font-black text-white uppercase tracking-tight group-hover:text-indigo-400 transition-colors">Usuário</p>
+                <div class="flex items-center gap-1.5">
+                  <span class="w-1 h-1 rounded-full bg-indigo-500"></span>
+                  <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Plano Pro</p>
+                </div>
+              </div>
+              <div id="userAvatarHeader" class="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 border border-white/5 flex items-center justify-center text-zinc-400 group-hover:border-indigo-500/50 group-hover:shadow-lg group-hover:shadow-indigo-500/10 transition-all duration-300">
+                <i class="far fa-user text-sm"></i>
+              </div>
+            </div>
+
+            <!-- Dropdown do Usuário -->
+            <div id="userDropdown" class="hidden absolute right-0 mt-3 w-64 bg-[#111113] border border-white/10 rounded-2xl shadow-2xl z-[60] overflow-hidden animate-dropdown">
+              <div class="p-5 bg-gradient-to-br from-white/[0.03] to-transparent border-b border-white/5">
+                <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-1">Logado como</p>
+                <p id="userEmailDropdown" class="text-xs font-bold text-white truncate">usuario@email.com</p>
+              </div>
+              <div class="p-2">
+                <button onclick="alert('Perfil em breve')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                  <i class="far fa-user-circle text-base text-zinc-500 group-hover:text-indigo-400"></i>
+                  Meu Perfil
+                </button>
+                <button onclick="alert('Configurações em breve')" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                  <i class="far fa-sliders-h text-base text-zinc-500 group-hover:text-indigo-400"></i>
+                  Configurações da Conta
+                </button>
+                <button onclick="mostrarModalUpgrade()" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                  <div class="flex items-center gap-3">
+                    <i class="far fa-gem text-base text-zinc-500 group-hover:text-indigo-400"></i>
+                    Gerenciar Plano
+                  </div>
+                  <span class="px-1.5 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 text-[8px] font-black uppercase">Pro</span>
+                </button>
+                <div class="h-px bg-white/5 my-2 mx-2"></div>
+                <button onclick="logout()" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-red-400/60 hover:text-red-400 hover:bg-red-500/5 text-[11px] font-bold transition-all group">
+                  <i class="fas fa-sign-out-alt text-base"></i>
+                  Sair do Sistema
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
