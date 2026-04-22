@@ -614,19 +614,56 @@
     </section>
 
     <!-- Rodapé -->
-    <footer class="py-12 border-t border-zinc-900">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-                <img src="assets/logo.svg" alt="FinAI Logo" class="w-6 h-6 rounded-md opacity-50 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
-                <span class="text-sm font-bold text-zinc-500">FinAI</span>
+    <footer class="pt-24 pb-12 border-t border-zinc-900 bg-zinc-950/50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
+                <!-- Coluna 1 — Marca -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-3">
+                        <img src="assets/logo.svg" alt="FinAI Logo" class="w-8 h-8">
+                        <span class="text-xl font-black tracking-tighter text-white">FinAI</span>
+                    </div>
+                    <p class="text-zinc-500 text-sm leading-relaxed max-w-xs">
+                        Controle financeiro com inteligência. Transforme seus gastos em estratégia com a melhor consultoria de IA.
+                    </p>
+                </div>
+
+                <!-- Coluna 2 — Navegação -->
+                <div class="space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-white">Navegação</h4>
+                    <ul class="space-y-4">
+                        <li><a href="#beneficios" class="text-zinc-500 hover:text-violet-500 transition-colors text-sm font-medium">Benefícios</a></li>
+                        <li><a href="#demonstracao" class="text-zinc-500 hover:text-violet-500 transition-colors text-sm font-medium">Produto</a></li>
+                        <li><a href="#planos" class="text-zinc-500 hover:text-violet-500 transition-colors text-sm font-medium">Planos</a></li>
+                    </ul>
+                </div>
+
+                <!-- Coluna 3 — Contato -->
+                <div class="space-y-6">
+                    <h4 class="text-xs font-black uppercase tracking-[0.2em] text-white">Social</h4>
+                    <div class="flex gap-4">
+                        <a href="https://github.com/debbsouz" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-violet-500 hover:border-violet-500/50 transition-all group">
+                            <i class="fab fa-github text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/deborasouzap/" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-violet-500 hover:border-violet-500/50 transition-all group">
+                            <i class="fab fa-linkedin text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                        <a href="https://x.com/debbsouz" target="_blank" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 hover:text-violet-500 hover:border-violet-500/50 transition-all group">
+                            <i class="fab fa-x-twitter text-lg group-hover:scale-110 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <p class="text-xs text-zinc-600 font-medium">
-                © 2026 FinAI. Sistema de Gestão Financeira Estratégica.
-            </p>
-            <div class="flex items-center gap-6">
-                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="text-zinc-600 hover:text-zinc-400 transition-colors"><i class="fab fa-github"></i></a>
+
+            <!-- Rodapé final -->
+            <div class="pt-8 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-[10px] font-bold text-zinc-600 uppercase tracking-widest">
+                    © 2026 FinAI. Todos os direitos reservados.
+                </p>
+                <div class="flex gap-8">
+                    <a href="#" class="text-[10px] font-bold text-zinc-600 hover:text-zinc-400 uppercase tracking-widest transition-colors">Privacidade</a>
+                    <a href="#" class="text-[10px] font-bold text-zinc-600 hover:text-zinc-400 uppercase tracking-widest transition-colors">Termos</a>
+                </div>
             </div>
         </div>
     </footer>
