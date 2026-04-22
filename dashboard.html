@@ -170,10 +170,16 @@
             <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
               <i class="fas fa-heartbeat text-4xl text-violet-500"></i>
             </div>
-            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Índice de Saúde</p>
-            <div class="flex items-baseline gap-2">
-              <h3 id="cardScoreLocal" class="text-5xl font-black text-violet-500 tracking-tighter">0</h3>
-              <span class="text-zinc-600 font-bold text-xs">/ 100</span>
+            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Score Financeiro</p>
+            <div class="space-y-4">
+              <div class="flex items-baseline gap-2">
+                <h3 id="cardScoreLocal" class="text-5xl font-black text-violet-500 tracking-tighter transition-all duration-500">0</h3>
+                <span class="text-zinc-600 font-bold text-xs">/ 100</span>
+              </div>
+              <div class="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+                <div id="barScoreLocal" class="h-full bg-violet-500 transition-all duration-1000" style="width: 0%"></div>
+              </div>
+              <p id="textScoreLocal" class="text-[10px] text-zinc-500 font-medium italic leading-tight">Adicione dados para calcular seu score.</p>
             </div>
           </div>
         </section>

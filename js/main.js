@@ -23,25 +23,49 @@ function categorizarGasto(descricao) {
 }
 
 function calcularScoreLocal() {
-  if (gastos.length === 0) return 0;
+  if (gastos.length === 0) return { score: 100, mensagem: "Adicione seus primeiros gastos para calcular seu score." };
 
-  const total = calcularTotalGasto();
   let score = 100;
+  const total = calcularTotalGasto();
+  const percentualUso = (total / orcamentoMensal) * 100;
+  
+  // 1. Regra: % gasto vs orçamento
+  if (percentualUso > 100) score -= 40;
+  else if (percentualUso > 80) score -= 20;
+  else if (percentualUso < 50) score += 5;
 
-  if (total > orcamentoMensal) {
-    const estouro = ((total - orcamentoMensal) / orcamentoMensal) * 100;
-    score -= Math.min(estouro, 50);
-  } else if (total > orcamentoMensal * 0.8) {
-    score -= 10;
+  // 2. Regra: Categorias
+  const gastosPorCategoria = {};
+  gastos.forEach(g => {
+    gastosPorCategoria[g.categoria] = (gastosPorCategoria[g.categoria] || 0) + g.valor;
+  });
+
+  const percAlimentacao = (gastosPorCategoria["Alimentação"] || 0) / total * 100;
+  const percLazer = (gastosPorCategoria["Lazer"] || 0) / total * 100;
+
+  if (percAlimentacao > 40) score -= 10;
+  if (percLazer > 25) score -= 10;
+
+  // 3. Regra: Equilíbrio (Diversificação)
+  const categoriasUnicas = Object.keys(gastosPorCategoria).length;
+  if (categoriasUnicas >= 4 && percentualUso < 80) score += 10;
+
+  score = Math.max(0, Math.min(100, Math.round(score)));
+
+  // Gerar Texto Dinâmico
+  let mensagem = "";
+  if (score >= 80) {
+    mensagem = "Excelente! Seu controle financeiro está sólido. Continue assim.";
+  } else if (score >= 50) {
+    mensagem = "Bom trabalho, mas atenção: ";
+    if (percLazer > 25) mensagem += "reduzir gastos com lazer pode ajudar.";
+    else if (percAlimentacao > 40) mensagem += "gastos com alimentação estão acima da média.";
+    else mensagem += "tente diversificar melhor seus gastos.";
+  } else {
+    mensagem = "Alerta crítico! Você está comprometendo seu orçamento. Revise seus custos fixos.";
   }
 
-  const categoriasUnicas = new Set(gastos.map(g => g.categoria)).size;
-  if (categoriasUnicas >= 5) score += 10;
-  else if (categoriasUnicas >= 3) score += 5;
-
-  if (gastos.length > 10) score += 5;
-
-  return Math.max(0, Math.min(100, Math.round(score)));
+  return { score, mensagem };
 }
 
 function carregarDados() {
@@ -199,9 +223,28 @@ function renderizarProgressoOrcamento() {
   }
 
   if (cardScore) {
-    const score = calcularScoreLocal();
+    const { score, mensagem } = calcularScoreLocal();
     cardScore.innerText = score;
-    cardScore.className = score > 80 ? "text-3xl font-bold text-emerald-400" : score > 60 ? "text-3xl font-bold text-amber-400" : "text-3xl font-bold text-red-400";
+    
+    // Cores e Barra Progressiva
+    const colorClass = score > 80 ? "text-emerald-500" : score > 50 ? "text-amber-500" : "text-red-500";
+    const bgClass = score > 80 ? "bg-emerald-500" : score > 50 ? "bg-amber-500" : "bg-red-500";
+    
+    cardScore.className = `text-5xl font-black ${colorClass} tracking-tighter transition-all duration-500`;
+    
+    // Atualizar barra se existir
+    const barScore = document.getElementById('barScoreLocal');
+    if (barScore) {
+      barScore.style.width = `${score}%`;
+      barScore.className = `h-full ${bgClass} transition-all duration-1000 shadow-[0_0_10px_rgba(0,0,0,0.2)]`;
+    }
+
+    // Atualizar texto dinâmico
+    const textScore = document.getElementById('textScoreLocal');
+    if (textScore) {
+      textScore.innerText = mensagem;
+      textScore.className = "text-[10px] text-zinc-500 mt-2 font-medium italic leading-tight";
+    }
   }
 }
 
@@ -238,7 +281,24 @@ async function chamarConsultoria(prompt) {
   }
 }
 
+function isPro() {
+  const session = JSON.parse(localStorage.getItem('session'));
+  const pagamentoConfirmado = localStorage.getItem("pagamento_confirmado") === "true";
+  return (session && session.plano === 'Pro') || pagamentoConfirmado;
+}
+
+function showProAlert() {
+  alert('Disponível apenas no plano Pro');
+  if (typeof toggleUpgradeModal === 'function') {
+    toggleUpgradeModal();
+  }
+}
+
 async function gerarRelatorio() {
+  if (!isPro()) {
+    showProAlert();
+    return;
+  }
   const container = document.getElementById('relatorio-estrategico');
   const btnRelatorio = document.querySelector('button[onclick="gerarRelatorio()"]');
   if (!container) return;
@@ -338,6 +398,10 @@ async function gerarRelatorio() {
 }
 
 async function enviarConsulta() {
+  if (!isPro()) {
+    showProAlert();
+    return;
+  }
   const input = document.getElementById('perguntaConsulta');
   const pergunta = input.value.trim();
   if (!pergunta) return;
@@ -359,6 +423,48 @@ async function enviarConsulta() {
   `;
 
   input.value = '';
+}
+
+function exportarCSV() {
+  if (!isPro()) {
+    showProAlert();
+    return;
+  }
+
+  if (gastos.length === 0) {
+    alert('Nenhum dado para exportar.');
+    return;
+  }
+
+  const headers = ['Data', 'Descrição', 'Categoria', 'Valor'];
+  const rows = gastos.map(g => [
+    new Date(g.data).toLocaleDateString('pt-BR'),
+    g.descricao,
+    g.categoria,
+    g.valor.toFixed(2)
+  ]);
+
+  let csvContent = "data:text/csv;charset=utf-8," 
+    + headers.join(",") + "\n"
+    + rows.map(e => e.join(",")).join("\n");
+
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", `finai_relatorio_${new Date().toISOString().split('T')[0]}.csv`);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+function limparTodosDados() {
+  if (confirm('Deseja realmente resetar todo o sistema? Todos os gastos e configurações serão apagados.')) {
+    localStorage.removeItem('gastos');
+    localStorage.removeItem('orcamentoMensal');
+    // Não removemos 'session' ou 'pagamento_confirmado' a menos que queira deslogar/tirar o Pro
+    // Mas o botão diz "Resetar Sistema", geralmente refere-se aos dados financeiros.
+    location.reload();
+  }
 }
 
 // ==================== FINAL ====================
