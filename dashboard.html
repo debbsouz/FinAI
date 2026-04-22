@@ -84,6 +84,13 @@
       window.location.href = 'checkout.html';
     }
 
+    function addMemberFamily() {
+      const email = prompt("Digite o e-mail do membro da família que deseja convidar:");
+      if (email) {
+        alert(`Convite enviado para ${email}! Assim que ele aceitar, vocês compartilharão a mesma base de gastos.`);
+      }
+    }
+
     window.onclick = function(event) {
       if (!event.target.closest('#userArea')) {
         const menu = document.getElementById('userMenu');
@@ -120,9 +127,12 @@
                <i class="fas fa-layer-group"></i>
              </div>
              <div class="flex-1 text-left overflow-hidden">
-               <p id="planNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Plano Free</p>
-               <span class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Gerenciar Assinatura</span>
-             </div>
+              <div class="flex items-center gap-1.5">
+                <p id="planNameSidebar" class="text-xs font-bold text-white truncate leading-tight">Plano Free</p>
+                <span id="sharedBadgeSidebar" class="hidden px-1.5 py-0.5 rounded-[4px] bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-tighter border border-emerald-500/20">Compartilhada</span>
+              </div>
+              <span class="text-[9px] font-black uppercase tracking-widest text-zinc-500">Gerenciar Assinatura</span>
+            </div>
              <i class="fas fa-chevron-down text-[10px] text-zinc-600 group-hover:text-zinc-400 transition-colors"></i>
            </button>
 
@@ -307,6 +317,37 @@
             <div class="mt-8 flex items-center gap-4">
               <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span class="text-[10px] font-bold text-emerald-500/80 uppercase tracking-widest">IA Conectada • Dados em Tempo Real</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Family Management Section (Simulated) -->
+        <section id="familyManagementSection" class="hidden bg-[#111113] p-8 rounded-2xl border border-emerald-500/20 shadow-xl relative overflow-hidden group">
+          <div class="absolute top-0 right-0 p-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+            <i class="fas fa-users text-5xl text-emerald-500"></i>
+          </div>
+          <div class="relative z-10">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <div class="flex items-center gap-3 mb-2">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-600/20 flex items-center justify-center border border-emerald-500/30">
+                    <i class="fas fa-home text-emerald-400 text-xs"></i>
+                  </div>
+                  <h4 class="text-[10px] font-black text-emerald-400 uppercase tracking-[0.2em]">Gestão de Plano Família</h4>
+                </div>
+                <h3 class="text-xl font-bold text-white tracking-tight">Membros da Família</h3>
+                <p class="text-zinc-500 text-xs mt-1">Você pode adicionar até 4 membros para compartilhar seus gastos e orçamentos.</p>
+              </div>
+              
+              <div class="flex items-center gap-4">
+                <div class="flex -space-x-3 overflow-hidden">
+                  <div class="inline-block h-10 w-10 rounded-full ring-2 ring-[#111113] bg-zinc-800 flex items-center justify-center text-[10px] font-black text-zinc-400">JD</div>
+                  <div class="inline-block h-10 w-10 rounded-full ring-2 ring-[#111113] bg-emerald-500/20 flex items-center justify-center text-[10px] font-black text-emerald-500 border border-emerald-500/30">+3</div>
+                </div>
+                <button onclick="addMemberFamily()" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-emerald-600/20">
+                  <i class="fas fa-plus mr-2"></i> Adicionar Membro
+                </button>
+              </div>
             </div>
           </div>
         </section>

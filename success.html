@@ -29,14 +29,14 @@
     <!-- Textos -->
     <div class="space-y-3">
       <h1 class="text-3xl font-black tracking-tight">Pagamento confirmado com sucesso</h1>
-      <p class="text-zinc-400 text-sm font-medium">Seu acesso <span class="text-violet-400 font-bold">Pro</span> já está liberado</p>
+      <p class="text-zinc-400 text-sm font-medium">Seu acesso <span id="successPlanName" class="text-violet-400 font-bold">Pro</span> já está liberado</p>
     </div>
 
     <!-- Divisor -->
     <div class="h-px bg-zinc-800 w-full"></div>
 
     <!-- Benefícios Liberados -->
-    <div class="grid grid-cols-2 gap-4">
+    <div id="successBenefits" class="grid grid-cols-2 gap-4">
       <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
         <i class="fas fa-chart-line text-violet-500 mb-2"></i>
         <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Insights IA</p>
@@ -55,30 +55,31 @@
   </div>
 
   <script>
-    // Ação ao carregar: Ativar Plano Pro
+    // Ação ao carregar: Atualizar UI e Garantir Persistência
     document.addEventListener('DOMContentLoaded', () => {
       const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
-
-      // 1. Marcar pagamento como confirmado para este usuário
-      localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
+      const plano = localStorage.getItem(`plano_${usuarioEmail}`) || localStorage.getItem("plano") || "Pro";
       
-      // 2. Marcar plano como Pro
-      localStorage.setItem("plano", "Pro");
+      // Atualizar Textos
+      const planLabel = document.getElementById('successPlanName');
+      planLabel.textContent = plano;
+      
+      if (plano === 'Família') {
+        planLabel.className = 'text-emerald-400 font-bold';
+        document.getElementById('successBenefits').innerHTML += `
+          <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 col-span-2">
+            <i class="fas fa-users text-emerald-500 mb-2"></i>
+            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Acesso Família Liberado</p>
+          </div>
+        `;
+      }
 
-      // 3. Atualizar objeto de sessão e usuário se existirem
+      // Sincronizar sessão
       const session = JSON.parse(localStorage.getItem('session'));
-      const usuario = JSON.parse(localStorage.getItem('usuario'));
-
       if (session) {
-        session.plano = 'Pro';
+        session.plano = plano;
         localStorage.setItem('session', JSON.stringify(session));
       }
-      if (usuario) {
-        usuario.plano = 'Pro';
-        localStorage.setItem('usuario', JSON.stringify(usuario));
-      }
-
-      console.log("Plano Pro ativado no localStorage.");
     });
 
     function irParaDashboard() {

@@ -123,19 +123,45 @@ function carregarDados() {
     }
     
     const isProUser = isPro();
+    const isFamilyUser = isFamily();
+    
     if (planNameEl) {
-      planNameEl.innerText = isProUser ? 'Conta Premium' : 'Plano Free';
+      if (isFamilyUser) {
+        planNameEl.innerText = 'Conta Família';
+      } else {
+        planNameEl.innerText = isProUser ? 'Conta Premium' : 'Plano Free';
+      }
     }
     
     if (planIconEl) {
-      planIconEl.innerHTML = isProUser ? '<i class="fas fa-crown text-violet-400"></i>' : '<i class="fas fa-layer-group"></i>';
-      planIconEl.className = isProUser 
-        ? "w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center text-xs border border-violet-500/20 shadow-[0_0_10px_rgba(139,92,246,0.2)]"
-        : "w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-400";
+      if (isFamilyUser) {
+        planIconEl.innerHTML = '<i class="fas fa-users text-emerald-400"></i>';
+        planIconEl.className = "w-9 h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center text-xs border border-emerald-500/20 shadow-[0_0_10px_rgba(16,185,129,0.2)]";
+      } else if (isProUser) {
+        planIconEl.innerHTML = '<i class="fas fa-crown text-violet-400"></i>';
+        planIconEl.className = "w-9 h-9 rounded-lg bg-violet-500/10 flex items-center justify-center text-xs border border-violet-500/20 shadow-[0_0_10px_rgba(139,92,246,0.2)]";
+      } else {
+        planIconEl.innerHTML = '<i class="fas fa-layer-group"></i>';
+        planIconEl.className = "w-9 h-9 rounded-lg bg-zinc-800 flex items-center justify-center text-xs text-zinc-400";
+      }
+    }
+
+    // Badge de conta compartilhada se for família
+    const sharedBadge = document.getElementById('sharedBadgeSidebar');
+    if (sharedBadge) {
+      if (isFamilyUser) sharedBadge.classList.remove('hidden');
+      else sharedBadge.classList.add('hidden');
+    }
+
+    // Seção de Gerenciamento de Família no Dashboard
+    const familySection = document.getElementById('familyManagementSection');
+    if (familySection) {
+      if (isFamilyUser) familySection.classList.remove('hidden');
+      else familySection.classList.add('hidden');
     }
 
     // Ajustar opções do dropdown baseado no plano
-    if (isProUser) {
+    if (isProUser || isFamilyUser) {
       if (btnTrial) btnTrial.classList.add('hidden');
       if (btnCancel) btnCancel.classList.remove('hidden');
     } else {
@@ -492,7 +518,14 @@ async function chamarConsultoria(prompt) {
 function isPro() {
   const session = JSON.parse(localStorage.getItem('session'));
   const pagamentoConfirmado = localStorage.getItem(`pagamento_confirmado_${usuarioEmail}`) === "true";
-  return (session && session.plano === 'Pro') || pagamentoConfirmado;
+  const plano = localStorage.getItem(`plano_${usuarioEmail}`);
+  return (session && (session.plano === 'Pro' || session.plano === 'Família')) || pagamentoConfirmado || plano === 'Pro' || plano === 'Família';
+}
+
+function isFamily() {
+  const session = JSON.parse(localStorage.getItem('session'));
+  const plano = localStorage.getItem(`plano_${usuarioEmail}`);
+  return (session && session.plano === 'Família') || plano === 'Família';
 }
 
 // ==================== WHATSAPP PRO ====================

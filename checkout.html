@@ -42,15 +42,15 @@
         <div class="space-y-6">
           <div class="space-y-1">
             <p class="text-white/60 text-xs font-bold uppercase tracking-widest">Assinando</p>
-            <h1 class="text-3xl font-black tracking-tight">FinAI Pro</h1>
+            <h1 id="planTitle" class="text-3xl font-black tracking-tight">FinAI Pro</h1>
           </div>
           
           <div class="flex items-baseline gap-1">
-            <span class="text-4xl font-black">R$ 19,90</span>
+            <span id="planPrice" class="text-4xl font-black">R$ 29,00</span>
             <span class="text-white/60 text-sm">/mês</span>
           </div>
 
-          <ul class="space-y-4 pt-8">
+          <ul id="planFeatures" class="space-y-4 pt-8">
             <li class="flex gap-3 text-sm text-white/80">
               <i class="fas fa-check text-emerald-400 mt-1"></i>
               Análises avançadas com IA
@@ -58,10 +58,6 @@
             <li class="flex gap-3 text-sm text-white/80">
               <i class="fas fa-check text-emerald-400 mt-1"></i>
               Insights personalizados
-            </li>
-            <li class="flex gap-3 text-sm text-white/80">
-              <i class="fas fa-check text-emerald-400 mt-1"></i>
-              Relatórios completos (PDF/CSV)
             </li>
             <li class="flex gap-3 text-sm text-white/80">
               <i class="fas fa-check text-emerald-400 mt-1"></i>
@@ -134,11 +130,38 @@
     const loader = document.getElementById('loader');
     const errorMsg = document.getElementById('paymentError');
 
+    // Detectar plano da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const planType = urlParams.get('plan') || 'pro';
+    
+    const planData = {
+      pro: {
+        title: 'FinAI Pro',
+        price: 'R$ 29,00',
+        features: ['Análises avançadas com IA', 'Insights personalizados', 'Suporte Prioritário 24/7']
+      },
+      family: {
+        title: 'FinAI Família',
+        price: 'R$ 49,00',
+        features: ['Até 4 membros inclusos', 'Gastos compartilhados', 'Gestão de dependentes', 'Insights da família']
+      }
+    };
+
+    const currentPlan = planData[planType] || planData.pro;
+    document.getElementById('planTitle').textContent = currentPlan.title;
+    document.getElementById('planPrice').textContent = currentPlan.price;
+    document.getElementById('planFeatures').innerHTML = currentPlan.features.map(f => `
+      <li class="flex gap-3 text-sm text-white/80">
+        <i class="fas fa-check text-emerald-400 mt-1"></i>
+        ${f}
+      </li>
+    `).join('');
+
     // Carregar e-mail da sessão se existir
     const session = JSON.parse(localStorage.getItem('session'));
     if (session && session.email) {
       document.getElementById('email').value = session.email;
-      document.getElementById('cardName').value = session.nome;
+      document.getElementById('cardName').value = session.name || session.nome;
     }
 
     form.addEventListener('submit', async (e) => {
@@ -163,11 +186,15 @@
       // Salvar status e redirecionar
       const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
       localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
-      localStorage.setItem("plano", "Pro"); // Compatibilidade
+      
+      // Salvar o tipo de plano escolhido
+      const finalPlanName = planType.charAt(0).toUpperCase() + planType.slice(1);
+      localStorage.setItem(`plano_${usuarioEmail}`, finalPlanName);
+      localStorage.setItem("plano", finalPlanName); // Compatibilidade
       
       // Atualizar plano na sessão
       if (session) {
-        const updatedUser = { ...session, plano: 'Pro' };
+        const updatedUser = { ...session, plano: finalPlanName };
         localStorage.setItem('usuario', JSON.stringify(updatedUser));
         localStorage.setItem('session', JSON.stringify(updatedUser));
       }
