@@ -42,24 +42,12 @@
       
       btn.disabled = true;
       loader.classList.remove('hidden');
-      text.textContent = 'Processando...';
+      text.textContent = 'Redirecionando...';
 
-      // Simular delay de pagamento
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // Pequeno delay para feedback visual
+      await new Promise(resolve => setTimeout(resolve, 800));
 
-      const updatedUser = { ...session, plano: 'Pro' };
-      localStorage.setItem('usuario', JSON.stringify(updatedUser));
-      localStorage.setItem('session', JSON.stringify(updatedUser));
-      
-      // Feedback de sucesso
-      text.textContent = 'Plano Pro ativado com sucesso!';
-      loader.classList.add('hidden');
-      btn.classList.remove('bg-violet-600');
-      btn.classList.add('bg-emerald-600');
-
-      setTimeout(() => {
-        location.reload();
-      }, 1500);
+      window.location.href = 'checkout.html';
     }
 
     window.onclick = function(event) {
