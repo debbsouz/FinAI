@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Acesso | FinAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #09090b; color: #fafafa; -webkit-font-smoothing: antialiased; }
+        .glass { background: rgba(24, 24, 27, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(63, 63, 70, 0.3); }
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-6 selection:bg-violet-500/30">
+    
+    <div class="w-full max-w-[400px] space-y-8 fade-in">
+        <div class="flex flex-col items-center text-center space-y-4">
+            <a href="landing.html" class="flex items-center gap-3">
+                <img src="assets/logo.svg" alt="FinAI Logo" class="w-12 h-12">
+                <span class="text-3xl font-black tracking-tighter text-white">FinAI</span>
+            </a>
+            <h1 class="text-xl font-bold text-white tracking-tight">Recuperar acesso</h1>
+        </div>
+
+        <div class="glass p-8 rounded-[32px] shadow-2xl">
+            <form id="recoverForm" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">E-mail</label>
+                    <input type="email" id="email" required autofocus
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
+                </div>
+
+                <button type="submit" id="submitBtn"
+                    class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+                    <span>Enviar instruções</span>
+                    <i id="loader" class="fas fa-circle-notch fa-spin hidden"></i>
+                </button>
+
+                <div id="message" class="hidden p-4 rounded-2xl bg-violet-500/10 border border-violet-500/20 text-[13px] text-violet-200 text-center leading-relaxed">
+                    Se este email estiver cadastrado, você receberá instruções.
+                </div>
+            </form>
+
+            <div class="mt-8 pt-8 border-t border-zinc-800/50 text-center">
+                <a href="login.html" class="text-sm text-zinc-500 hover:text-white font-bold transition-colors">Voltar para login</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('recoverForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const loader = document.getElementById('loader');
+            const message = document.getElementById('message');
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-70');
+            loader.classList.remove('hidden');
+
+            setTimeout(() => {
+                btn.classList.add('hidden');
+                message.classList.remove('hidden');
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

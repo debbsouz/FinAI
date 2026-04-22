@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar | FinAI</title>
+    <title>Cadastro | FinAI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -33,78 +33,64 @@
                 <img src="assets/logo.svg" alt="FinAI Logo" class="w-12 h-12">
                 <span class="text-3xl font-black tracking-tighter text-white">FinAI</span>
             </a>
-            <div class="space-y-1">
-                <h1 class="text-xl font-bold text-white tracking-tight">Bem-vindo de volta</h1>
-                <p class="text-sm text-zinc-500">Acesse sua consultoria estratégica agora</p>
-            </div>
+            <h1 class="text-xl font-bold text-white tracking-tight">Criar conta</h1>
         </div>
 
         <div class="glass p-8 rounded-[32px] shadow-2xl">
-            <form id="loginForm" class="space-y-5">
+            <form id="registerForm" class="space-y-5">
+                <div class="space-y-2">
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Nome</label>
+                    <input type="text" id="name" required autofocus
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
+                </div>
+
                 <div class="space-y-2">
                     <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">E-mail</label>
-                    <input type="email" id="email" required autofocus placeholder="exemplo@email.com" 
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
+                    <input type="email" id="email" required
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
                 </div>
                 
                 <div class="space-y-2">
-                    <div class="flex justify-between items-center px-1">
-                        <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500">Senha</label>
-                        <a href="recover.html" class="text-[10px] font-black uppercase tracking-widest text-violet-500 hover:text-violet-400 transition-colors">Esqueceu?</a>
-                    </div>
-                    <input type="password" id="password" required placeholder="••••••••" 
-                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
-                </div>
-
-                <div id="error" class="hidden p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-[11px] font-bold text-red-400 text-center uppercase tracking-widest">
-                    Credenciais inválidas
+                    <label class="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">Senha</label>
+                    <input type="password" id="password" required
+                        class="w-full bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 text-sm text-white focus:outline-none focus:border-violet-500/50 focus:ring-4 focus:ring-violet-500/10 transition-all">
                 </div>
 
                 <button type="submit" id="submitBtn"
                     class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                    <span>Entrar no Sistema</span>
+                    <span>Criar conta</span>
                     <i id="loader" class="fas fa-circle-notch fa-spin hidden"></i>
                 </button>
             </form>
 
             <div class="mt-8 pt-8 border-t border-zinc-800/50 text-center">
                 <p class="text-sm text-zinc-500">
-                    Não tem uma conta? 
-                    <a href="register.html" class="text-white font-bold hover:text-violet-400 transition-colors ml-1">Criar conta</a>
+                    Já tem conta? 
+                    <a href="login.html" class="text-white font-bold hover:text-violet-400 transition-colors ml-1">Entrar</a>
                 </p>
             </div>
         </div>
-
-        <p class="text-center text-[10px] font-bold text-zinc-600 uppercase tracking-[0.3em]">
-            &copy; 2026 FinAI Strategic Control
-        </p>
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = document.getElementById('submitBtn');
             const loader = document.getElementById('loader');
-            const error = document.getElementById('error');
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
             
-            error.classList.add('hidden');
             btn.disabled = true;
             btn.classList.add('opacity-70');
             loader.classList.remove('hidden');
 
+            const usuario = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
+            };
+
             setTimeout(() => {
-                const storedUser = JSON.parse(localStorage.getItem('usuario'));
-                
-                if (storedUser && storedUser.email === email && storedUser.password === password) {
-                    window.location.href = 'dashboard.html';
-                } else {
-                    btn.disabled = false;
-                    btn.classList.remove('opacity-70');
-                    loader.classList.add('hidden');
-                    error.classList.remove('hidden');
-                }
+                localStorage.setItem('usuario', JSON.stringify(usuario));
+                window.location.href = 'dashboard.html';
             }, 1000);
         });
     </script>
