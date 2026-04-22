@@ -117,14 +117,12 @@
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <p class="text-violet-500 text-[10px] font-black uppercase tracking-[0.3em] mb-4">Interface Intuitiva</p>
-                <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">Veja como funciona na prática</h2>
+                <h2 class="text-4xl md:text-5xl font-black tracking-tighter text-white">Entenda seus gastos em segundos</h2>
             </div>
 
             <div class="relative max-w-5xl mx-auto">
-                <!-- Mockup Principal -->
                 <div class="rounded-3xl border border-zinc-800 bg-zinc-900/50 p-4 shadow-2xl shadow-violet-500/10 animate-slide-up">
                     <div class="rounded-2xl overflow-hidden border border-zinc-800 bg-[#09090b] aspect-video flex flex-col">
-                        <!-- Topbar Mockup -->
                         <div class="h-12 border-b border-zinc-800 flex items-center px-4 justify-between bg-zinc-900/30">
                             <div class="flex gap-1.5">
                                 <div class="w-2.5 h-2.5 rounded-full bg-zinc-800"></div>
@@ -134,45 +132,65 @@
                             <div class="w-32 h-2 rounded-full bg-zinc-800"></div>
                             <div class="w-8 h-8 rounded-full bg-zinc-800"></div>
                         </div>
-                        <!-- Content Mockup -->
-                        <div class="flex-1 p-6 grid grid-cols-3 gap-6">
-                            <div class="col-span-2 space-y-6">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div class="h-24 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-4 space-y-3">
-                                        <div class="w-1/2 h-2 bg-zinc-800 rounded"></div>
-                                        <div class="w-3/4 h-4 bg-white/10 rounded"></div>
+                        <div class="flex-1 p-8 grid grid-cols-3 gap-8">
+                            <div class="col-span-2 space-y-8">
+                                <div class="grid grid-cols-2 gap-6">
+                                    <div class="h-28 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-5 flex flex-col justify-between hover:bg-zinc-900/40 transition-colors">
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Gasto Total</div>
+                                        <div class="text-2xl font-black text-white tracking-tighter">R$ 2.450,00</div>
                                     </div>
-                                    <div class="h-24 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-4 space-y-3">
-                                        <div class="w-1/2 h-2 bg-zinc-800 rounded"></div>
-                                        <div class="w-3/4 h-4 bg-white/10 rounded"></div>
+                                    <div class="h-28 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-5 flex flex-col justify-between hover:bg-zinc-900/40 transition-colors">
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500">Alimentação</div>
+                                        <div class="text-2xl font-black text-white tracking-tighter">R$ 980,00</div>
                                     </div>
                                 </div>
-                                <div class="h-48 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-6">
-                                    <div class="w-full h-full flex items-end gap-2">
-                                        <div class="flex-1 bg-violet-500/20 rounded-t h-[40%]"></div>
-                                        <div class="flex-1 bg-violet-500/40 rounded-t h-[60%]"></div>
-                                        <div class="flex-1 bg-violet-500/20 rounded-t h-[30%]"></div>
-                                        <div class="flex-1 bg-violet-500/60 rounded-t h-[80%]"></div>
-                                        <div class="flex-1 bg-violet-500/30 rounded-t h-[50%]"></div>
+                                <div class="h-56 rounded-2xl border border-zinc-800 bg-zinc-900/20 p-8 flex flex-col hover:bg-zinc-900/40 transition-colors">
+                                    <div class="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-8 text-center">Distribuição de Gastos</div>
+                                    <div class="flex-1 flex items-end justify-center gap-6">
+                                        <div class="flex flex-col items-center gap-3 flex-1 max-w-[60px]">
+                                            <div class="w-full bg-violet-500/40 border border-violet-500/20 rounded-t-lg transition-all duration-1000 animate-slide-up" style="height: 100%"></div>
+                                            <span class="text-[9px] font-bold text-zinc-600 uppercase tracking-tighter">Alim.</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-3 flex-1 max-w-[60px]">
+                                            <div class="w-full bg-violet-500/30 border border-violet-500/10 rounded-t-lg transition-all duration-1000 animate-slide-up delay-100" style="height: 45%"></div>
+                                            <span class="text-[9px] font-bold text-zinc-600 uppercase tracking-tighter">Trans.</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-3 flex-1 max-w-[60px]">
+                                            <div class="w-full bg-violet-500/20 border border-violet-500/10 rounded-t-lg transition-all duration-1000 animate-slide-up delay-200" style="height: 35%"></div>
+                                            <span class="text-[9px] font-bold text-zinc-600 uppercase tracking-tighter">Lazer</span>
+                                        </div>
+                                        <div class="flex flex-col items-center gap-3 flex-1 max-w-[60px]">
+                                            <div class="w-full bg-zinc-800 rounded-t-lg transition-all duration-1000 animate-slide-up delay-300" style="height: 20%"></div>
+                                            <span class="text-[9px] font-bold text-zinc-600 uppercase tracking-tighter">Outros</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="space-y-4">
-                                <div class="h-full rounded-2xl border border-violet-500/20 bg-violet-500/5 p-4 space-y-4">
-                                    <div class="w-8 h-8 rounded-lg bg-violet-500/20 flex items-center justify-center">
-                                        <i class="fas fa-robot text-violet-500 text-xs"></i>
+                                <div class="h-full rounded-2xl border border-violet-500/20 bg-violet-500/5 p-6 space-y-6 hover:bg-violet-500/[0.08] transition-colors">
+                                    <div class="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center">
+                                        <i class="fas fa-lightbulb text-violet-500"></i>
                                     </div>
-                                    <div class="space-y-2">
-                                        <div class="w-full h-2 bg-violet-500/20 rounded"></div>
-                                        <div class="w-5/6 h-2 bg-violet-500/20 rounded"></div>
-                                        <div class="w-4/6 h-2 bg-violet-500/20 rounded"></div>
+                                    <div class="space-y-4">
+                                        <div class="text-[10px] font-black uppercase tracking-widest text-violet-400">Consultoria Estratégica</div>
+                                        <p class="text-xs text-violet-200 leading-relaxed font-medium italic">
+                                            "Seus gastos com delivery aumentaram este mês. Reduzir pedidos pode gerar economia mensal significativa."
+                                        </p>
+                                    </div>
+                                    <div class="pt-4 border-t border-violet-500/10">
+                                        <div class="w-full h-1.5 bg-violet-500/10 rounded-full overflow-hidden">
+                                            <div class="w-2/3 h-full bg-violet-500"></div>
+                                        </div>
+                                        <div class="flex justify-between mt-2 text-[8px] font-black text-violet-400 uppercase tracking-widest">
+                                            <span>Score Financeiro</span>
+                                            <span>68/100</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Decoradores -->
                 <div class="absolute -top-6 -right-6 w-32 h-32 bg-violet-600/20 blur-3xl rounded-full"></div>
                 <div class="absolute -bottom-6 -left-6 w-32 h-32 bg-violet-600/20 blur-3xl rounded-full"></div>
             </div>
