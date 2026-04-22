@@ -91,6 +91,7 @@
 
             setTimeout(() => {
                 localStorage.setItem('usuario', JSON.stringify(usuario));
+                localStorage.setItem('usuario_logado', usuario.email);
                 localStorage.setItem('session', JSON.stringify(usuario));
                 window.location.href = 'dashboard.html';
             }, 1000);

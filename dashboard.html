@@ -331,7 +331,8 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Sincronizar status PRO do localStorage
-      const pagamentoConfirmado = localStorage.getItem("pagamento_confirmado") === "true";
+      const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
+      const pagamentoConfirmado = localStorage.getItem(`pagamento_confirmado_${usuarioEmail}`) === "true";
       let session = JSON.parse(localStorage.getItem('session'));
       
       if (pagamentoConfirmado && session && session.plano !== 'Pro') {

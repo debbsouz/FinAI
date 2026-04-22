@@ -161,7 +161,9 @@
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Salvar status e redirecionar
-      localStorage.setItem("pagamento_confirmado", "true");
+      const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
+      localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
+      localStorage.setItem("plano", "Pro"); // Compatibilidade
       
       // Atualizar plano na sessão
       if (session) {

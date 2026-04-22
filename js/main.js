@@ -1,7 +1,21 @@
-let gastos = [];
-let orcamentoMensal = parseFloat(localStorage.getItem('orcamentoMensal')) || 3000;
+// ==================== CONFIGURAÇÃO E DADOS ====================
+const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
+
+let gastos = JSON.parse(localStorage.getItem(`gastos_${usuarioEmail}`)) || [];
+let orcamentoMensal = parseFloat(localStorage.getItem(`orcamento_${usuarioEmail}`)) || 3000.00;
 let pieChart = null;
 let barChart = null;
+
+function salvarDados() {
+  localStorage.setItem(`gastos_${usuarioEmail}`, JSON.stringify(gastos));
+  localStorage.setItem(`orcamento_${usuarioEmail}`, orcamentoMensal.toString());
+}
+
+function alterarOrcamento(valor) {
+  orcamentoMensal = parseFloat(valor) || 0;
+  salvarDados();
+  renderizarTudo();
+}
 
 const regrasCategorias = {
   "Alimentação": ["ifood", "restaurante", "mercado", "supermercado", "pão", "café", "almoço", "janta", "lanche"],
@@ -417,7 +431,7 @@ async function chamarConsultoria(prompt) {
 
 function isPro() {
   const session = JSON.parse(localStorage.getItem('session'));
-  const pagamentoConfirmado = localStorage.getItem("pagamento_confirmado") === "true";
+  const pagamentoConfirmado = localStorage.getItem(`pagamento_confirmado_${usuarioEmail}`) === "true";
   return (session && session.plano === 'Pro') || pagamentoConfirmado;
 }
 
@@ -546,12 +560,17 @@ function exportarCSV() {
   document.body.removeChild(link);
 }
 
+function logout() {
+  localStorage.removeItem('usuario_logado');
+  localStorage.removeItem('session');
+  window.location.href = 'login.html';
+}
+
 function limparTodosDados() {
-  if (confirm('Deseja realmente resetar todo o sistema? Todos os gastos e configurações serão apagados.')) {
-    localStorage.removeItem('gastos');
-    localStorage.removeItem('orcamentoMensal');
-    // Não removemos 'session' ou 'pagamento_confirmado' a menos que queira deslogar/tirar o Pro
-    // Mas o botão diz "Resetar Sistema", geralmente refere-se aos dados financeiros.
+  if (confirm('Deseja realmente resetar seus dados? Todos os gastos e configurações deste usuário serão apagados.')) {
+    localStorage.removeItem(`gastos_${usuarioEmail}`);
+    localStorage.removeItem(`orcamento_${usuarioEmail}`);
+    localStorage.removeItem(`pagamento_confirmado_${usuarioEmail}`);
     location.reload();
   }
 }

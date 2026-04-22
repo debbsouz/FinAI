@@ -57,10 +57,12 @@
   <script>
     // Ação ao carregar: Ativar Plano Pro
     document.addEventListener('DOMContentLoaded', () => {
-      // 1. Marcar pagamento como confirmado
-      localStorage.setItem("pagamento_confirmado", "true");
+      const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
+
+      // 1. Marcar pagamento como confirmado para este usuário
+      localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
       
-      // 2. Marcar plano como Pro (conforme solicitado explicitamente)
+      // 2. Marcar plano como Pro
       localStorage.setItem("plano", "Pro");
 
       // 3. Atualizar objeto de sessão e usuário se existirem
