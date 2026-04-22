@@ -248,7 +248,141 @@ function renderizarProgressoOrcamento() {
   }
 }
 
+function gerarRespostaLocal(pergunta = "") {
+  if (gastos.length === 0) return "Ainda não tenho dados suficientes para uma análise. Adicione seus primeiros gastos para eu poder te ajudar!";
+
+  const total = calcularTotalGasto();
+  const gastosPorCategoria = {};
+  gastos.forEach(g => {
+    gastosPorCategoria[g.categoria] = (gastosPorCategoria[g.categoria] || 0) + g.valor;
+  });
+
+  // Encontrar categoria dominante
+  let categoriaDominante = "";
+  let maiorValor = 0;
+  Object.entries(gastosPorCategoria).forEach(([cat, val]) => {
+    if (val > maiorValor) {
+      maiorValor = val;
+      categoriaDominante = cat;
+    }
+  });
+
+  const percDominante = (maiorValor / total) * 100;
+  const percAlimentacao = (gastosPorCategoria["Alimentação"] || 0) / total * 100;
+  const percLazer = (gastosPorCategoria["Lazer"] || 0) / total * 100;
+  const percTransporte = (gastosPorCategoria["Transporte"] || 0) / total * 100;
+
+  // Lógica de resposta baseada em regras
+  let insights = [];
+
+  if (percAlimentacao > 40) {
+    insights.push("Você está gastando bastante com alimentação. Talvez valha revisar pedidos em apps de delivery e priorizar refeições caseiras para economizar.");
+  }
+  
+  if (percLazer > 25) {
+    insights.push("Seus gastos com lazer estão acima do recomendado (25%). Tente buscar opções de entretenimento gratuitas ou reduzir a frequência de saídas este mês.");
+  }
+
+  if (percTransporte > 20) {
+    insights.push("O custo com transporte está elevado. Avalie se o uso de transporte por aplicativo está compensando ou se há alternativas mais baratas para trajetos curtos.");
+  }
+
+  if (total > orcamentoMensal) {
+    insights.push(`Atenção: Você já ultrapassou seu orçamento em R$ ${(total - orcamentoMensal).toFixed(2)}. É hora de cortar gastos não essenciais imediatamente.`);
+  }
+
+  // Fallback se nenhuma regra específica for atingida
+  if (insights.length === 0) {
+    insights.push(`Sua maior categoria de gastos é ${categoriaDominante}, representando ${percDominante.toFixed(1)}% do seu total. No geral, sua saúde financeira parece equilibrada.`);
+  }
+
+  // Se for uma pergunta específica do chat, tentar contextualizar
+  if (pergunta) {
+    return `Baseado nos seus dados: ${insights[0]}`;
+  }
+
+  return insights.join(" ");
+}
+
+function gerarRelatorioLocal() {
+  const total = calcularTotalGasto();
+  const gastosPorCategoria = {};
+  gastos.forEach(g => {
+    gastosPorCategoria[g.categoria] = (gastosPorCategoria[g.categoria] || 0) + g.valor;
+  });
+
+  const insights = [];
+  const sugestoes = [];
+  const { score } = calcularScoreLocal();
+
+  const percAlimentacao = (gastosPorCategoria["Alimentação"] || 0) / total * 100;
+  const percLazer = (gastosPorCategoria["Lazer"] || 0) / total * 100;
+
+  // Gerar insights baseados em dados reais
+  Object.entries(gastosPorCategoria).forEach(([cat, val]) => {
+    const perc = (val / total) * 100;
+    if (perc > 30) insights.push(`A categoria ${cat} consome ${perc.toFixed(1)}% dos seus recursos.`);
+  });
+
+  if (percAlimentacao > 40) sugestoes.push("Reduzir delivery em 20% para equilibrar o caixa.");
+  if (percLazer > 25) sugestoes.push("Limitar gastos com entretenimento até o próximo ciclo.");
+  if (total > orcamentoMensal) sugestoes.push("Revisar custos fixos para evitar novos endividamentos.");
+  
+  if (sugestoes.length === 0) sugestoes.push("Manter o padrão de consumo atual e focar em reserva de emergência.");
+
+  return {
+    analise: {
+      score_financeiro: score,
+      insights: insights.length > 0 ? insights : ["Seus gastos estão bem distribuídos entre as categorias."],
+      sugestoes: sugestoes
+    }
+  };
+}
+
 // ==================== CONSULTORIA ESTRATÉGICA ====================
+function renderizarConteudoRelatorio(analise, container) {
+  container.innerHTML = `
+    <div class="space-y-10 animate-slide-up">
+      <div class="flex flex-col items-center pb-10 border-b border-zinc-800/50">
+        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-3">Eficiência de Capital</p>
+        <div class="relative">
+          <div class="text-7xl font-black text-white tracking-tighter">${analise.score_financeiro}</div>
+          <div class="absolute -top-1 -right-4 w-2 h-2 rounded-full bg-violet-500 animate-pulse"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div class="space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div>
+            <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diagnóstico de Performance</h5>
+          </div>
+          <ul class="space-y-4">
+            ${analise.insights.map(i => `
+              <li class="group">
+                <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${i}</p>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+        <div class="space-y-6">
+          <div class="flex items-center gap-2">
+            <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
+            <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diretrizes de Otimização</h5>
+          </div>
+          <ul class="space-y-4">
+            ${analise.sugestoes.map(s => `
+              <li class="group">
+                <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${s}</p>
+              </li>
+            `).join('')}
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
 async function chamarConsultoria(prompt) {
   try {
     const resposta = await fetch("http://localhost:3000/consultar", {
@@ -322,73 +456,28 @@ async function gerarRelatorio() {
   `;
 
   try {
-    const response = await fetch("http://localhost:3000/api/analysis/analisar", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        dadosFinanceiros: {
-          gastos,
-          orcamentoMensal,
-          totalGasto: calcularTotalGasto()
-        }
-      })
-    });
+      const response = await fetch("http://localhost:3000/api/analysis/analisar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dadosFinanceiros: {
+            gastos,
+            orcamentoMensal,
+            totalGasto: total
+          }
+        })
+      });
 
-    const data = await response.json();
-    if (!data.success || !data.analise) throw new Error("Falha na análise");
+      const data = await response.json();
+      if (!data.success || !data.analise) throw new Error("Falha na análise");
 
-    const { analise } = data;
-    
-    container.innerHTML = `
-      <div class="space-y-10 animate-slide-up">
-        <div class="flex flex-col items-center pb-10 border-b border-zinc-800/50">
-          <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] mb-3">Eficiência de Capital</p>
-          <div class="relative">
-            <div class="text-7xl font-black text-white tracking-tighter">${analise.score_financeiro}</div>
-            <div class="absolute -top-1 -right-4 w-2 h-2 rounded-full bg-violet-500 animate-pulse"></div>
-          </div>
-        </div>
+      renderizarConteudoRelatorio(data.analise, container);
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div class="space-y-6">
-            <div class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 rounded-full bg-violet-500"></div>
-              <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diagnóstico de Performance</h5>
-            </div>
-            <ul class="space-y-4">
-              ${analise.insights.map(i => `
-                <li class="group">
-                  <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${i}</p>
-                </li>
-              `).join('')}
-            </ul>
-          </div>
-          <div class="space-y-6">
-            <div class="flex items-center gap-2">
-              <div class="w-1.5 h-1.5 rounded-full bg-emerald-500"></div>
-              <h5 class="text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Diretrizes de Otimização</h5>
-            </div>
-            <ul class="space-y-4">
-              ${analise.sugestoes.map(s => `
-                <li class="group">
-                  <p class="text-xs text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors">${s}</p>
-                </li>
-              `).join('')}
-            </ul>
-          </div>
-        </div>
-      </div>
-    `;
-
-  } catch (erro) {
-    container.innerHTML = `
-      <div class="text-center py-8">
-        <p class="text-zinc-500 text-xs font-medium italic text-zinc-400 leading-relaxed">
-          ${gerarRespostaLocal("fallback")}
-        </p>
-      </div>
-    `;
-  } finally {
+    } catch (erro) {
+      console.warn("IA externa falhou, usando análise local.");
+      const dataLocal = gerarRelatorioLocal();
+      renderizarConteudoRelatorio(dataLocal.analise, container);
+    } finally {
     if (btnRelatorio) {
       btnRelatorio.disabled = false;
       btnRelatorio.classList.remove('opacity-50', 'cursor-not-allowed');
@@ -418,7 +507,7 @@ async function enviarConsulta() {
 
   container.innerHTML = `
     <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 animate-in slide-in-from-bottom-2 duration-500">
-      <p class="text-xs text-zinc-300 leading-relaxed">${resposta}</p>
+      <p class="text-xs text-zinc-300 leading-relaxed">${resposta || gerarRespostaLocal(pergunta)}</p>
     </div>
   `;
 
