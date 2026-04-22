@@ -149,7 +149,7 @@
             <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Volume de Despesas</p>
             <div class="flex items-end justify-between">
               <h3 id="cardTotalGasto" class="text-4xl font-black text-white tracking-tighter">R$ 0,00</h3>
-              <span id="statusGasto" class="text-[9px] font-black uppercase px-2 py-1 rounded-md bg-zinc-900 text-zinc-500 tracking-tighter border border-zinc-800">Calculando</span>
+              <span id="statusGasto" class="hidden text-[9px] font-black uppercase px-2 py-1 rounded-md bg-zinc-900 text-zinc-500 tracking-tighter border border-zinc-800"></span>
             </div>
           </div>
           
@@ -265,6 +265,57 @@
                     <!-- JS Insert -->
                   </tbody>
                 </table>
+              </div>
+            </section>
+
+            <!-- Seção WhatsApp Pro -->
+            <section id="section-whatsapp-pro" class="hidden bg-[#111113] p-10 rounded-2xl border border-zinc-800 shadow-xl overflow-hidden relative card-hover animate-fade-in">
+              <div class="absolute top-0 right-0 p-8 opacity-5">
+                <i class="fab fa-whatsapp text-7xl text-emerald-500"></i>
+              </div>
+              
+              <div class="flex flex-col md:flex-row gap-10">
+                <div class="flex-1 space-y-6">
+                  <div>
+                    <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
+                      Notificações inteligentes
+                      <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest border border-emerald-500/20">Pro Feature</span>
+                    </h2>
+                    <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Receba análises automáticas e alertas estratégicos diretamente no seu WhatsApp.</p>
+                  </div>
+
+                  <div id="whatsappStatusArea" class="space-y-4">
+                    <button id="btnAtivarWhatsapp" onclick="ativarWhatsapp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all active:scale-[0.98] flex items-center gap-3 shadow-lg shadow-emerald-600/10">
+                      <i class="fab fa-whatsapp text-lg"></i>
+                      <span>Ativar notificações</span>
+                    </button>
+                    <p id="whatsappFeedback" class="hidden text-[10px] text-emerald-400 font-bold animate-fade-in flex items-center gap-2">
+                      <i class="fas fa-check-circle"></i>
+                      Notificações ativadas com sucesso
+                    </p>
+                  </div>
+                </div>
+
+                <div class="w-full md:w-72 space-y-4">
+                  <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest ml-1">Simulação de Mensagens</p>
+                  <div class="space-y-3">
+                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
+                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • Hoje</p>
+                      "Relatório semanal enviado! Seu score subiu 5 pontos."
+                    </div>
+                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
+                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • Ontem</p>
+                      "Detectamos aumento em alimentação. Deseja revisar?"
+                    </div>
+                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
+                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-violet-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • 2 dias</p>
+                      "Sugestão de economia disponível: Assinatura não utilizada."
+                    </div>
+                  </div>
+                </div>
               </div>
             </section>
           </div>

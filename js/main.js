@@ -138,8 +138,12 @@ function removerGasto(id) {
   }
 }
 
-function calcularTotalGasto() {
+function calcularVolume() {
   return gastos.reduce((acc, g) => acc + g.valor, 0);
+}
+
+function calcularTotalGasto() {
+  return calcularVolume();
 }
 
 // ==================== RENDERIZAÇÕES ====================
@@ -225,7 +229,10 @@ function renderizarProgressoOrcamento() {
   const statusGasto = document.getElementById('statusGasto');
   const barSaldo = document.getElementById('barSaldoDisponivel');
 
-  if (cardTotal) cardTotal.innerText = `R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  if (cardTotal) {
+    const volume = calcularVolume();
+    cardTotal.innerText = `R$ ${volume.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+  }
   
   if (cardSaldo) {
     const saldoDisponivel = saldoInicial - total;
@@ -448,6 +455,41 @@ function isPro() {
   return (session && session.plano === 'Pro') || pagamentoConfirmado;
 }
 
+// ==================== WHATSAPP PRO ====================
+function ativarWhatsapp() {
+  if (!isPro()) return;
+  
+  const numero = "5551995245630";
+  localStorage.setItem(`whatsapp_${usuarioEmail}`, numero);
+  
+  // Abrir WhatsApp com mensagem
+  const texto = encodeURIComponent("Quero receber análises financeiras do FinAI");
+  window.open(`https://wa.me/${numero}?text=${texto}`, '_blank');
+  
+  renderizarStatusWhatsapp();
+}
+
+function renderizarStatusWhatsapp() {
+  const isAtivo = localStorage.getItem(`whatsapp_${usuarioEmail}`) === "5551995245630";
+  const section = document.getElementById('section-whatsapp-pro');
+  const btn = document.getElementById('btnAtivarWhatsapp');
+  const feedback = document.getElementById('whatsappFeedback');
+
+  if (section && isPro()) {
+    section.classList.remove('hidden');
+  } else if (section) {
+    section.classList.add('hidden');
+  }
+
+  if (isAtivo && btn && feedback) {
+    btn.innerHTML = `<i class="fas fa-check"></i><span>Ativo</span>`;
+    btn.classList.remove('bg-emerald-600', 'hover:bg-emerald-500');
+    btn.classList.add('bg-zinc-800', 'text-emerald-500', 'border', 'border-emerald-500/20', 'cursor-default');
+    btn.onclick = null;
+    feedback.classList.remove('hidden');
+  }
+}
+
 function showProAlert() {
   alert('Disponível apenas no plano Pro');
   if (typeof toggleUpgradeModal === 'function') {
@@ -593,6 +635,7 @@ function renderizarTudo() {
   renderizarLista();
   renderizarResumoCategorias();
   renderizarProgressoOrcamento();
+  renderizarStatusWhatsapp();
   if (typeof atualizarGraficos === "function") {
     atualizarGraficos();
   } else {
