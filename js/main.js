@@ -366,7 +366,11 @@ function renderizarTudo() {
   renderizarLista();
   renderizarResumoCategorias();
   renderizarProgressoOrcamento();
-  atualizarGraficos();
+  if (typeof atualizarGraficos === "function") {
+    atualizarGraficos();
+  } else {
+    console.warn('Função atualizarGraficos não encontrada.');
+  }
 }
 
 window.onload = function() {

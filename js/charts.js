@@ -1,14 +1,31 @@
 function atualizarGraficos() {
+  console.log('Atualizando gráficos com os dados:', gastos);
   const ctx = document.getElementById('pieChart');
-  if (!ctx) return;
+  if (!ctx) {
+    console.warn('Canvas "pieChart" não encontrado.');
+    return;
+  }
+
+  if (gastos.length === 0) {
+    console.log('Nenhum gasto registrado para exibir no gráfico.');
+    if (pieChart) {
+      pieChart.destroy();
+      pieChart = null;
+    }
+    return;
+  }
 
   const dadosPorCategoria = {};
   gastos.forEach(g => {
-    dadosPorCategoria[g.categoria] = (dadosPorCategoria[g.categoria] || 0) + g.valor;
+    const categoria = g.categoria || 'Outros';
+    const valor = parseFloat(g.valor) || 0;
+    dadosPorCategoria[categoria] = (dadosPorCategoria[categoria] || 0) + valor;
   });
 
   const labels = Object.keys(dadosPorCategoria);
   const values = Object.values(dadosPorCategoria);
+
+  console.log('Dados formatados para o gráfico:', { labels, values });
 
   if (pieChart) {
     pieChart.destroy();
