@@ -645,14 +645,18 @@ async function enviarConsulta() {
   container.innerHTML = `
     <div class="flex items-center gap-2 py-3">
       <div class="w-3 h-3 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando dados...</p>
+      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando contexto...</p>
     </div>
   `;
 
-  // Simulação de "pensamento" da IA para tornar mais realista
   await new Promise(resolve => setTimeout(resolve, 1200));
 
-  const keywordsFinancas = ['gasto', 'dinheiro', 'saldo', 'economizar', 'investir', 'finanças', 'pagar', 'comprar', 'preço', 'valor', 'custo', 'orcamento', 'cartão', 'banco', 'fatura', 'conta', 'receita', 'lucro'];
+  const keywordsFinancas = [
+    'gasto', 'dinheiro', 'saldo', 'economizar', 'investir', 'finanças', 'pagar', 'comprar', 
+    'preço', 'valor', 'custo', 'orcamento', 'cartão', 'banco', 'fatura', 'conta', 'receita', 
+    'lucro', 'poupar', 'investimento', 'planejamento', 'estratégia', 'mercado', 'juros'
+  ];
+  
   const ehFinanceiro = keywordsFinancas.some(k => pergunta.toLowerCase().includes(k));
 
   if (!ehFinanceiro) {
@@ -660,9 +664,9 @@ async function enviarConsulta() {
       <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 animate-fade-in">
         <div class="flex items-start gap-3">
           <div class="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 border border-white/5">
-            <i class="fas fa-robot text-zinc-500 text-[10px]"></i>
+            <i class="fas fa-info-circle text-zinc-500 text-[10px]"></i>
           </div>
-          <p class="text-[11px] text-zinc-400 leading-relaxed pt-0.5">Não entendi como posso ajudar você com finanças. Como seu assistente FinAI, meu foco é auxiliar na gestão de gastos e economia.</p>
+          <p class="text-[11px] text-zinc-400 leading-relaxed pt-0.5">Posso te ajudar com suas finanças. Tente perguntar sobre seus gastos ou planejamento.</p>
         </div>
       </div>
     `;
@@ -671,11 +675,14 @@ async function enviarConsulta() {
   }
 
   const respostas = [
-    "Baseado nos seus últimos registros, notei que você pode economizar reduzindo gastos pequenos e frequentes. Deseja que eu liste quais são?",
-    "Seu orçamento atual permite uma reserva de emergência maior este mês. Que tal destinar 10% do saldo disponível para investimentos?",
-    "Analisei sua tendência de gastos e, se mantiver esse ritmo, você fechará o mês com um saldo positivo de aproximadamente 15%.",
-    "Dica: Tente agrupar suas compras recorrentes em um único dia para ter uma visão mais clara do seu fluxo de caixa mensal.",
-    "Identifiquei um aumento de 12% na categoria de alimentação esta semana. Vale a pena revisar se houve algum gasto extraordinário."
+    "Notei que você tem uma oportunidade de economizar reduzindo gastos pequenos e frequentes. Quer que eu analise quais categorias estão pesando mais?",
+    "Uma sugestão seria destinar pelo menos 10% do seu saldo atual para uma reserva de emergência. Isso trará mais segurança para o seu planejamento.",
+    "Vale observar que seu ritmo de gastos atual está sustentável. Se mantiver essa disciplina, você deve fechar o mês com uma boa margem positiva.",
+    "Analisei sua tendência de consumo e percebi que concentrar compras recorrentes em datas específicas pode te dar uma visão mais clara do fluxo de caixa.",
+    "Identifiquei um padrão interessante: seus gastos fixos estão bem controlados, mas as despesas variáveis subiram um pouco esta semana. Vale uma revisão rápida.",
+    "Uma estratégia eficiente agora seria revisar suas assinaturas e serviços recorrentes. Pequenos cortes aqui geram um impacto grande no longo prazo.",
+    "Notei que você costuma ter picos de gastos em fins de semana. Tentar equilibrar essas despesas pode ajudar a manter o score financeiro alto.",
+    "Seu planejamento para este mês parece sólido. Uma dica extra é sempre registrar o valor nominal logo após a compra para evitar esquecimentos."
   ];
   
   const respostaAleatoria = respostas[Math.floor(Math.random() * respostas.length)];
