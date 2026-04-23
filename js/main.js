@@ -184,7 +184,11 @@ function adicionarGasto() {
   const data = document.getElementById('data').value;
 
   if (!descricao || !valorStr || !data) {
-    alert('Preencha todos os campos.');
+    if (typeof showToast === 'function') {
+      showToast('Preencha todos os campos.', 'error');
+    } else {
+      alert('Preencha todos os campos.');
+    }
     return;
   }
 
@@ -197,6 +201,10 @@ function adicionarGasto() {
 
   document.getElementById('descricao').value = '';
   document.getElementById('valor').value = '';
+
+  if (typeof showToast === 'function') {
+    showToast('Gasto registrado com sucesso!');
+  }
 }
 
 function removerGasto(id) {
@@ -204,6 +212,9 @@ function removerGasto(id) {
     gastos = gastos.filter(g => g.id !== id);
     salvarGastos();
     renderizarTudo();
+    if (typeof showToast === 'function') {
+      showToast('Gasto removido.', 'success');
+    }
   }
 }
 
@@ -582,60 +593,27 @@ function showProAlert() {
 }
 
 async function gerarRelatorio() {
-  if (!isPro()) {
-    showProAlert();
-    return;
-  }
-  const container = document.getElementById('relatorio-estrategico');
-  const btnRelatorio = document.querySelector('button[onclick="gerarRelatorio()"]');
-  if (!container) return;
-
-  if (gastos.length === 0) {
-    container.innerHTML = `<div id="diagnostico" class="min-h-[100px] flex items-center justify-center text-zinc-500 italic">Adicione dados para análise estratégica.</div>`;
-    return;
-  }
-
-  if (btnRelatorio) {
-    btnRelatorio.disabled = true;
-    btnRelatorio.classList.add('opacity-50', 'cursor-not-allowed');
-    btnRelatorio.innerHTML = `<i class="fas fa-circle-notch animate-spin"></i><span>Processando</span>`;
-  }
-
+  const container = document.getElementById('diagnostico');
   container.innerHTML = `
-    <div class="flex flex-col items-center justify-center py-12 space-y-4 text-center">
-      <div class="w-10 h-10 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-400 text-[10px] font-black uppercase tracking-[0.2em] animate-pulse">Consolidando Diagnóstico Estratégico</p>
+    <div class="flex flex-col items-center justify-center gap-4 py-12 animate-fade-in">
+      <div class="relative">
+        <div class="w-12 h-12 border-2 border-indigo-500/20 border-t-indigo-500 rounded-full animate-spin"></div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i class="fas fa-sparkles text-indigo-400 text-xs animate-pulse"></i>
+        </div>
+      </div>
+      <p class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.3em]">IA processando dados transacionais...</p>
     </div>
   `;
 
-  try {
-      const response = await fetch("http://localhost:3000/api/analysis/analisar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          dadosFinanceiros: {
-            gastos,
-            orcamentoMensal,
-            totalGasto: total
-          }
-        })
-      });
+  // Simulação de processamento pesado
+  await new Promise(resolve => setTimeout(resolve, 2000));
 
-      const data = await response.json();
-      if (!data.success || !data.analise) throw new Error("Falha na análise");
-
-      renderizarConteudoRelatorio(data.analise, container);
-
-    } catch (erro) {
-      console.warn("IA externa falhou, usando análise local.");
-      const dataLocal = gerarRelatorioLocal();
-      renderizarConteudoRelatorio(dataLocal.analise, container);
-    } finally {
-    if (btnRelatorio) {
-      btnRelatorio.disabled = false;
-      btnRelatorio.classList.remove('opacity-50', 'cursor-not-allowed');
-      btnRelatorio.innerHTML = `Gerar Relatório`;
-    }
+  const dados = gerarRelatorioLocal();
+  renderizarConteudoRelatorio(dados.analise, container);
+  
+  if (typeof showToast === 'function') {
+    showToast('Relatório gerado com sucesso!');
   }
 }
 
@@ -724,6 +702,10 @@ async function enviarConsulta() {
       </div>
     </div>
   `;
+
+  if (typeof showToast === 'function') {
+    showToast('Consulta finalizada.', 'success');
+  }
 
   input.value = '';
 }
