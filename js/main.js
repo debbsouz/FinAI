@@ -11,6 +11,9 @@ function salvarDados() {
   localStorage.setItem(`gastos_${usuarioEmail}`, JSON.stringify(gastos));
   localStorage.setItem(`orcamento_${usuarioEmail}`, orcamentoMensal.toString());
   localStorage.setItem(`saldo_${usuarioEmail}`, saldoInicial.toString());
+  
+  // Sincronizar com a chave genérica para compatibilidade se necessário
+  localStorage.setItem('gastos', JSON.stringify(gastos));
 }
 
 function alterarOrcamento(valor) {
@@ -172,7 +175,7 @@ function carregarDados() {
 }
 
 function salvarGastos() {
-  localStorage.setItem('gastos', JSON.stringify(gastos));
+  salvarDados();
 }
 
 function adicionarGasto() {
@@ -645,7 +648,7 @@ async function enviarConsulta() {
   container.innerHTML = `
     <div class="flex items-center gap-2 py-3">
       <div class="w-3 h-3 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando contexto...</p>
+      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando dados reais...</p>
     </div>
   `;
 
@@ -674,18 +677,42 @@ async function enviarConsulta() {
     return;
   }
 
-  const respostas = [
-    "Notei que você tem uma oportunidade de economizar reduzindo gastos pequenos e frequentes. Quer que eu analise quais categorias estão pesando mais?",
-    "Uma sugestão seria destinar pelo menos 10% do seu saldo atual para uma reserva de emergência. Isso trará mais segurança para o seu planejamento.",
-    "Vale observar que seu ritmo de gastos atual está sustentável. Se mantiver essa disciplina, você deve fechar o mês com uma boa margem positiva.",
-    "Analisei sua tendência de consumo e percebi que concentrar compras recorrentes em datas específicas pode te dar uma visão mais clara do fluxo de caixa.",
-    "Identifiquei um padrão interessante: seus gastos fixos estão bem controlados, mas as despesas variáveis subiram um pouco esta semana. Vale uma revisão rápida.",
-    "Uma estratégia eficiente agora seria revisar suas assinaturas e serviços recorrentes. Pequenos cortes aqui geram um impacto grande no longo prazo.",
-    "Notei que você costuma ter picos de gastos em fins de semana. Tentar equilibrar essas despesas pode ajudar a manter o score financeiro alto.",
-    "Seu planejamento para este mês parece sólido. Uma dica extra é sempre registrar o valor nominal logo após a compra para evitar esquecimentos."
-  ];
+  // Lógica de resposta baseada em dados reais
+  const total = calcularTotalGasto();
+  const saldoDisponivel = saldoInicial - total;
+  const gastosPorCategoria = gastos.reduce((acc, g) => {
+    acc[g.categoria] = (acc[g.categoria] || 0) + g.valor;
+    return acc;
+  }, {});
+
+  // Encontrar categoria com maior gasto
+  let maiorCategoria = "Nenhuma";
+  let maiorValor = 0;
+  Object.entries(gastosPorCategoria).forEach(([cat, val]) => {
+    if (val > maiorValor) {
+      maiorValor = val;
+      maiorCategoria = cat;
+    }
+  });
+
+  let respostaIA = "";
   
-  const respostaAleatoria = respostas[Math.floor(Math.random() * respostas.length)];
+  if (gastos.length === 0) {
+    respostaIA = "Ainda não identifiquei gastos registrados. Assim que você adicionar suas primeiras transações, poderei fazer uma análise precisa do seu perfil.";
+  } else if (total > orcamentoMensal) {
+    respostaIA = `Atenção: Você ultrapassou seu orçamento mensal em R$ ${(total - orcamentoMensal).toLocaleString('pt-BR')}. Recomendo focar em reduzir gastos na categoria ${maiorCategoria}, que é seu maior custo atualmente.`;
+  } else if (saldoDisponivel < 0) {
+    respostaIA = `Seu saldo está negativo em R$ ${Math.abs(saldoDisponivel).toLocaleString('pt-BR')}. Analisei seus registros e vejo que ${maiorCategoria} representa a maior fatia dos seus gastos. Podemos tentar economizar aqui?`;
+  } else if (maiorValor > (total * 0.5)) {
+    respostaIA = `Notei que ${maiorCategoria} representa mais de 50% dos seus gastos totais. Uma sugestão seria diversificar ou revisar se esses custos são essenciais para manter seu equilíbrio.`;
+  } else {
+    const variacoes = [
+      `Seu planejamento está sólido! Com R$ ${saldoDisponivel.toLocaleString('pt-BR')} de saldo, você tem uma boa margem. Que tal investir 10% desse valor?`,
+      `Vale observar que seu ritmo de gastos em ${maiorCategoria} está sob controle. Se mantiver essa disciplina, fechará o mês com saldo positivo.`,
+      `Analisei seus registros e percebi que você está com um bom score. Uma estratégia eficiente agora seria focar em criar uma reserva de emergência.`
+    ];
+    respostaIA = variacoes[Math.floor(Math.random() * variacoes.length)];
+  }
 
   container.innerHTML = `
     <div class="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-4 animate-fade-in">
@@ -693,7 +720,7 @@ async function enviarConsulta() {
         <div class="w-7 h-7 rounded-lg bg-indigo-500/10 flex items-center justify-center shrink-0 border border-indigo-500/20">
           <i class="fas fa-sparkles text-indigo-400 text-[10px]"></i>
         </div>
-        <p class="text-[11px] text-zinc-200 leading-relaxed pt-0.5">${respostaAleatoria}</p>
+        <p class="text-[11px] text-zinc-200 leading-relaxed pt-0.5">${respostaIA}</p>
       </div>
     </div>
   `;
