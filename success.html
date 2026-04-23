@@ -1,96 +1,92 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pagamento Confirmado - FinAI</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    @keyframes checkmark {
-      0% { transform: scale(0); opacity: 0; }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-    .animate-checkmark {
-      animation: checkmark 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assinatura Confirmada | FinAI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #09090b;
+            color: #fafafa;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass {
+            background: rgba(24, 24, 27, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(63, 63, 70, 0.3);
+        }
+        @keyframes scaleIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-scale-in {
+            animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
 </head>
-<body class="bg-[#09090b] text-white min-h-screen flex items-center justify-center p-6">
-  <div class="w-full max-w-md bg-[#111113] border border-zinc-800 rounded-[32px] p-12 text-center space-y-8 shadow-2xl">
-    
-    <!-- Ícone de Sucesso -->
-    <div class="relative mx-auto w-24 h-24 bg-emerald-500/20 rounded-full flex items-center justify-center border border-emerald-500/30 animate-checkmark">
-      <i class="fas fa-check text-4xl text-emerald-500"></i>
-      <div class="absolute inset-0 rounded-full bg-emerald-500/10 animate-pulse"></div>
+<body class="min-h-screen flex items-center justify-center p-6 selection:bg-violet-500/30">
+
+    <div class="max-w-md w-full text-center animate-scale-in">
+        <div class="mb-8 relative inline-block">
+            <div class="w-24 h-24 rounded-full bg-violet-500/10 flex items-center justify-center border border-violet-500/20 mx-auto">
+                <i class="fas fa-check text-4xl text-violet-500"></i>
+            </div>
+            <div class="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center animate-bounce shadow-lg shadow-violet-600/40">
+                <i class="fas fa-sparkles text-white text-xs"></i>
+            </div>
+        </div>
+
+        <h1 class="text-4xl font-black tracking-tighter mb-4 text-white">Assinatura confirmada com sucesso!</h1>
+        <p class="text-zinc-400 mb-8 leading-relaxed">
+            Seja bem-vindo ao próximo nível da sua gestão financeira. Seu plano <span id="planDisplay" class="text-white font-bold">PRO</span> já está ativo na sua conta.
+        </p>
+
+        <div class="glass p-6 rounded-3xl mb-10 border-dashed">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Status da Conta</span>
+                <span class="px-2 py-0.5 rounded-full bg-green-500/10 text-green-500 text-[8px] font-black uppercase tracking-widest">Ativo</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-zinc-300">Plano Escolhido</span>
+                <span id="planName" class="text-sm font-black text-white">Mensal PRO</span>
+            </div>
+        </div>
+
+        <div class="space-y-4">
+            <a href="dashboard.html" class="block w-full bg-white text-black font-black py-5 rounded-2xl hover:bg-zinc-200 transition-all shadow-2xl shadow-white/5 active:scale-95">
+                Ir para o dashboard
+                <i class="fas fa-arrow-right ml-2 text-xs"></i>
+            </a>
+            <p class="text-[10px] font-bold text-zinc-600 uppercase tracking-[0.2em]">Redirecionando em 5 segundos...</p>
+        </div>
     </div>
 
-    <!-- Textos -->
-    <div class="space-y-3">
-      <h1 class="text-3xl font-black tracking-tight">Pagamento confirmado com sucesso</h1>
-      <p class="text-zinc-400 text-sm font-medium">Seu acesso <span id="successPlanName" class="text-violet-400 font-bold">Pro</span> já está liberado</p>
-    </div>
+    <script>
+        // Recuperar plano do localStorage
+        const plan = localStorage.getItem('plano') || 'Mensal PRO';
+        document.getElementById('planDisplay').textContent = plan.toUpperCase();
+        document.getElementById('planName').textContent = plan;
 
-    <!-- Divisor -->
-    <div class="h-px bg-zinc-800 w-full"></div>
+        // Redirecionamento automático opcional
+        setTimeout(() => {
+            // window.location.href = 'dashboard.html';
+        }, 5000);
+    </script>
 
-    <!-- Benefícios Liberados -->
-    <div id="successBenefits" class="grid grid-cols-2 gap-4">
-      <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
-        <i class="fas fa-chart-line text-violet-500 mb-2"></i>
-        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Insights IA</p>
-      </div>
-      <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800">
-        <i class="fas fa-file-export text-violet-500 mb-2"></i>
-        <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Relatórios</p>
-      </div>
-    </div>
-
-    <!-- Botão -->
-    <button onclick="irParaDashboard()" class="w-full bg-white text-black hover:bg-zinc-200 font-black py-5 rounded-2xl transition-all active:scale-[0.98] shadow-lg flex items-center justify-center gap-3 group">
-      <span>Ir para o dashboard</span>
-      <i class="fas fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
-    </button>
-  </div>
-
-  <script>
-    // Ação ao carregar: Atualizar UI e Garantir Persistência
-    document.addEventListener('DOMContentLoaded', () => {
-      const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
-      const plano = localStorage.getItem(`plano_${usuarioEmail}`) || localStorage.getItem("plano") || "Pro";
-      
-      // Atualizar Textos
-      const planLabel = document.getElementById('successPlanName');
-      planLabel.textContent = plano;
-      
-      if (plano === 'Família') {
-        planLabel.className = 'text-emerald-400 font-bold';
-        document.getElementById('successBenefits').innerHTML += `
-          <div class="p-4 bg-zinc-900/50 rounded-2xl border border-zinc-800 col-span-2">
-            <i class="fas fa-users text-emerald-500 mb-2"></i>
-            <p class="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Acesso Família Liberado</p>
-          </div>
-        `;
-      }
-
-      // Sincronizar sessão
-      const session = JSON.parse(localStorage.getItem('session'));
-      if (session) {
-        session.plano = plano;
-        localStorage.setItem('session', JSON.stringify(session));
-      }
-    });
-
-    function irParaDashboard() {
-      const btn = document.querySelector('button');
-      btn.innerHTML = '<i class="fas fa-circle-notch animate-spin"></i>';
-      btn.disabled = true;
-      
-      setTimeout(() => {
-        window.location.href = 'dashboard.html';
-      }, 500);
-    }
-  </script>
 </body>
 </html>
