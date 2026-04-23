@@ -132,24 +132,37 @@
 
     // Detectar plano da URL
     const urlParams = new URLSearchParams(window.location.search);
-    const planType = urlParams.get('plan') || 'pro';
+    const planType = urlParams.get('plano') || 'mensal';
     
     const planData = {
-      pro: {
-        title: 'FinAI Pro',
-        price: 'R$ 29,00',
-        features: ['Análises avançadas com IA', 'Insights personalizados', 'Suporte Prioritário 24/7']
+      mensal: {
+        title: 'Mensal PRO',
+        price: 'R$ 19,90',
+        period: '/mês',
+        features: ['Acesso total à IA', 'Relatórios estratégicos ilimitados', 'Suporte Prioritário 24/7']
       },
-      family: {
-        title: 'FinAI Família',
-        price: 'R$ 49,00',
-        features: ['Até 4 membros inclusos', 'Gastos compartilhados', 'Gestão de dependentes', 'Insights da família']
+      anual: {
+        title: 'Anual',
+        price: 'R$ 197,00',
+        period: '/ano',
+        features: ['Economia de 20%', 'Acesso completo ao sistema', 'Economia de 2 meses']
+      },
+      familiar: {
+        title: 'Familiar PREMIUM',
+        price: 'R$ 49,90',
+        period: '/mês',
+        features: ['Até 4 membros na mesma conta', 'Acesso Pro para todos', 'Gastos compartilhados']
       }
     };
 
-    const currentPlan = planData[planType] || planData.pro;
+    const currentPlan = planData[planType] || planData.mensal;
     document.getElementById('planTitle').textContent = currentPlan.title;
     document.getElementById('planPrice').textContent = currentPlan.price;
+    
+    // Atualizar o período (mês/ano) se necessário
+    const periodSpan = document.querySelector('#planPrice').nextElementSibling;
+    if (periodSpan) periodSpan.textContent = currentPlan.period;
+
     document.getElementById('planFeatures').innerHTML = currentPlan.features.map(f => `
       <li class="flex gap-3 text-sm text-white/80">
         <i class="fas fa-check text-emerald-400 mt-1"></i>
