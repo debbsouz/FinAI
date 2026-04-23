@@ -38,10 +38,10 @@
 </head>
 <body class="min-h-screen py-20 px-6 selection:bg-violet-500/30">
     
-    <div class="max-w-5xl mx-auto space-y-16">
+    <div class="max-w-7xl mx-auto space-y-16">
         <!-- Header -->
         <div class="text-center space-y-4">
-            <a href="index.html" class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors mb-8 group">
+            <a href="dashboard.html" class="inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors mb-8 group">
                 <i class="fas fa-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
                 <span class="text-xs font-bold uppercase tracking-widest">Voltar ao dashboard</span>
             </a>
@@ -50,7 +50,7 @@
         </div>
 
         <!-- Pricing Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
             <!-- Free Plan -->
             <div class="glass p-8 rounded-[40px] flex flex-col space-y-8 hover:border-zinc-700 transition-all group">
                 <div class="space-y-2">
@@ -61,17 +61,17 @@
                 </div>
 
                 <ul class="space-y-4 flex-1">
-                    <li class="flex items-center gap-3 text-sm text-zinc-400">
-                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-400">
+                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-zinc-500"></i>
                         </div>
-                        Controle de gastos
+                        <span>Acesso básico ao sistema</span>
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-zinc-400">
-                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-400">
+                        <div class="w-5 h-5 rounded-full bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-zinc-500"></i>
                         </div>
-                        Gráficos básicos
+                        <span>Controle financeiro essencial</span>
                     </li>
                 </ul>
 
@@ -82,71 +82,102 @@
 
             <!-- Pro Plan -->
             <div class="pro-card p-8 rounded-[40px] flex flex-col space-y-8 relative overflow-hidden group shadow-2xl shadow-violet-500/10 border-violet-500/50">
+                <div class="absolute top-0 right-0 p-6">
+                    <span class="bg-violet-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Recomendado</span>
+                </div>
+
                 <div class="space-y-2 relative z-10">
                     <span class="text-[10px] font-black uppercase tracking-[0.2em] text-violet-400">Professional</span>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black text-white">R$ 29</span>
+                        <span class="text-4xl font-black text-white">R$ 19,90</span>
                         <span class="text-zinc-500 text-sm font-bold">/mês</span>
                     </div>
                 </div>
 
                 <ul class="space-y-4 flex-1 relative z-10">
-                    <li class="flex items-center gap-3 text-sm text-zinc-200">
-                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-violet-400"></i>
                         </div>
-                        Tudo do Essential
+                        <span>Acesso total à IA</span>
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-zinc-200">
-                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-violet-500/20 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-violet-400"></i>
                         </div>
-                        Insights com IA
+                        <span>Relatórios estratégicos ilimitados</span>
                     </li>
                 </ul>
 
-                <a href="checkout.html?plan=pro" 
+                <a href="checkout.html?plano=mensal" 
                    class="w-full py-4 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-black text-center shadow-xl shadow-violet-600/20 transition-all active:scale-[0.98] relative z-10 text-sm">
-                    Assinar Pro
+                    Assinar agora
                 </a>
+            </div>
+
+            <!-- Annual Plan -->
+            <div class="glass p-8 rounded-[40px] flex flex-col space-y-8 border-green-500/30 bg-green-500/5 hover:border-green-500/50 transition-all group relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-6">
+                    <span class="bg-green-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Economize 20%</span>
+                </div>
+
+                <div class="space-y-2">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-green-400">Annual</span>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-4xl font-black text-white">R$ 197,00</span>
+                        <span class="text-zinc-500 text-sm font-bold">/ano</span>
+                    </div>
+                </div>
+
+                <ul class="space-y-4 flex-1">
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fas fa-check text-[10px] text-green-400"></i>
+                        </div>
+                        <span>Acesso completo ao sistema</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
+                            <i class="fas fa-check text-[10px] text-green-400"></i>
+                        </div>
+                        <span>Economia de 2 meses</span>
+                    </li>
+                </ul>
+
+                <a href="checkout.html?plano=anual" 
+                   class="w-full py-4 rounded-2xl bg-green-600 hover:bg-green-500 text-white font-black text-center shadow-xl shadow-green-600/20 transition-all active:scale-[0.98] text-sm">
+                    Assinar Anual
+                </a>
+                
+                <div class="absolute -bottom-12 -right-12 w-32 h-32 bg-green-600/10 blur-[60px] rounded-full"></div>
             </div>
 
             <!-- Family Plan -->
             <div class="glass p-8 rounded-[40px] flex flex-col space-y-8 border-emerald-500/30 bg-emerald-500/5 hover:border-emerald-500/50 transition-all group relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-6">
-                    <span class="bg-emerald-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Novo</span>
-                </div>
-
                 <div class="space-y-2">
-                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">Family</span>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-emerald-400">Premium</span>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-4xl font-black text-white">R$ 49</span>
+                        <span class="text-4xl font-black text-white">R$ 49,90</span>
                         <span class="text-zinc-500 text-sm font-bold">/mês</span>
                     </div>
                 </div>
 
                 <ul class="space-y-4 flex-1">
-                    <li class="flex items-center gap-3 text-sm text-zinc-200">
-                        <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-emerald-400"></i>
                         </div>
-                        Até 4 membros
+                        <span>Até 4 membros</span>
                     </li>
-                    <li class="flex items-center gap-3 text-sm text-zinc-200">
-                        <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <li class="flex items-start gap-3 text-sm text-zinc-200">
+                        <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center shrink-0 mt-0.5">
                             <i class="fas fa-check text-[10px] text-emerald-400"></i>
                         </div>
-                        Gastos compartilhados
-                    </li>
-                    <li class="flex items-center gap-3 text-sm text-zinc-200">
-                        <div class="w-5 h-5 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                            <i class="fas fa-check text-[10px] text-emerald-400"></i>
-                        </div>
-                        Gestão de dependentes
+                        <span>Acesso Pro para todos</span>
                     </li>
                 </ul>
 
-                <a href="checkout.html?plan=family" 
+                <a href="checkout.html?plano=familiar" 
                    class="w-full py-4 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-center shadow-xl shadow-emerald-600/20 transition-all active:scale-[0.98] text-sm">
                     Assinar Família
                 </a>
