@@ -338,11 +338,6 @@
     }
 
 
-     function openPlanSelection() {
-       const container = document.getElementById('planSelectionContainer');
-       container.classList.toggle('hidden');
-     }
- 
      function toggleMobileMenu() {
       const sidebar = document.getElementById('sidebar');
       const overlay = document.getElementById('sidebarOverlay');
@@ -470,7 +465,7 @@
                </div>
              </div>
              
-             <button onclick="abrirModal('planManagementModal')" class="flex items-center gap-1 text-[10px] font-bold text-zinc-500 group-hover/plan:text-indigo-400 transition-colors">
+             <button onclick="window.location.href='plans.html'" class="flex items-center gap-1 text-[10px] font-bold text-zinc-500 group-hover/plan:text-indigo-400 transition-colors">
                <span id="sidebarPlanBtnText">Upgrade</span>
                <i class="fas fa-arrow-right text-[7px] translate-y-[0.5px] transition-transform group-hover/plan:translate-x-0.5"></i>
              </button>
@@ -670,7 +665,7 @@
                   <i class="far fa-sliders-h text-base text-zinc-500 group-hover:text-indigo-400"></i>
                   Configurações da Conta
                 </button>
-                <button onclick="abrirModal('planManagementModal')" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
+                <button onclick="window.location.href='plans.html'" class="w-full flex items-center justify-between gap-3 px-4 py-3 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 text-[11px] font-bold transition-all group">
                   <div class="flex items-center gap-3">
                     <i class="far fa-gem text-base text-zinc-500 group-hover:text-indigo-400"></i>
                     Gerenciar Plano
@@ -1124,134 +1119,6 @@
     </div>
   </div>
 
-  <!-- Plan Management Modal -->
-  <div id="planManagementModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] items-center justify-center p-4 md:p-6 animate-fade-in">
-    <div class="w-full max-w-4xl max-h-[90vh] bg-[#111113] border border-white/5 rounded-[32px] overflow-y-auto shadow-2xl relative animate-slide-up custom-scrollbar">
-      <button onclick="fecharModal('planManagementModal')" class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors z-20">
-        <i class="fas fa-times text-xl"></i>
-      </button>
-      
-      <div class="p-6 md:p-10 space-y-6">
-        <!-- Topo: Info do Plano Atual -->
-        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/[0.02] border border-white/5 p-6 rounded-3xl">
-          <div class="flex items-center gap-5">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl border border-indigo-500/20 shadow-xl shadow-indigo-500/5">
-              <i class="fas fa-crown"></i>
-            </div>
-            <div>
-              <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-0.5">Seu plano atual</p>
-              <h3 id="modalCurrentPlanName" class="text-xl font-black text-white tracking-tight">FinAI Pro</h3>
-              <div class="flex items-center gap-2 mt-0.5">
-                <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
-                <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Assinatura Ativa</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex gap-3">
-            <button onclick="openPlanSelection()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all shadow-lg shadow-indigo-600/20 active:scale-95">
-              Alterar Plano
-            </button>
-            <button onclick="alert('Entre em contato com o suporte para cancelar')" class="px-6 py-3 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all active:scale-95">
-              Cancelar
-            </button>
-          </div>
-        </div>
-
-        <!-- Plan Selection Container -->
-        <div id="planSelectionContainer" class="hidden animate-fade-in pt-6 border-t border-white/10 space-y-6">
-          <div class="flex items-center justify-between">
-            <h4 class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]" data-i18n="plan_modal_title">Planos Disponíveis</h4>
-            <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-[8px] font-black uppercase tracking-widest border border-indigo-500/20" data-i18n="plan_modal_subtitle">Escolha seu nível</span>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Free Plan -->
-            <button onclick="selectPlan('Free')" id="plan-card-Free" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-white/20 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
-              <div class="flex flex-col h-full justify-between gap-4">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Essential</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
-                  </div>
-                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_free_title">Free</h4>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Gestão básica para iniciantes no controle financeiro pessoal.</p>
-                </div>
-                <div class="space-y-3">
-                  <p class="text-xl font-black text-white tracking-tighter">Grátis</p>
-                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-white group-hover:text-black text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_choose">Escolher</span>
-                </div>
-              </div>
-            </button>
-
-            <!-- Monthly Plan -->
-            <button onclick="selectPlan('Mensal')" id="plan-card-Mensal" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-indigo-500/30 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
-              <div class="flex flex-col h-full justify-between gap-4">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <p class="text-[9px] font-black text-indigo-400 uppercase tracking-[0.2em]">Professional</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
-                  </div>
-                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_monthly_title">Mensal PRO</h4>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Acesso total à IA estratégica e relatórios ilimitados.</p>
-                </div>
-                <div class="space-y-3">
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-xl font-black text-white tracking-tighter">R$ 19,90</span>
-                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/mês</span>
-                  </div>
-                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-indigo-600 group-hover:text-white text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_subscribe">Assinar</span>
-                </div>
-              </div>
-            </button>
-
-            <!-- Annual Plan (Recommended) -->
-            <button onclick="selectPlan('Anual')" id="plan-card-Anual" class="group relative p-5 rounded-[24px] bg-indigo-500/[0.03] border border-indigo-500/20 hover:border-indigo-500/50 hover:bg-indigo-500/[0.06] text-left transition-all duration-300 active:scale-[0.98] shadow-2xl shadow-indigo-500/5">
-              <div class="absolute -top-3 left-6 px-4 py-1 bg-indigo-600 rounded-full text-[8px] font-black text-white uppercase tracking-[0.2em] shadow-xl shadow-indigo-600/30 border border-white/10">Recomendado</div>
-              <div class="flex flex-col h-full justify-between gap-4">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <p class="text-[9px] font-black text-indigo-400 uppercase tracking-[0.2em]">Best Value</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
-                  </div>
-                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_annual_title">Anual</h4>
-                  <p class="text-[9px] text-zinc-400 leading-relaxed font-medium">Economize 20% com o plano anual e tenha acesso completo.</p>
-                </div>
-                <div class="space-y-3">
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-xl font-black text-white tracking-tighter">R$ 197,00</span>
-                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/ano</span>
-                  </div>
-                  <span class="w-full py-2.5 flex items-center justify-center bg-indigo-600 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_annual">Escolher Anual</span>
-                </div>
-              </div>
-            </button>
-
-            <!-- Family Plan -->
-            <button onclick="selectPlan('Familiar')" id="plan-card-Familiar" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-emerald-500/30 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
-              <div class="flex flex-col h-full justify-between gap-4">
-                <div>
-                  <div class="flex items-center justify-between mb-2">
-                    <p class="text-[9px] font-black text-emerald-400 uppercase tracking-[0.2em]">Family Access</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
-                  </div>
-                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_family_title">Familiar PREMIUM</h4>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Conecte até 4 membros da família na mesma conta Pro.</p>
-                </div>
-                <div class="space-y-3">
-                  <div class="flex items-baseline gap-1">
-                    <span class="text-xl font-black text-white tracking-tighter">R$ 49,90</span>
-                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/mês</span>
-                  </div>
-                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-emerald-600 group-hover:text-white text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_family">Assinar Família</span>
-                </div>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Referral Modal -->
   <div id="referralModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] items-center justify-center p-6 animate-fade-in">
