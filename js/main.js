@@ -20,12 +20,18 @@ function alterarOrcamento(valor) {
   orcamentoMensal = parseFloat(valor) || 0;
   salvarDados();
   renderizarTudo();
+  if (typeof showToast === 'function') {
+    showToast('Teto de gastos atualizado.', 'success');
+  }
 }
 
 function alterarSaldoInicial(valor) {
   saldoInicial = parseFloat(valor) || 0;
   salvarDados();
   renderizarTudo();
+  if (typeof showToast === 'function') {
+    showToast('Saldo inicial atualizado.', 'success');
+  }
 }
 
 const regrasCategorias = {
@@ -232,7 +238,23 @@ function renderizarLista() {
   if (!container) return;
 
   if (gastos.length === 0) {
-    container.innerHTML = `<tr><td colspan="5" class="text-center py-24 text-zinc-600 font-medium text-xs tracking-wide">Nenhuma transação registrada no período.</td></tr>`;
+    container.innerHTML = `
+      <tr>
+        <td colspan="5" class="py-20 text-center">
+          <div class="flex flex-col items-center gap-4 animate-fade-in">
+            <div class="w-16 h-16 rounded-3xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-zinc-700">
+              <i class="fas fa-receipt text-2xl"></i>
+            </div>
+            <div class="space-y-1">
+              <p class="text-zinc-400 font-bold text-xs uppercase tracking-widest" data-i18n="empty_list_title">Nenhuma transação encontrada</p>
+              <p class="text-zinc-600 text-[10px] font-medium" data-i18n="empty_list_desc">Registre seu primeiro gasto para começar o controle.</p>
+            </div>
+            <button onclick="document.getElementById('descricao').focus()" class="mt-2 px-6 py-2.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 rounded-xl text-[10px] font-black uppercase tracking-widest border border-indigo-500/20 transition-all active:scale-95" data-i18n="empty_list_btn">
+              Adicionar Gasto
+            </button>
+          </div>
+        </td>
+      </tr>`;
     return;
   }
 
@@ -748,6 +770,24 @@ function logout() {
   window.location.href = 'login.html';
 }
 
+function changeLanguage(lang) {
+  localStorage.setItem('finai_language', lang);
+  
+  // Sincronizar com o dashboard se a função existir lá
+  if (window.parent && typeof window.parent.changeLanguage === 'function') {
+    window.parent.changeLanguage(lang);
+  }
+  
+  if (typeof showToast === 'function') {
+    const messages = {
+      pt: 'Idioma alterado.',
+      en: 'Language changed.',
+      es: 'Idioma cambiado.'
+    };
+    showToast(messages[lang] || messages.pt, 'success');
+  }
+}
+
 function limparTodosDados() {
   if (confirm('Deseja realmente resetar seus dados? Todos os gastos e configurações deste usuário serão apagados.')) {
     localStorage.removeItem(`gastos_${usuarioEmail}`);
@@ -879,6 +919,21 @@ window.addEventListener('scroll', () => {
 function renderizarTudo() {
   ultimaAtualizacao = new Date();
   renderizarPerfilUsuario();
+
+  const onboardingCard = document.getElementById('onboardingCard');
+  const sectionInsights = document.getElementById('section-insights');
+  const sectionGastos = document.getElementById('section-gastos');
+
+  if (gastos.length === 0) {
+    if (onboardingCard) onboardingCard.classList.remove('hidden');
+    if (sectionInsights) sectionInsights.classList.add('opacity-50', 'pointer-events-none');
+    if (sectionGastos) sectionGastos.classList.add('opacity-50');
+  } else {
+    if (onboardingCard) onboardingCard.classList.add('hidden');
+    if (sectionInsights) sectionInsights.classList.remove('opacity-50', 'pointer-events-none');
+    if (sectionGastos) sectionGastos.classList.remove('opacity-50');
+  }
+
   renderizarLista();
   renderizarProgressoOrcamento();
   renderizarStatusWhatsapp();

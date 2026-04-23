@@ -12,6 +12,19 @@ function atualizarGraficos() {
       pieChart.destroy();
       pieChart = null;
     }
+    // Exibir placeholder visual quando vazio
+    const container = ctx.parentElement;
+    if (container) {
+      container.innerHTML = `
+        <div class="flex flex-col items-center justify-center h-full text-center space-y-3 animate-fade-in">
+          <div class="w-12 h-12 rounded-full border-2 border-dashed border-zinc-800 flex items-center justify-center">
+            <i class="fas fa-chart-pie text-zinc-700 text-sm"></i>
+          </div>
+          <p class="text-[10px] text-zinc-500 font-medium leading-tight">Dados insuficientes<br>para gerar o gráfico.</p>
+        </div>
+        <canvas id="pieChart" class="hidden"></canvas>
+      `;
+    }
     return;
   }
 
