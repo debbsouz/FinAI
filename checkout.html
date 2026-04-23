@@ -211,10 +211,11 @@
       const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
       localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
       
-      // Salvar o tipo de plano escolhido
+      // Salvar o tipo de plano escolhido (Fonte única de verdade)
       const finalPlanName = planType.charAt(0).toUpperCase() + planType.slice(1);
+      localStorage.setItem("planoUsuario", finalPlanName.toLowerCase()); // Valor base solicitado pelo usuário
       localStorage.setItem(`plano_${usuarioEmail}`, finalPlanName);
-      localStorage.setItem("plano", finalPlanName); // Compatibilidade
+      localStorage.setItem("plano", finalPlanName);
       
       // Atualizar plano na sessão
       if (session) {

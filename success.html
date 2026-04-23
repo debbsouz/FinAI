@@ -77,14 +77,16 @@
     </div>
 
     <script>
-        // Recuperar plano do localStorage
-        const plan = localStorage.getItem('plano') || 'Mensal PRO';
-        document.getElementById('planDisplay').textContent = plan.toUpperCase();
+        // Recuperar plano do localStorage (Fonte única de verdade)
+        const savedPlan = localStorage.getItem('planoUsuario') || 'mensal';
+        const plan = savedPlan.charAt(0).toUpperCase() + savedPlan.slice(1) + (savedPlan === 'mensal' ? ' PRO' : '');
+        
+        document.getElementById('planDisplay').textContent = savedPlan.toUpperCase();
         document.getElementById('planName').textContent = plan;
 
         // Redirecionamento automático opcional
         setTimeout(() => {
-            // window.location.href = 'dashboard.html';
+            window.location.href = 'dashboard.html';
         }, 5000);
     </script>
 

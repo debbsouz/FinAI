@@ -165,7 +165,22 @@
           nav_financas: 'Finanças',
           nav_relatorios: 'Relatórios',
           nav_settings: 'Configurações',
-          btn_logout: 'Sair da conta'
+          btn_logout: 'Sair da conta',
+          plan_free_title: 'Grátis',
+          plan_monthly_title: 'Mensal PRO',
+          plan_annual_title: 'Anual',
+          plan_family_title: 'Familiar PREMIUM',
+          plan_btn_choose: 'Escolher',
+          plan_btn_subscribe: 'Assinar',
+          plan_btn_annual: 'Escolher Anual',
+          plan_btn_family: 'Assinar Família',
+          plan_modal_title: 'Planos Disponíveis',
+          plan_modal_subtitle: 'Escolha seu nível',
+          plan_current: 'Plano Atual',
+          plan_free_sidebar: 'Plano Grátis',
+          plan_pro_sidebar: 'Plano PRO',
+          plan_upgrade: 'Fazer upgrade',
+          plan_manage: 'Gerenciar plano'
         },
         en: {
           nav_title: 'Navigation',
@@ -173,7 +188,22 @@
           nav_financas: 'Finance',
           nav_relatorios: 'Reports',
           nav_settings: 'Settings',
-          btn_logout: 'Logout'
+          btn_logout: 'Logout',
+          plan_free_title: 'Free',
+          plan_monthly_title: 'Monthly PRO',
+          plan_annual_title: 'Annual',
+          plan_family_title: 'Family PREMIUM',
+          plan_btn_choose: 'Choose',
+          plan_btn_subscribe: 'Subscribe',
+          plan_btn_annual: 'Choose Annual',
+          plan_btn_family: 'Subscribe Family',
+          plan_modal_title: 'Available Plans',
+          plan_modal_subtitle: 'Choose your level',
+          plan_current: 'Current Plan',
+          plan_free_sidebar: 'Free Plan',
+          plan_pro_sidebar: 'PRO Plan',
+          plan_upgrade: 'Upgrade now',
+          plan_manage: 'Manage plan'
         },
         es: {
           nav_title: 'Navegación',
@@ -181,7 +211,22 @@
           nav_financas: 'Finanzas',
           nav_relatorios: 'Informes',
           nav_settings: 'Ajustes',
-          btn_logout: 'Cerrar sesión'
+          btn_logout: 'Cerrar sesión',
+          plan_free_title: 'Gratis',
+          plan_monthly_title: 'Mensual PRO',
+          plan_annual_title: 'Anual',
+          plan_family_title: 'Familiar PREMIUM',
+          plan_btn_choose: 'Elegir',
+          plan_btn_subscribe: 'Suscribir',
+          plan_btn_annual: 'Elegir Anual',
+          plan_btn_family: 'Suscribir Familia',
+          plan_modal_title: 'Planes Disponibles',
+          plan_modal_subtitle: 'Elige tu nivel',
+          plan_current: 'Plan Actual',
+          plan_free_sidebar: 'Plan Gratuito',
+          plan_pro_sidebar: 'Plan PRO',
+          plan_upgrade: 'Mejorar plan',
+          plan_manage: 'Gestionar plan'
         }
       };
 
@@ -220,6 +265,32 @@
       }
     }
 
+    function renderSidebarPlanCard() {
+      const plano = localStorage.getItem("planoUsuario") || "free";
+      const isPremium = plano.toLowerCase() !== "free";
+      
+      const planName = document.getElementById('sidebarPlanName');
+      const planStatusText = document.getElementById('sidebarStatusText');
+      const planBtnText = document.getElementById('sidebarPlanBtnText');
+      const planIcon = document.getElementById('sidebarPlanIcon');
+
+      if (planName) planName.textContent = isPremium ? "PRO" : "Grátis";
+      if (planStatusText) {
+        planStatusText.textContent = isPremium ? "Plano ativo" : "Básico";
+        planStatusText.className = isPremium ? "text-[9px] text-indigo-400/80 font-semibold" : "text-[9px] text-zinc-500 font-medium";
+      }
+      
+      if (planBtnText) {
+        planBtnText.textContent = isPremium ? "Gerenciar" : "Upgrade";
+      }
+      
+      if (planIcon) {
+        planIcon.innerHTML = isPremium ? '<i class="fas fa-crown"></i>' : '<i class="fas fa-shield-halved"></i>';
+        planIcon.className = isPremium ? "w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500 text-[10px] shadow-sm shadow-indigo-500/5 transition-all duration-300" : "w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-500 text-[10px] transition-all duration-300";
+      }
+    }
+
+
     function toggleNotification(type) {
       const toggle = document.getElementById(`toggle-${type}`);
       const dot = toggle.querySelector('.dot');
@@ -243,49 +314,29 @@
     function selectPlan(plan) {
       const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
       
-      // Salvar plano
-      localStorage.setItem(`plano_${usuarioEmail}`, plan);
-      if (plan !== 'Free') {
-        localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "true");
-      } else {
-        localStorage.setItem(`pagamento_confirmado_${usuarioEmail}`, "false");
+      // Se o plano for gratuito, ativa imediatamente
+      if (plan === 'Free') {
+        localStorage.setItem("planoUsuario", "free");
+        localStorage.setItem(`plano_${usuarioEmail}`, 'Free');
+        let session = JSON.parse(localStorage.getItem('session'));
+        if (session) {
+          session.plano = 'Free';
+          localStorage.setItem('session', JSON.stringify(session));
+        }
+        renderSidebarPlanCard();
+        
+        const btn = event.currentTarget.querySelector('span');
+        if (btn) btn.textContent = 'Selecionado!';
+        
+        setTimeout(() => location.reload(), 800);
+        return;
       }
-      
-      // Atualizar sessão
-      let session = JSON.parse(localStorage.getItem('session'));
-      if (session) {
-        session.plano = plan;
-        localStorage.setItem('session', JSON.stringify(session));
-      }
-      
-      // Destacar plano atual visualmente
-      updatePlanCards(plan);
-      
-      // Feedback suave em vez de alert
-      const btn = event.currentTarget.querySelector('span');
-      const originalText = btn.textContent;
-      btn.textContent = 'Selecionado!';
-      btn.classList.add('bg-emerald-500', 'text-white');
-      
-      setTimeout(() => {
-        location.reload();
-      }, 1000);
+
+      // Se for plano pago, redireciona para o checkout sem ativar
+      const planParam = plan.toLowerCase();
+      window.location.href = `checkout.html?plano=${planParam}`;
     }
 
-    function updatePlanCards(currentPlan) {
-      const plans = ['Free', 'Mensal', 'Anual', 'Familiar'];
-      plans.forEach(p => {
-        const card = document.getElementById(`plan-card-${p}`);
-        const badge = card.querySelector('.current-badge');
-        if (p === currentPlan) {
-          card.classList.add('border-indigo-500', 'ring-1', 'ring-indigo-500/50');
-          badge.classList.remove('hidden');
-        } else {
-          card.classList.remove('border-indigo-500', 'ring-1', 'ring-indigo-500/50');
-          badge.classList.add('hidden');
-        }
-      });
-    }
 
      function openPlanSelection() {
        const container = document.getElementById('planSelectionContainer');
@@ -406,25 +457,50 @@
           </a>
         </nav>
 
-         <!-- Premium Card -->
-         <div class="relative group animate-premium-in stagger-3">
-           <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-violet-600 rounded-2xl blur opacity-10 group-hover:opacity-30 transition duration-1000 group-hover:duration-200"></div>
-           <div class="relative sidebar-card space-y-4">
-             <div class="flex items-start justify-between">
-               <div class="w-10 h-10 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 border border-indigo-500/10 group-hover:scale-110 transition-transform duration-500">
-                 <i class="fas fa-crown"></i>
+         <!-- Componente de Plano Minimalista -->
+         <div id="sidebarPlanArea" class="mt-2 mb-8 group/plan cursor-pointer">
+           <div class="flex items-center justify-between px-4 py-4 rounded-2xl bg-white/[0.02] border border-white/[0.03] hover:bg-white/[0.04] hover:border-white/[0.08] transition-all duration-300 shadow-sm">
+             <div class="flex items-center gap-3">
+               <div id="sidebarPlanIcon" class="w-8 h-8 rounded-lg bg-zinc-800/50 flex items-center justify-center text-zinc-500 text-[10px] transition-all duration-300 group-hover/plan:scale-110">
+                 <i class="fas fa-shield-halved"></i>
                </div>
-               <span class="px-2 py-1 rounded-lg bg-indigo-500/10 text-indigo-400 text-[8px] font-black uppercase tracking-widest border border-indigo-500/20 animate-pulse-soft">Ativo</span>
+               <div class="space-y-0.5">
+                 <h3 id="sidebarPlanName" class="text-[11px] font-bold text-white/90 uppercase tracking-wider">Grátis</h3>
+                 <p id="sidebarStatusText" class="text-[9px] text-zinc-500 font-medium">Básico</p>
+               </div>
              </div>
-             <div>
-               <p class="text-xs font-black text-white mb-1">Plano FinAI Pro</p>
-               <p class="text-[10px] text-zinc-500 leading-relaxed">Acesso ilimitado às análises de inteligência artificial.</p>
-             </div>
-             <button onclick="abrirModal('planManagementModal')" class="w-full py-2.5 bg-indigo-500 hover:bg-indigo-400 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 shadow-lg shadow-indigo-500/20 active:scale-95">
-               Gerenciar Assinatura
+             
+             <button onclick="abrirModal('planManagementModal')" class="flex items-center gap-1 text-[10px] font-bold text-zinc-500 group-hover/plan:text-indigo-400 transition-colors">
+               <span id="sidebarPlanBtnText">Upgrade</span>
+               <i class="fas fa-arrow-right text-[7px] translate-y-[0.5px] transition-transform group-hover/plan:translate-x-0.5"></i>
              </button>
            </div>
+           
+           <script>
+             (function() {
+               const plano = localStorage.getItem("planoUsuario") || "free";
+               const isPremium = plano.toLowerCase() !== "free";
+               const nameEl = document.getElementById('sidebarPlanName');
+               const statusEl = document.getElementById('sidebarStatusText');
+               const btnTextEl = document.getElementById('sidebarPlanBtnText');
+               const iconEl = document.getElementById('sidebarPlanIcon');
+
+               if (isPremium) {
+                 if (nameEl) nameEl.textContent = "PRO";
+                 if (statusEl) {
+                   statusEl.textContent = "Plano ativo";
+                   statusEl.className = "text-[9px] text-indigo-400/80 font-semibold";
+                 }
+                 if (btnTextEl) btnTextEl.textContent = "Gerenciar";
+                 if (iconEl) {
+                   iconEl.innerHTML = '<i class="fas fa-crown"></i>';
+                   iconEl.className = "w-8 h-8 rounded-lg bg-indigo-500/10 flex items-center justify-center text-indigo-500 text-[10px] shadow-sm shadow-indigo-500/5 transition-all duration-300 group-hover/plan:scale-110";
+                 }
+               }
+             })();
+           </script>
          </div>
+
 
          <!-- Referral Block -->
          <div onclick="abrirModal('referralModal')" class="sidebar-card relative overflow-hidden group cursor-pointer active:scale-[0.98] animate-premium-in stagger-4">
@@ -570,8 +646,8 @@
               <div class="flex flex-col items-end">
                 <p id="userNameHeader" class="text-xs font-black text-white uppercase tracking-tight group-hover:text-indigo-400 transition-colors">Usuário</p>
                 <div class="flex items-center gap-1.5">
-                  <span class="w-1 h-1 rounded-full bg-indigo-500"></span>
-                  <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Plano Pro</p>
+                  <span id="headerPlanIndicator" class="w-1 h-1 rounded-full bg-indigo-500"></span>
+                  <p id="headerPlanName" class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest">Plano Pro</p>
                 </div>
               </div>
               <div id="userAvatarHeader" class="w-10 h-10 rounded-xl bg-gradient-to-br from-zinc-800 to-zinc-900 border border-white/5 flex items-center justify-center text-zinc-400 group-hover:border-indigo-500/50 group-hover:shadow-lg group-hover:shadow-indigo-500/10 transition-all duration-300">
@@ -1049,70 +1125,61 @@
   </div>
 
   <!-- Plan Management Modal -->
-  <div id="planManagementModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] items-center justify-center p-6 animate-fade-in">
-    <div class="w-full max-w-lg bg-[#111113] border border-white/5 rounded-[32px] overflow-hidden shadow-2xl relative animate-slide-up">
-      <button onclick="fecharModal('planManagementModal')" class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors">
+  <div id="planManagementModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] items-center justify-center p-4 md:p-6 animate-fade-in">
+    <div class="w-full max-w-4xl max-h-[90vh] bg-[#111113] border border-white/5 rounded-[32px] overflow-y-auto shadow-2xl relative animate-slide-up custom-scrollbar">
+      <button onclick="fecharModal('planManagementModal')" class="absolute top-6 right-6 text-zinc-500 hover:text-white transition-colors z-20">
         <i class="fas fa-times text-xl"></i>
       </button>
       
-      <div class="p-10 space-y-8">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 text-2xl border border-indigo-500/20">
-            <i class="fas fa-crown"></i>
+      <div class="p-6 md:p-10 space-y-6">
+        <!-- Topo: Info do Plano Atual -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white/[0.02] border border-white/5 p-6 rounded-3xl">
+          <div class="flex items-center gap-5">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-500/20 flex items-center justify-center text-indigo-400 text-2xl border border-indigo-500/20 shadow-xl shadow-indigo-500/5">
+              <i class="fas fa-crown"></i>
+            </div>
+            <div>
+              <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em] mb-0.5">Seu plano atual</p>
+              <h3 id="modalCurrentPlanName" class="text-xl font-black text-white tracking-tight">FinAI Pro</h3>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="w-1 h-1 rounded-full bg-emerald-500 animate-pulse"></span>
+                <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Assinatura Ativa</p>
+              </div>
+            </div>
           </div>
-          <div>
-            <h3 class="text-xl font-black text-white tracking-tight">FinAI Pro</h3>
-            <p class="text-zinc-500 text-xs">Sua assinatura está ativa e regular.</p>
+
+          <div class="flex gap-3">
+            <button onclick="openPlanSelection()" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all shadow-lg shadow-indigo-600/20 active:scale-95">
+              Alterar Plano
+            </button>
+            <button onclick="alert('Entre em contato com o suporte para cancelar')" class="px-6 py-3 bg-red-500/5 hover:bg-red-500/10 text-red-400 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all active:scale-95">
+              Cancelar
+            </button>
           </div>
-        </div>
-
-        <div class="p-6 rounded-2xl bg-white/[0.02] border border-white/5 space-y-4">
-          <h4 class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Benefícios Ativos</h4>
-          <ul class="space-y-3">
-            <li class="flex items-center gap-3 text-xs text-zinc-300">
-              <i class="fas fa-check text-emerald-500 text-[10px]"></i>
-              Consultoria ilimitada com IA
-            </li>
-            <li class="flex items-center gap-3 text-xs text-zinc-300">
-              <i class="fas fa-check text-emerald-500 text-[10px]"></i>
-              Exportação completa de dados
-            </li>
-            <li class="flex items-center gap-3 text-xs text-zinc-300">
-              <i class="fas fa-check text-emerald-500 text-[10px]"></i>
-              Suporte prioritário
-            </li>
-          </ul>
-        </div>
-
-        <div class="flex gap-4">
-          <button onclick="openPlanSelection()" class="flex-1 py-4 bg-white/5 hover:bg-white/10 text-white text-xs font-black uppercase tracking-widest rounded-xl transition-all">
-            Alterar Plano
-          </button>
-          <button onclick="alert('Entre em contato com o suporte para cancelar')" class="flex-1 py-4 text-red-400/60 hover:text-red-400 text-xs font-black uppercase tracking-widest rounded-xl transition-all">
-            Cancelar
-          </button>
         </div>
 
         <!-- Plan Selection Container -->
-        <div id="planSelectionContainer" class="hidden animate-fade-in pt-6 border-t border-white/5 space-y-6">
+        <div id="planSelectionContainer" class="hidden animate-fade-in pt-6 border-t border-white/10 space-y-6">
           <div class="flex items-center justify-between">
-            <h4 class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Planos Disponíveis</h4>
-            <span class="px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 text-[8px] font-bold uppercase tracking-tighter">Escolha o ideal</span>
+            <h4 class="text-[10px] font-black text-zinc-400 uppercase tracking-[0.2em]" data-i18n="plan_modal_title">Planos Disponíveis</h4>
+            <span class="px-3 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-[8px] font-black uppercase tracking-widest border border-indigo-500/20" data-i18n="plan_modal_subtitle">Escolha seu nível</span>
           </div>
+          
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Free Plan -->
-            <button onclick="selectPlan('Free')" id="plan-card-Free" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-indigo-500/30 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
+            <button onclick="selectPlan('Free')" id="plan-card-Free" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-white/20 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
               <div class="flex flex-col h-full justify-between gap-4">
                 <div>
                   <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-black text-white uppercase tracking-wider">Free</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest">Atual</div>
+                    <p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Essential</p>
+                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
                   </div>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed">Gestão básica para iniciantes no controle financeiro.</p>
+                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_free_title">Free</h4>
+                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Gestão básica para iniciantes no controle financeiro pessoal.</p>
                 </div>
-                <div>
-                  <p class="text-lg font-black text-white mb-3">Grátis</p>
-                  <span class="w-full py-2 flex items-center justify-center bg-white/5 group-hover:bg-indigo-500 group-hover:text-white text-zinc-400 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all">Escolher</span>
+                <div class="space-y-3">
+                  <p class="text-xl font-black text-white tracking-tighter">Grátis</p>
+                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-white group-hover:text-black text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_choose">Escolher</span>
                 </div>
               </div>
             </button>
@@ -1122,49 +1189,61 @@
               <div class="flex flex-col h-full justify-between gap-4">
                 <div>
                   <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-black text-white uppercase tracking-wider">Mensal</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest">Atual</div>
+                    <p class="text-[9px] font-black text-indigo-400 uppercase tracking-[0.2em]">Professional</p>
+                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
                   </div>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed">Acesso total à IA e relatórios estratégicos ilimitados.</p>
+                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_monthly_title">Mensal PRO</h4>
+                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Acesso total à IA estratégica e relatórios ilimitados.</p>
                 </div>
-                <div>
-                  <p class="text-lg font-black text-white mb-3">R$ 19,90<span class="text-[10px] text-zinc-500 font-bold">/mês</span></p>
-                  <span class="w-full py-2 flex items-center justify-center bg-white/5 group-hover:bg-indigo-500 group-hover:text-white text-zinc-400 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all">Escolher</span>
+                <div class="space-y-3">
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-xl font-black text-white tracking-tighter">R$ 19,90</span>
+                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/mês</span>
+                  </div>
+                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-indigo-600 group-hover:text-white text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_subscribe">Assinar</span>
                 </div>
               </div>
             </button>
 
             <!-- Annual Plan (Recommended) -->
-            <button onclick="selectPlan('Anual')" id="plan-card-Anual" class="group relative p-5 rounded-[24px] bg-indigo-500/5 border border-indigo-500/20 hover:border-indigo-500/50 hover:bg-indigo-500/10 text-left transition-all duration-300 active:scale-[0.98]">
-              <div class="absolute -top-3 left-4 px-3 py-1 bg-indigo-500 rounded-full text-[8px] font-black text-white uppercase tracking-widest shadow-lg shadow-indigo-500/20">Recomendado</div>
+            <button onclick="selectPlan('Anual')" id="plan-card-Anual" class="group relative p-5 rounded-[24px] bg-indigo-500/[0.03] border border-indigo-500/20 hover:border-indigo-500/50 hover:bg-indigo-500/[0.06] text-left transition-all duration-300 active:scale-[0.98] shadow-2xl shadow-indigo-500/5">
+              <div class="absolute -top-3 left-6 px-4 py-1 bg-indigo-600 rounded-full text-[8px] font-black text-white uppercase tracking-[0.2em] shadow-xl shadow-indigo-600/30 border border-white/10">Recomendado</div>
               <div class="flex flex-col h-full justify-between gap-4">
                 <div>
                   <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-black text-white uppercase tracking-wider">Anual</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest">Atual</div>
+                    <p class="text-[9px] font-black text-indigo-400 uppercase tracking-[0.2em]">Best Value</p>
+                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
                   </div>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed">Economize 20% com o plano anual e tenha acesso vitalício.</p>
+                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_annual_title">Anual</h4>
+                  <p class="text-[9px] text-zinc-400 leading-relaxed font-medium">Economize 20% com o plano anual e tenha acesso completo.</p>
                 </div>
-                <div>
-                  <p class="text-lg font-black text-white mb-3">R$ 197,00<span class="text-[10px] text-zinc-500 font-bold">/ano</span></p>
-                  <span class="w-full py-2 flex items-center justify-center bg-indigo-500 text-white text-[9px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-indigo-500/20">Escolher Plano</span>
+                <div class="space-y-3">
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-xl font-black text-white tracking-tighter">R$ 197,00</span>
+                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/ano</span>
+                  </div>
+                  <span class="w-full py-2.5 flex items-center justify-center bg-indigo-600 text-white text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_annual">Escolher Anual</span>
                 </div>
               </div>
             </button>
 
             <!-- Family Plan -->
-            <button onclick="selectPlan('Familiar')" id="plan-card-Familiar" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-indigo-500/30 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
+            <button onclick="selectPlan('Familiar')" id="plan-card-Familiar" class="group relative p-5 rounded-[24px] bg-white/[0.02] border border-white/5 hover:border-emerald-500/30 hover:bg-white/[0.04] text-left transition-all duration-300 active:scale-[0.98]">
               <div class="flex flex-col h-full justify-between gap-4">
                 <div>
                   <div class="flex items-center justify-between mb-2">
-                    <p class="text-xs font-black text-white uppercase tracking-wider">Familiar</p>
-                    <div class="current-badge hidden px-2 py-0.5 rounded-md bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest">Atual</div>
+                    <p class="text-[9px] font-black text-emerald-400 uppercase tracking-[0.2em]">Family Access</p>
+                    <div class="current-badge hidden px-2 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-400 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">Plano Atual</div>
                   </div>
-                  <p class="text-[9px] text-zinc-500 leading-relaxed">Conecte até 4 membros da família na mesma conta Pro.</p>
+                  <h4 class="text-base font-black text-white tracking-tight mb-1" data-i18n="plan_family_title">Familiar PREMIUM</h4>
+                  <p class="text-[9px] text-zinc-500 leading-relaxed font-medium">Conecte até 4 membros da família na mesma conta Pro.</p>
                 </div>
-                <div>
-                  <p class="text-lg font-black text-white mb-3">R$ 49,90<span class="text-[10px] text-zinc-500 font-bold">/mês</span></p>
-                  <span class="w-full py-2 flex items-center justify-center bg-white/5 group-hover:bg-indigo-500 group-hover:text-white text-zinc-400 text-[9px] font-black uppercase tracking-widest rounded-xl transition-all">Escolher</span>
+                <div class="space-y-3">
+                  <div class="flex items-baseline gap-1">
+                    <span class="text-xl font-black text-white tracking-tighter">R$ 49,90</span>
+                    <span class="text-zinc-500 text-[9px] font-black uppercase tracking-widest">/mês</span>
+                  </div>
+                  <span class="w-full py-2.5 flex items-center justify-center bg-white/5 group-hover:bg-emerald-600 group-hover:text-white text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] rounded-xl transition-all" data-i18n="plan_btn_family">Assinar Família</span>
                 </div>
               </div>
             </button>
@@ -1218,80 +1297,26 @@
       const savedLang = localStorage.getItem('finai_language') || 'pt';
       changeLanguage(savedLang);
       
-      // Sincronizar status PRO do localStorage
-      const usuarioEmail = localStorage.getItem("usuario_logado") || "default";
-      const pagamentoConfirmado = localStorage.getItem(`pagamento_confirmado_${usuarioEmail}`) === "true";
-      let session = JSON.parse(localStorage.getItem('session'));
-      
-      if (pagamentoConfirmado && session && session.plano !== 'Pro') {
-        session.plano = 'Pro';
-        localStorage.setItem('session', JSON.stringify(session));
-        localStorage.setItem('usuario', JSON.stringify(session));
-      }
-
+      // Sincronizar dados do usuário
+      const session = JSON.parse(localStorage.getItem('session'));
       if (session) {
-        const isPro = session.plano === 'Pro' || session.plano === 'Mensal' || session.plano === 'Anual' || session.plano === 'Familiar';
-        
         document.getElementById('userName').textContent = session.nome;
         document.getElementById('userInitials').textContent = getInitials(session.nome);
-        
-        const badge = document.getElementById('userPlanBadge');
-        badge.textContent = session.plano || 'Free';
+        document.getElementById('userNameHeader').textContent = session.nome;
         
         const settingsEmail = document.getElementById('settingsEmail');
-        if (settingsEmail) settingsEmail.value = usuarioEmail;
-        
-        if (isPro) {
-          badge.classList.remove('bg-zinc-900', 'text-zinc-600', 'border-zinc-800');
-          badge.classList.add('bg-violet-600/20', 'text-violet-400', 'border-violet-500/30');
-          document.getElementById('upgradeBtn').classList.add('hidden');
-          
-          const topBadge = document.getElementById('topPlanBadge');
-          if (topBadge) topBadge.classList.remove('hidden');
+        if (settingsEmail) settingsEmail.value = session.email;
 
-          const analysisSection = document.getElementById('section-insights');
-          if (analysisSection) {
-            analysisSection.classList.add('pro-feature-glow');
-          }
-        } else {
-          // Bloqueio visual para não-Pro
-          const insightsContent = document.getElementById('section-insights');
-          if (insightsContent) {
-            const overlay = document.createElement('div');
-            overlay.className = 'absolute inset-0 bg-black/60 backdrop-blur-[2px] z-10 flex flex-col items-center justify-center text-center p-6 rounded-2xl';
-            overlay.innerHTML = `
-              <div class="w-16 h-16 bg-violet-600/20 rounded-2xl flex items-center justify-center mb-4 border border-violet-500/30">
-                <i class="fas fa-lock text-2xl text-violet-500"></i>
-              </div>
-              <h3 class="text-xl font-bold text-white mb-2">Recurso Premium</h3>
-              <p class="text-zinc-400 text-sm mb-6 max-w-[280px]">O Relatório Estratégico com IA está disponível apenas para usuários <strong>FinAI Pro</strong>.</p>
-              <button onclick="toggleUpgradeModal()" class="bg-violet-600 hover:bg-violet-500 text-white px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-violet-600/20">
-                Fazer Upgrade Agora
-              </button>
-            `;
-            insightsContent.style.position = 'relative';
-            insightsContent.appendChild(overlay);
-          }
-
-          // Restrição de Notificações para Usuários Free
-          const lockAlertas = document.getElementById('lock-alertas');
-          const lockRelatorios = document.getElementById('lock-relatorios');
-          const toggleAlertas = document.getElementById('toggle-alertas');
-          const toggleRelatorios = document.getElementById('toggle-relatorios');
-
-          if (lockAlertas) lockAlertas.classList.remove('hidden');
-          if (lockRelatorios) lockRelatorios.classList.remove('hidden');
-          
-          if (toggleAlertas) {
-            toggleAlertas.style.pointerEvents = 'none';
-            toggleAlertas.style.opacity = '0.5';
-          }
-          if (toggleRelatorios) {
-            toggleRelatorios.style.pointerEvents = 'none';
-            toggleRelatorios.style.opacity = '0.5';
-          }
-        }
+        // Atualizar card de plano na sidebar
+        renderSidebarPlanCard();
       }
+
+      // Escutar mudanças no localStorage para atualização automática (Sincronização entre abas)
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'planoUsuario') {
+          renderSidebarPlanCard();
+        }
+      });
     });
   </script>
 </body>
