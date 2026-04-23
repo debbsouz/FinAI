@@ -686,74 +686,55 @@
       <div class="p-6 md:p-12 max-w-7xl mx-auto space-y-12 animate-fade-in">
         
         <!-- Summary Cards -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <i class="fas fa-wallet text-4xl text-violet-500"></i>
+              <i class="fas fa-wallet text-3xl text-violet-500"></i>
             </div>
-            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Volume de Despesas</p>
+            <p class="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3 group-hover:text-zinc-400 transition-colors">Volume de Despesas</p>
             <div class="flex items-end justify-between">
-              <h3 id="cardTotalGasto" class="text-4xl font-black text-white tracking-tighter">R$ 0,00</h3>
-              <span id="statusGasto" class="hidden text-[9px] font-black uppercase px-2 py-1 rounded-md bg-zinc-900 text-zinc-500 tracking-tighter border border-zinc-800"></span>
+              <h3 id="cardTotalGasto" class="text-3xl font-black text-white tracking-tighter">R$ 0,00</h3>
+              <span id="statusGasto" class="hidden text-[8px] font-black uppercase px-2 py-1 rounded-md bg-zinc-900 text-zinc-500 tracking-tighter border border-zinc-800"></span>
             </div>
           </div>
           
-          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
+          <div class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <i class="fas fa-piggy-bank text-4xl text-violet-500"></i>
+              <i class="fas fa-piggy-bank text-3xl text-violet-500"></i>
             </div>
-            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Saldo Disponível</p>
-            <div class="flex flex-col gap-4">
-              <h3 id="cardSaldoDisponivel" class="text-4xl font-black text-white tracking-tighter">R$ 0,00</h3>
+            <p class="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3 group-hover:text-zinc-400 transition-colors">Saldo Disponível</p>
+            <div class="flex flex-col gap-3">
+              <h3 id="cardSaldoDisponivel" class="text-3xl font-black text-white tracking-tighter">R$ 0,00</h3>
               <div class="flex items-center gap-2">
-                <span class="text-[9px] font-bold text-zinc-600 uppercase">Saldo Inicial:</span>
-                <input id="inputSaldoInicial" type="number" onchange="alterarSaldoInicial(this.value)" class="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-[10px] w-20 focus:outline-none focus:border-violet-500/50 text-white font-bold" placeholder="0.00">
+                <span class="text-[8px] font-bold text-zinc-600 uppercase">Inicial:</span>
+                <input id="inputSaldoInicial" type="number" onchange="alterarSaldoInicial(this.value)" class="bg-zinc-900 border border-zinc-800 rounded px-2 py-1 text-[9px] w-16 focus:outline-none focus:border-violet-500/50 text-white font-bold" placeholder="0.00">
               </div>
-              <div class="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+              <div class="h-1 bg-zinc-900 rounded-full overflow-hidden">
                 <div id="barSaldoDisponivel" class="h-full bg-violet-600 transition-all duration-1000 shadow-[0_0_10px_rgba(139,92,246,0.5)]" style="width: 100%"></div>
               </div>
             </div>
           </div>
 
-          <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
+          <div class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 hover:border-violet-500/30 transition-all shadow-sm group relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-              <i class="fas fa-heartbeat text-4xl text-violet-500"></i>
+              <i class="fas fa-heartbeat text-3xl text-violet-500"></i>
             </div>
-            <p class="text-zinc-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 group-hover:text-zinc-400 transition-colors">Score Financeiro</p>
-            <div class="space-y-4">
+            <p class="text-zinc-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3 group-hover:text-zinc-400 transition-colors">Score Financeiro</p>
+            <div class="space-y-3">
               <div class="flex items-baseline gap-2">
-                <h3 id="cardScoreLocal" class="text-5xl font-black text-violet-500 tracking-tighter transition-all duration-500">0</h3>
-                <span class="text-zinc-600 font-bold text-xs">/ 100</span>
+                <h3 id="cardScoreLocal" class="text-4xl font-black text-violet-500 tracking-tighter transition-all duration-500">0</h3>
+                <span class="text-zinc-600 font-bold text-[10px]">/ 100</span>
               </div>
-              <div class="h-1.5 bg-zinc-900 rounded-full overflow-hidden">
+              <div class="h-1 bg-zinc-900 rounded-full overflow-hidden">
                 <div id="barScoreLocal" class="h-full bg-violet-500 transition-all duration-1000" style="width: 0%"></div>
               </div>
-              <p id="textScoreLocal" class="text-[10px] text-zinc-500 font-medium italic leading-tight">Adicione dados para calcular seu score.</p>
+              <p id="textScoreLocal" class="text-[9px] text-zinc-500 font-medium italic leading-tight">Adicione dados para calcular.</p>
             </div>
           </div>
         </section>
 
-        <!-- AI Insight Card -->
-        <section id="section-ai" class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 shadow-xl relative overflow-hidden group">
-          <div class="relative z-10">
-            <div class="flex items-center gap-3 mb-4">
-              <div class="w-6 h-6 rounded-lg bg-violet-600/10 flex items-center justify-center border border-violet-500/20">
-                <i class="fas fa-sparkles text-violet-400 text-[10px]"></i>
-              </div>
-              <h4 class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Análise Financeira</h4>
-            </div>
-            
-            <div id="analiseIAContainer" class="space-y-3">
-              <p id="analiseIAInsight" class="text-base font-medium text-zinc-200 tracking-tight">
-                Adicione dados para gerar sua análise.
-              </p>
-              <div id="analiseIAAlerta" class="hidden flex items-center gap-2 px-3 py-2 rounded-xl bg-red-500/10 border border-red-500/20">
-                <i class="fas fa-exclamation-triangle text-red-400 text-[10px]"></i>
-                <p class="text-xs font-bold text-red-400 tracking-tight"></p>
-              </div>
-            </div>
-          </div>
-        </section>
+
+
 
         <!-- Family Management Section (Simulated) -->
         <section id="familyManagementSection" class="hidden bg-[#111113] p-8 rounded-2xl border border-emerald-500/20 shadow-xl relative overflow-hidden group">
@@ -788,75 +769,76 @@
 
         <div class="grid grid-cols-1 xl:grid-cols-12 gap-12">
           <!-- Coluna Esquerda: Cadastro e Gráficos -->
-          <div class="xl:col-span-4 space-y-12">
-            <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 card-hover">
-              <h4 class="text-[10px] font-black text-zinc-500 mb-8 uppercase tracking-[0.2em]">Novo Registro</h4>
-              <div class="space-y-6">
-                <div class="space-y-2">
-                  <label class="text-[9px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Descrição</label>
-                  <input type="text" id="descricao" placeholder="Ex: Assinatura Cloud" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 focus:outline-none transition-all text-xs text-zinc-200">
+          <div class="xl:col-span-4 space-y-6">
+            <div class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 card-hover">
+              <h4 class="text-[9px] font-black text-zinc-500 mb-6 uppercase tracking-[0.2em]">Novo Registro</h4>
+              <div class="space-y-4">
+                <div class="space-y-1.5">
+                  <label class="text-[8px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Descrição</label>
+                  <input type="text" id="descricao" placeholder="Ex: Assinatura Cloud" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 focus:outline-none transition-all text-[11px] text-zinc-200">
                 </div>
-                <div class="space-y-2">
-                  <label class="text-[9px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Valor Nominal</label>
+                <div class="space-y-1.5">
+                  <label class="text-[8px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Valor Nominal</label>
                   <div class="relative">
-                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-zinc-600">R$</span>
-                    <input type="number" id="valor" placeholder="0.00" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl pl-12 pr-5 py-4 focus:outline-none transition-all text-xs text-zinc-200 font-bold">
+                    <span class="absolute left-4 top-1/2 -translate-y-1/2 text-[9px] font-black text-zinc-600">R$</span>
+                    <input type="number" id="valor" placeholder="0.00" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl pl-10 pr-4 py-3 focus:outline-none transition-all text-[11px] text-zinc-200 font-bold">
                   </div>
                 </div>
-                <div class="space-y-2">
-                  <label class="text-[9px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Data da Transação</label>
-                  <input type="date" id="data" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-5 py-4 focus:outline-none transition-all text-xs text-zinc-500">
+                <div class="space-y-1.5">
+                  <label class="text-[8px] font-black text-zinc-600 uppercase ml-1 tracking-widest">Data da Transação</label>
+                  <input type="date" id="data" class="w-full bg-zinc-900/50 border border-zinc-800 rounded-xl px-4 py-3 focus:outline-none transition-all text-[11px] text-zinc-500">
                 </div>
-                <button onclick="adicionarGasto()" class="btn-primary w-full py-4 rounded-xl text-xs uppercase tracking-widest font-black mt-4">Confirmar Registro</button>
+                <button onclick="adicionarGasto()" class="btn-primary w-full py-3.5 rounded-xl text-[10px] uppercase tracking-widest font-black mt-2">Confirmar Registro</button>
               </div>
             </div>
 
-            <div class="bg-[#111113] p-8 rounded-2xl border border-zinc-800 card-hover">
-              <h4 class="text-[10px] font-black text-zinc-500 mb-8 uppercase tracking-[0.2em]">Composição de Gastos</h4>
-              <div class="h-64"><canvas id="pieChart"></canvas></div>
+            <div class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 card-hover">
+              <h4 class="text-[9px] font-black text-zinc-500 mb-6 uppercase tracking-[0.2em]">Composição de Gastos</h4>
+              <div class="h-48 max-w-[200px] mx-auto"><canvas id="pieChart"></canvas></div>
             </div>
           </div>
 
           <!-- Coluna Direita: Insights e Lista -->
-          <div class="xl:col-span-8 space-y-12">
+          <div class="xl:col-span-8 space-y-6">
             <!-- Relatório Estratégico -->
-            <section id="section-insights" class="bg-[#111113] p-10 rounded-2xl border border-zinc-800 shadow-xl overflow-hidden relative card-hover">
-              <div class="flex items-center justify-between mb-8">
+            <section id="section-insights" class="bg-[#111113] p-6 rounded-2xl border border-zinc-800 shadow-xl overflow-hidden relative card-hover">
+              <div class="flex items-center justify-between mb-4">
                 <div>
-                  <h2 class="text-2xl font-bold text-white tracking-tight">Análise Preditiva</h2>
-                  <p class="text-xs text-zinc-500 mt-1">Diagnóstico avançado baseado em comportamento de consumo</p>
+                  <h2 class="text-lg font-bold text-white tracking-tight">Análise Preditiva</h2>
+                  <p class="text-[10px] text-zinc-500">Diagnóstico inteligente baseado em consumo</p>
                 </div>
-                <button onclick="gerarRelatorio()" class="btn-secondary px-6 py-3 rounded-xl text-sm">Gerar Relatório</button>
+                <button onclick="gerarRelatorio()" class="btn-secondary px-4 py-2 rounded-xl text-[10px]">Gerar Relatório</button>
               </div>
 
-              <div id="relatorio-estrategico" class="min-h-[120px] bg-zinc-900/30 rounded-2xl border border-zinc-800/50 p-8">
-                <p id="diagnostico" class="text-zinc-500 text-xs font-medium text-center leading-relaxed">Selecione "Gerar Relatório" para iniciar o processamento dos dados transacionais.</p>
+              <div id="relatorio-estrategico" class="min-h-[80px] bg-zinc-900/30 rounded-2xl border border-zinc-800/50 p-4">
+                <p id="diagnostico" class="text-zinc-500 text-[10px] font-medium text-center leading-relaxed">Selecione "Gerar Relatório" para processar dados.</p>
               </div>
 
-              <div class="mt-8 flex gap-4">
-                <input id="perguntaConsulta" type="text" placeholder="Digite sua dúvida financeira..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-6 py-4 focus:outline-none text-sm text-zinc-200 transition-all">
-                <button onclick="enviarConsulta()" class="btn-primary px-8 rounded-xl text-sm">Consultar</button>
+              <div class="mt-4 flex gap-2">
+                <input id="perguntaConsulta" type="text" placeholder="Dúvida financeira..." class="flex-1 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 focus:outline-none text-[10px] text-zinc-200 transition-all">
+                <button onclick="enviarConsulta()" class="btn-primary px-5 rounded-xl text-[10px]">Consultar</button>
               </div>
             </section>
 
+
             <!-- Gastos Table -->
             <section id="section-gastos" class="bg-[#111113] rounded-2xl border border-zinc-800 overflow-hidden">
-              <div class="p-8 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/20">
-                <h4 class="text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Log de Transações</h4>
-                <div class="flex gap-4 items-center">
-                  <label class="text-[10px] font-bold text-zinc-600 uppercase">Teto de Gastos:</label>
-                  <input id="orcamentoMensal" type="number" onchange="alterarOrcamento(this.value)" class="bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2 text-xs w-32 focus:outline-none focus:border-violet-500/50 text-white font-bold" placeholder="0.00">
+              <div class="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/20">
+                <h4 class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.2em]">Log de Transações</h4>
+                <div class="flex gap-3 items-center">
+                  <label class="text-[9px] font-bold text-zinc-600 uppercase">Teto:</label>
+                  <input id="orcamentoMensal" type="number" onchange="alterarOrcamento(this.value)" class="bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 text-[11px] w-24 focus:outline-none focus:border-violet-500/50 text-white font-bold" placeholder="0.00">
                 </div>
               </div>
               <div class="overflow-x-auto">
-                <table class="w-full text-left text-sm">
-                  <thead class="bg-zinc-900/80 text-zinc-500 font-bold uppercase text-[9px] tracking-[0.2em] border-b border-zinc-800">
+                <table class="w-full text-left text-[11px]">
+                  <thead class="bg-zinc-900/80 text-zinc-500 font-bold uppercase text-[8px] tracking-[0.2em] border-b border-zinc-800">
                     <tr>
-                      <th class="px-8 py-5">Identificação</th>
-                      <th class="px-8 py-5">Classificação</th>
-                      <th class="px-8 py-5">Data</th>
-                      <th class="px-8 py-5 text-right">Valor Nominal</th>
-                      <th class="px-8 py-5 text-center">Operação</th>
+                      <th class="px-6 py-4">Identificação</th>
+                      <th class="px-6 py-4">Classificação</th>
+                      <th class="px-6 py-4">Data</th>
+                      <th class="px-6 py-4 text-right">Valor</th>
+                      <th class="px-6 py-4 text-center">Operação</th>
                     </tr>
                   </thead>
                   <tbody id="listaGastos" class="divide-y divide-zinc-800/50">
@@ -866,56 +848,63 @@
               </div>
             </section>
 
-            <!-- Seção WhatsApp Pro -->
-            <section id="section-whatsapp-pro" class="hidden bg-[#111113] p-10 rounded-2xl border border-zinc-800 shadow-xl overflow-hidden relative card-hover animate-fade-in">
-              <div class="absolute top-0 right-0 p-8 opacity-5">
-                <i class="fab fa-whatsapp text-7xl text-emerald-500"></i>
-              </div>
-              
-              <div class="flex flex-col md:flex-row gap-10">
-                <div class="flex-1 space-y-6">
-                  <div>
-                    <h2 class="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                      Notificações inteligentes
-                      <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest border border-emerald-500/20">Pro Feature</span>
-                    </h2>
-                    <p class="text-xs text-zinc-500 mt-2 leading-relaxed">Receba análises automáticas e alertas estratégicos diretamente no seu WhatsApp.</p>
-                  </div>
 
-                  <div id="whatsappStatusArea" class="space-y-4">
-                    <button id="btnAtivarWhatsapp" onclick="ativarWhatsapp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-8 py-4 rounded-xl text-xs uppercase tracking-widest transition-all active:scale-[0.98] flex items-center gap-3 shadow-lg shadow-emerald-600/10">
-                      <i class="fab fa-whatsapp text-lg"></i>
-                      <span>Ativar notificações</span>
-                    </button>
-                    <p id="whatsappFeedback" class="hidden text-[10px] text-emerald-400 font-bold animate-fade-in flex items-center gap-2">
-                      <i class="fas fa-check-circle"></i>
-                      Notificações ativadas com sucesso
-                    </p>
-                  </div>
-                </div>
+             <!-- Seção WhatsApp Pro -->
+             <section id="section-whatsapp-pro" class="hidden bg-[#111113] p-8 rounded-2xl border border-indigo-500/20 shadow-xl overflow-hidden relative card-hover animate-fade-in">
+               <div id="pro-lock-overlay" class="hidden absolute inset-0 bg-[#09090b]/80 backdrop-blur-[2px] z-20 flex flex-col items-center justify-center text-center p-6">
+                 <div class="w-10 h-10 bg-indigo-500/20 rounded-xl flex items-center justify-center mb-3 border border-indigo-500/30">
+                   <i class="fas fa-lock text-indigo-400"></i>
+                 </div>
+                 <h4 class="text-sm font-bold text-white mb-1">Recurso PRO</h4>
+                 <p class="text-zinc-500 text-[10px] mb-4 max-w-[200px]">As notificações inteligentes via WhatsApp estão disponíveis apenas para assinantes.</p>
+                 <button onclick="window.location.href='plans.html'" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg shadow-indigo-600/20">
+                   Conhecer Planos
+                 </button>
+               </div>
+               
+               <div class="absolute top-0 right-0 p-6 opacity-5">
+                 <i class="fab fa-whatsapp text-6xl text-emerald-500"></i>
+               </div>
+               
+               <div class="flex flex-col md:flex-row gap-8 relative z-10">
+                 <div class="flex-1 space-y-4">
+                   <div>
+                     <h2 class="text-xl font-bold text-white tracking-tight flex items-center gap-2">
+                       Notificações inteligentes
+                       <span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[7px] font-black uppercase tracking-widest border border-emerald-500/20">PRO</span>
+                     </h2>
+                     <p class="text-[11px] text-zinc-500 mt-1 leading-relaxed">Receba análises automáticas e alertas estratégicos diretamente no seu WhatsApp.</p>
+                   </div>
 
-                <div class="w-full md:w-72 space-y-4">
-                  <p class="text-[9px] font-black text-zinc-600 uppercase tracking-widest ml-1">Simulação de Mensagens</p>
-                  <div class="space-y-3">
-                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
-                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
-                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • Hoje</p>
-                      "Relatório semanal enviado! Seu score subiu 5 pontos."
-                    </div>
-                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
-                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
-                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • Ontem</p>
-                      "Detectamos aumento em alimentação. Deseja revisar?"
-                    </div>
-                    <div class="bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl text-[11px] text-zinc-400 leading-tight relative overflow-hidden group">
-                      <div class="absolute left-0 top-0 bottom-0 w-1 bg-violet-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
-                      <p class="font-bold text-zinc-300 mb-1">FinAI Bot • 2 dias</p>
-                      "Sugestão de economia disponível: Assinatura não utilizada."
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
+                   <div id="whatsappStatusArea" class="space-y-3">
+                     <button id="btnAtivarWhatsapp" onclick="ativarWhatsapp()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-black px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all active:scale-[0.98] flex items-center gap-2 shadow-lg shadow-emerald-600/10">
+                       <i class="fab fa-whatsapp text-base"></i>
+                       <span>Ativar notificações</span>
+                     </button>
+                     <p id="whatsappFeedback" class="hidden text-[9px] text-emerald-400 font-bold animate-fade-in flex items-center gap-2">
+                       <i class="fas fa-check-circle"></i>
+                       Notificações ativadas com sucesso
+                     </p>
+                   </div>
+                 </div>
+
+                 <div class="w-full md:w-64 space-y-3">
+                   <p class="text-[8px] font-black text-zinc-600 uppercase tracking-widest ml-1">Simulação de Mensagens</p>
+                   <div class="space-y-2">
+                     <div class="bg-zinc-900/50 border border-zinc-800 p-3 rounded-xl text-[10px] text-zinc-400 leading-tight relative overflow-hidden group">
+                       <div class="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                       <p class="font-bold text-zinc-300 mb-0.5">FinAI Bot • Hoje</p>
+                       "Relatório semanal enviado! Seu score subiu 5 pontos."
+                     </div>
+                     <div class="bg-zinc-900/50 border border-zinc-800 p-3 rounded-xl text-[10px] text-zinc-400 leading-tight relative overflow-hidden group">
+                       <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500 opacity-30 group-hover:opacity-100 transition-opacity"></div>
+                       <p class="font-bold text-zinc-300 mb-0.5">FinAI Bot • Ontem</p>
+                       "Detectamos aumento em alimentação. Deseja revisar?"
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </section>
           </div>
         </div>
 
@@ -1176,12 +1165,31 @@
 
         // Atualizar card de plano na sidebar
         renderSidebarPlanCard();
+
+        // Bloqueio de Recursos PRO (Dashboard)
+        const plano = localStorage.getItem("planoUsuario") || "free";
+        const isFree = plano.toLowerCase() === "free";
+        const lockOverlay = document.getElementById('pro-lock-overlay');
+        const sectionWhatsApp = document.getElementById('section-whatsapp-pro');
+
+        if (sectionWhatsApp) {
+          sectionWhatsApp.classList.remove('hidden');
+          if (isFree && lockOverlay) {
+            lockOverlay.classList.remove('hidden');
+          }
+        }
       }
 
       // Escutar mudanças no localStorage para atualização automática (Sincronização entre abas)
       window.addEventListener('storage', (e) => {
         if (e.key === 'planoUsuario') {
           renderSidebarPlanCard();
+          
+          const isFree = (e.newValue || 'free').toLowerCase() === 'free';
+          const lockOverlay = document.getElementById('pro-lock-overlay');
+          if (lockOverlay) {
+            lockOverlay.classList.toggle('hidden', !isFree);
+          }
         }
       });
     });

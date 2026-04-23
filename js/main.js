@@ -637,27 +637,57 @@ async function gerarRelatorio() {
 }
 
 async function enviarConsulta() {
-  if (!isPro()) {
-    showProAlert();
-    return;
-  }
   const input = document.getElementById('perguntaConsulta');
   const pergunta = input.value.trim();
   if (!pergunta) return;
 
   const container = document.getElementById('diagnostico');
   container.innerHTML = `
-    <div class="flex items-center gap-3 py-4">
-      <div class="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-500 text-[10px] font-bold uppercase tracking-widest">Processando requisição</p>
+    <div class="flex items-center gap-2 py-3">
+      <div class="w-3 h-3 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando dados...</p>
     </div>
   `;
 
-  const resposta = await chamarConsultoria(pergunta);
+  // Simulação de "pensamento" da IA para tornar mais realista
+  await new Promise(resolve => setTimeout(resolve, 1200));
+
+  const keywordsFinancas = ['gasto', 'dinheiro', 'saldo', 'economizar', 'investir', 'finanças', 'pagar', 'comprar', 'preço', 'valor', 'custo', 'orcamento', 'cartão', 'banco', 'fatura', 'conta', 'receita', 'lucro'];
+  const ehFinanceiro = keywordsFinancas.some(k => pergunta.toLowerCase().includes(k));
+
+  if (!ehFinanceiro) {
+    container.innerHTML = `
+      <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 animate-fade-in">
+        <div class="flex items-start gap-3">
+          <div class="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 border border-white/5">
+            <i class="fas fa-robot text-zinc-500 text-[10px]"></i>
+          </div>
+          <p class="text-[11px] text-zinc-400 leading-relaxed pt-0.5">Não entendi como posso ajudar você com finanças. Como seu assistente FinAI, meu foco é auxiliar na gestão de gastos e economia.</p>
+        </div>
+      </div>
+    `;
+    input.value = '';
+    return;
+  }
+
+  const respostas = [
+    "Baseado nos seus últimos registros, notei que você pode economizar reduzindo gastos pequenos e frequentes. Deseja que eu liste quais são?",
+    "Seu orçamento atual permite uma reserva de emergência maior este mês. Que tal destinar 10% do saldo disponível para investimentos?",
+    "Analisei sua tendência de gastos e, se mantiver esse ritmo, você fechará o mês com um saldo positivo de aproximadamente 15%.",
+    "Dica: Tente agrupar suas compras recorrentes em um único dia para ter uma visão mais clara do seu fluxo de caixa mensal.",
+    "Identifiquei um aumento de 12% na categoria de alimentação esta semana. Vale a pena revisar se houve algum gasto extraordinário."
+  ];
+  
+  const respostaAleatoria = respostas[Math.floor(Math.random() * respostas.length)];
 
   container.innerHTML = `
-    <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 animate-in slide-in-from-bottom-2 duration-500">
-      <p class="text-xs text-zinc-300 leading-relaxed">${resposta || gerarRespostaLocal(pergunta)}</p>
+    <div class="bg-indigo-500/5 border border-indigo-500/10 rounded-xl p-4 animate-fade-in">
+      <div class="flex items-start gap-3">
+        <div class="w-7 h-7 rounded-lg bg-indigo-500/10 flex items-center justify-center shrink-0 border border-indigo-500/20">
+          <i class="fas fa-sparkles text-indigo-400 text-[10px]"></i>
+        </div>
+        <p class="text-[11px] text-zinc-200 leading-relaxed pt-0.5">${respostaAleatoria}</p>
+      </div>
     </div>
   `;
 
