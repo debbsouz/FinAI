@@ -1,0 +1,305 @@
+[33mcommit 6eb4cf7bfb7c1d06f02203e31a3d2daf218149da[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mdevelop[m[33m)[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 20:24:19 2026 -0300
+
+    refatora sidebar do FinAI para design SaaS mais limpo e funcional, removendo ações técnicas, reorganizando navegação principal (Dashboard, Finanças, Relatórios, Configurações), adicionando card premium de conta com status e gerenciamento de assinatura, e melhorando hierarquia visual com seções de apoio e layout minimalista
+
+[33mcommit cee84ef5d6d7793663724119c8a6a9e9f0e22ac5[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 20:05:20 2026 -0300
+
+    Removi o botão Novo Gasto do menu de Ações Rápidas no header.
+
+[33mcommit eea643f8f26a0d4e8f895cb01b378ee9977a98ad[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 20:03:30 2026 -0300
+
+    ultimos ajustes no header com botão de notificações e ações rápidas
+
+[33mcommit 3134d8fbc5887cb9b023ae9a5553d10aef743f7d[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 19:50:07 2026 -0300
+
+    simplifica header com foco em clareza e padrão SaaS
+
+[33mcommit 13c8d935f6dd200da802d856a14e2e3f76e80730[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:40:44 2026 -0300
+
+    redesenhei seção de análise financeira para estilo minimalista, removendo excessos de texto, exibindo apenas um insight principal e um alerta dinâmico, com visual limpo, tipografia simples e atualização automática baseada nos dados
+
+[33mcommit b667f2fb179b03695b1b52e15158fddc8f698cdc[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:36:44 2026 -0300
+
+    adicionei plano Família com suporte a conta compartilhada, permitindo vincular usuários e simular compartilhamento de gastos, com indicação visual no dashboard e sem necessidade de backend real
+
+[33mcommit 9d4788e9e4852430e985549c2f2606f5fff1e825[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:32:43 2026 -0300
+
+    reorganizei sidebar com estrutura profissional de SaaS, incluindo status de plano com badge dinâmico, dropdown de conta com ações (upgrade, anual, trial e cancelamento), navegação principal mantida, seção de indicação, opções de exportação e reset, além de área de usuário com logout no final
+
+[33mcommit b3cee8d85dc6ca7fa4376fcddcec119fa6cf0c21[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:20:05 2026 -0300
+
+    melhora exibição do usuário no dashboard, movendo perfil para o topo da sidebar com layout compacto, avatar/iniciais, nome e plano, além de menu interativo com opções de configurações e logout
+
+[33mcommit 543dd31a8e77701f31fa1f2f69480226676c6792[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:11:36 2026 -0300
+
+    implementa sidebar responsiva estilo SaaS, mantendo fixa no desktop e adaptando para mobile com menu colapsável acionado por botão, animação suave com overlay, além de fechamento ao clicar fora ou no botão interno
+
+[33mcommit 18daacf93a514fcca53b9ac99f02b6a679385735[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 18:00:38 2026 -0300
+
+    implementei funcionalidade premium de notificações via WhatsApp para usuários Pro, com seção dedicada no dashboard, botão de ativação que abre link direto com mensagem pré-definida, persistência do número e status por usuário, feedback visual com mudança de estado e mensagens simuladas, além de animações e experiência contínua após reload
+
+[33mcommit 1896ced5a0e3f28214c58d439e4cff7f541a02b3[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:54:43 2026 -0300
+
+    implementei sistema de saldo disponível com valor inicial por usuário, cálculo automático baseado nos gastos, atualização em tempo real ao adicionar/remover despesas, exibição no dashboard com indicação visual (positivo/negativo) e possibilidade de edição manual, garantindo persistência por usuário
+
+[33mcommit c020e67bf381f8d320a63340a897584d2ed3d6dc[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:47:57 2026 -0300
+
+    corrigi persistência para isolar dados por usuário, utilizando identificador via usuario_logado e padronizando chaves no localStorage (gastos, plano, saldo, score por email), ajustando carregamento dinâmico e limpeza no logout
+
+[33mcommit 1484d5e00eac4a387b4734f15faaf578354e996b[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:42:11 2026 -0300
+
+    implementei página de sucesso pós-pagamento com confirmação visual, mensagem de acesso liberado, botão para retorno ao dashboard e atualização do plano para Pro no localStorage, completando o fluxo de pagamento
+
+[33mcommit a53ff2a8d5f51793002336ac8fb5112913f66407[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:38:12 2026 -0300
+
+    implementei sistema de análise inteligente local baseado nos gastos do usuário, calculando totais e percentuais por categoria, identificando padrões de consumo e gerando feedback textual com base em regras, atuando como fallback offline para IA externa
+
+[33mcommit e42f70afb800025e0e9d5723ddac9fe39f1ee844[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:23:04 2026 -0300
+
+    implementei sistema de score financeiro baseado nos hábitos de gastos, com cálculo dinâmico (percentual do orçamento, categorias e frequência), pontuação inicial de 100 com regras de ajuste, exibição no dashboard com barra progressiva e cores indicativas, além de feedback textual inteligente conforme comportamento do usuário
+
+[33mcommit 6b99a44ae858f87dc87636da78a11afa8aafdd46[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:21:54 2026 -0300
+
+    implementei verificação de acesso ao plano Pro baseada em pagamento confirmado, liberando funcionalidades premium apenas para usuários autorizados, com bloqueio de recursos, proteção visual, badge Pro, remoção do botão de upgrade e persistência via localStorage
+
+[33mcommit ff975b31e2ff7e10fc7da3088f261776a4129be4[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:18:54 2026 -0300
+
+    implementei página de checkout estilo Stripe para simulação de pagamento do plano Pro, com layout dividido (resumo + formulário), inputs modernos, validação de cartão, fluxo de pagamento com loading e redirecionamento para sucesso, além de persistência do status no localStorage
+
+[33mcommit efe1909121bef4f139918092d7cf056cb96e4dae[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:11:07 2026 -0300
+
+    corrigi atualização dos gráficos para refletir gastos adicionados, garantindo fluxo completo (salvar, listar, resumir e renderizar), criando/ajustando função atualizarGraficos, integrando ao renderizarTudo, adicionando debug de dados e evitando duplicação ao destruir gráficos antes de recriar
+
+[33mcommit f6595dbdb2695387ccf51d4d16497fd7c1f6c0a2[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 17:08:21 2026 -0300
+
+    implementei sistema de upgrade para Pro no dashboard, adicionando estado de plano (Free/Pro), botão de upgrade com modal de benefícios, ativação simulada via localStorage, atualização em tempo real da interface, mudanças visuais para usuários Pro e melhorias de UX com animações, loading e feedback de sucesso, mantendo persistência após reload
+
+[33mcommit af0e75f1d1db5cadfdb12e6e7803d6a4120006dd[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 16:01:57 2026 -0300
+
+    implementa sistema de usuário no dashboard, substituindo dados estáticos por informações do usuário logado, com controle de sessão via localStorage, exibição dinâmica de nome, iniciais e plano, menu com logout, página de configurações com edição de dados e proteção de rotas para acesso seguro
+
+[33mcommit 6f1b342f7eb60a2a5b384b333d370b69ca8de7d6[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:55:26 2026 -0300
+
+    Implementei um fluxo completo de autenticação no frontend, com login, cadastro e recuperação de senha, incluindo validação simples, simulação de usuário e melhorias de UX
+
+[33mcommit 43299361b9a7de5de8d74e997f90eb60d2021162[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:38:36 2026 -0300
+
+    ajuste no rodapé da landing page
+
+[33mcommit 50f94f319b244ad80ab5c31fb09d710ff32d047e[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:26:07 2026 -0300
+
+    criei uma página de planos e pagamento simples
+
+[33mcommit 3c33f2787534f974ff8846ef27e6a822252061d6[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:23:30 2026 -0300
+
+    Adicionei um botão de contato via WhatsApp à landing page
+
+[33mcommit 25b4b5e8589d582d6d1af3cb15ef0e897724a099[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:21:12 2026 -0300
+
+    adicionei pagina de login
+
+[33mcommit edf1693910d0d5c38a23450704678ca6f849e724[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:18:11 2026 -0300
+
+    refinamento da logo
+
+[33mcommit 385d66e08b7bfa028457c4e3a153e5993a2fa709[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:16:50 2026 -0300
+
+    criei grafico de dados na landing page
+
+[33mcommit 765f1f47c1606515ea45aeedc5e00c0e3f2be596[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 15:15:06 2026 -0300
+
+    - adicionei cards com valores de gastos simulados
+    - implementei seção de análise com insights financeiros
+    - inclui indicador de última análise
+    - melhorei layout da área de demonstração
+    - adicionei elementos visuais para simular uso real do sistema
+
+[33mcommit 3f224cd4f5c396a35bda1647259d371993cbbc54[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 14:39:16 2026 -0300
+
+    melhorei seção de demonstração com dados reais, gráficos e interações visuais
+
+[33mcommit 93cedab41f7e04cfa7a031cdc0df9b112b2c127a[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 14:29:41 2026 -0300
+
+    - seção hero mais clara com proposta de valor
+    - inclui seção de benefícios do produto
+    - adicionei explicação de como funciona
+    - criei estrutura inspirada em SaaS real
+    - melhorei organização visual da landing
+
+[33mcommit 12a624ab3ab2b62b21b28825209e6d231cd7ad82[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Wed Apr 22 14:16:48 2026 -0300
+
+    criação da landing page
+
+[33mcommit 8810af25e28c16770f50c1157e2ce32e24dbb128[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 14:05:21 2026 -0300
+
+    transformei FinAI em SaaS corporativo minimalista com layout dashboard, sidebar fixa e IA estratégica
+
+[33mcommit f98b47199bb5fe0a75512394e98f53841de2aec8[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 13:35:21 2026 -0300
+
+    - integração com Gemini
+    - fallback local em caso de falha da API
+    - tratamento de timeout
+    - resposta sempre garantida no formato padrão
+    - melhoria na estabilidade da IA
+
+[33mcommit 0174b688ba32f03d03441ec990275e70b354c053[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 12:12:07 2026 -0300
+
+    ajustei imports typescript removendo extensões .js e configurei commonjs para compatibilidade
+
+[33mcommit 47c07dec86559cb4a94f93d305c5493e66cc789d[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 12:02:07 2026 -0300
+
+    adicionei score financeiro local + melhorei dashboard com cards de visão geral
+
+[33mcommit b0a194ae8b99c1dfbbbd21e945c57341352ef7bb[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 12:00:33 2026 -0300
+
+    integrei análise IA no frontend com Tailwind + exibição de score, insights, alertas e sugestões
+
+[33mcommit 3d7474b2b190975a7afe495d83ff0f712d651a49[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Tue Apr 21 00:28:38 2026 -0300
+
+    criar OpenAIService com análise estruturada em JSON + controller e rota de análise
+
+[33mcommit d70de853b0bfe67999939896bc3cad52d94fbbe8[m[33m ([m[1;32mmain[m[33m)[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Mon Apr 20 22:41:48 2026 -0300
+
+    integra OpenAI com variáveis de ambiente e melhora segurança da API
+
+[33mcommit ed0730659d45bdbf612fe2853fdd08daab066471[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 12:17:53 2026 -0300
+
+    integra Gemini API
+
+[33mcommit e1fb6c321999a1b935145647fa818d6f7a43c4bd[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 12:08:49 2026 -0300
+
+    melhora análise da IA + finaliza detalhes visuais
+
+[33mcommit 272e5f75564c3fca7ec06e0d605d84fb4e93defc[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 12:07:17 2026 -0300
+
+    separa CSS em arquivo externo + ajustes de estilo
+
+[33mcommit 1b358aacdb0688085f92640168ded76606d07b74[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 12:03:57 2026 -0300
+
+    adiciona orçamento mensal + análise inteligente avançada + design
+
+[33mcommit 7b17f83f14ee568da4c959720d887b698d4cb07a[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 11:20:28 2026 -0300
+
+    finaliza funcionalidades + exportar CSV + limpar dados
+
+[33mcommit cf716051f0147aebce87da39fe62d24543001daa[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 10:50:10 2026 -0300
+
+    adiciona insights inteligentes da IA
+
+[33mcommit eb7bc2caf3d38a9e6510b5e7dd5df83f70c4fd22[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 10:46:31 2026 -0300
+
+    melhora seção de gráficos e resumo visual
+
+[33mcommit bcf0f5d954908bb4d9da40f0b7d6bf5a4386c2f7[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 10:38:32 2026 -0300
+
+    separa arquivos HTML, CSS e JavaScript
+
+[33mcommit 3c9b90004ffd74dece12c1997a6d2d90c57f4357[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Fri Apr 17 10:34:27 2026 -0300
+
+    local e lista de gastos
+
+[33mcommit 7e430cf6c33333953cbcfa65cdf86b6acd3834cb[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Thu Apr 16 19:13:54 2026 -0300
+
+    adiciona formulário para registrar novos gastos
+
+[33mcommit 3c408e5f43fc6116bfbcc8d1aa124c0ca7f6f44b[m
+Author: Debora <deborasouza.p@outlook.com>
+Date:   Thu Apr 16 19:06:23 2026 -0300
+
+    inicializa estrutura básica do projeto
