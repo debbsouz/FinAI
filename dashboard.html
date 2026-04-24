@@ -164,17 +164,16 @@
       }, 1500);
     }
 
-    function changeLanguage(lang) {
+    function applyLanguage(lang) {
+      if (!lang) return;
       localStorage.setItem('finai_language', lang);
+      document.documentElement.lang = lang;
       
-      if (typeof showToast === 'function') {
-        const messages = {
-          pt: 'Idioma alterado.',
-          en: 'Language changed.',
-          es: 'Idioma cambiado.'
-        };
-        showToast(messages[lang] || messages.pt, 'success');
-      }
+      console.log('Trocando idioma para:', lang); // Log de depuração
+
+      // Sincronizar o select se ele existir
+      const selectIdioma = document.getElementById('selectIdioma');
+      if (selectIdioma) selectIdioma.value = lang;
 
       const translations = {
         pt: {
@@ -194,6 +193,7 @@
           toast_expense_rem: 'Gasto removido.',
           toast_report_gen: 'Relatório gerado com sucesso!',
           toast_lang_upd: 'Idioma alterado.',
+          toast_error_fields: 'Preencha todos os campos.',
           plan_free_title: 'Grátis',
           plan_monthly_title: 'Mensal PRO',
           plan_annual_title: 'Anual',
@@ -242,7 +242,10 @@
           whatsapp_pro_desc: 'Receba análises automáticas e alertas estratégicos diretamente no seu WhatsApp.',
           whatsapp_pro_btn: 'Ativar notificações',
           whatsapp_pro_feedback: 'Notificações ativadas com sucesso',
-          whatsapp_pro_sim: 'Simulação de Mensagens'
+          whatsapp_pro_sim: 'Simulação de Mensagens',
+          referral_title: 'Indique e ganhe',
+          referral_desc: 'Ganhe 1 mês grátis indicando amigos para o FinAI.',
+          referral_btn: 'Convidar agora'
         },
         en: {
           nav_title: 'Navigation',
@@ -261,6 +264,7 @@
           toast_expense_rem: 'Expense removed.',
           toast_report_gen: 'Report generated successfully!',
           toast_lang_upd: 'Language changed.',
+          toast_error_fields: 'Fill in all fields.',
           plan_free_title: 'Free',
           plan_monthly_title: 'Monthly PRO',
           plan_annual_title: 'Annual',
@@ -309,7 +313,10 @@
           whatsapp_pro_desc: 'Receive automatic analyses and strategic alerts directly on your WhatsApp.',
           whatsapp_pro_btn: 'Activate notifications',
           whatsapp_pro_feedback: 'Notifications activated successfully',
-          whatsapp_pro_sim: 'Message Simulation'
+          whatsapp_pro_sim: 'Message Simulation',
+          referral_title: 'Refer and earn',
+          referral_desc: 'Earn 1 free month by referring friends to FinAI.',
+          referral_btn: 'Invite now'
         },
         es: {
           nav_title: 'Navegación',
@@ -328,6 +335,7 @@
           toast_expense_rem: 'Gasto eliminado.',
           toast_report_gen: '¡Informe generado con éxito!',
           toast_lang_upd: 'Idioma cambiado.',
+          toast_error_fields: 'Complete todos los campos.',
           plan_free_title: 'Gratis',
           plan_monthly_title: 'Mensual PRO',
           plan_annual_title: 'Anual',
@@ -376,7 +384,10 @@
           whatsapp_pro_desc: 'Recibe análisis automáticos e alertas estratégicas directamente en tu WhatsApp.',
           whatsapp_pro_btn: 'Activar notificaciones',
           whatsapp_pro_feedback: 'Notificaciones activadas con éxito',
-          whatsapp_pro_sim: 'Simulación de Mensagens'
+          whatsapp_pro_sim: 'Simulación de Mensagens',
+          referral_title: 'Recomienda y gana',
+          referral_desc: 'Gana 1 mes gratis recomendando amigos a FinAI.',
+          referral_btn: 'Invitar ahora'
         }
       };
 
@@ -392,6 +403,16 @@
             }
           }
         });
+
+        // Feedback visual
+        if (typeof showToast === 'function') {
+          const messages = {
+            pt: 'Idioma alterado.',
+            en: 'Language changed.',
+            es: 'Idioma cambiado.'
+          };
+          showToast(messages[lang] || messages.pt, 'success');
+        }
       }
     }
 
@@ -742,11 +763,11 @@
              <div class="w-7 h-7 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 text-xs border border-amber-500/10 group-hover:rotate-12 transition-transform">
                <i class="fas fa-gift"></i>
              </div>
-             <p class="text-[10px] font-black text-white uppercase tracking-wider">Indique e ganhe</p>
+             <p class="text-[10px] font-black text-white uppercase tracking-wider" data-i18n="referral_title">Indique e ganhe</p>
            </div>
-           <p class="text-[10px] text-zinc-500 leading-tight mb-4">Ganhe 1 mês grátis indicando amigos para o FinAI.</p>
+           <p class="text-[10px] text-zinc-500 leading-tight mb-4" data-i18n="referral_desc">Ganhe 1 mês grátis indicando amigos para o FinAI.</p>
            <div class="text-[10px] font-black text-indigo-400 uppercase tracking-widest group-hover:text-indigo-300 transition-colors flex items-center gap-2">
-             Convidar agora
+             <span data-i18n="referral_btn">Convidar agora</span>
              <i class="fas fa-arrow-right text-[8px] group-hover:translate-x-1 transition-transform"></i>
            </div>
          </div>

@@ -21,7 +21,13 @@ function alterarOrcamento(valor) {
   salvarDados();
   renderizarTudo();
   if (typeof showToast === 'function') {
-    showToast('Teto de gastos atualizado.', 'success');
+    const lang = localStorage.getItem('finai_language') || 'pt';
+    const messages = {
+      pt: 'Teto de gastos atualizado.',
+      en: 'Spending limit updated.',
+      es: 'Límite de gastos actualizado.'
+    };
+    showToast(messages[lang] || messages.pt, 'success');
   }
 }
 
@@ -30,7 +36,13 @@ function alterarSaldoInicial(valor) {
   salvarDados();
   renderizarTudo();
   if (typeof showToast === 'function') {
-    showToast('Saldo inicial atualizado.', 'success');
+    const lang = localStorage.getItem('finai_language') || 'pt';
+    const messages = {
+      pt: 'Saldo inicial atualizado.',
+      en: 'Initial balance updated.',
+      es: 'Saldo inicial actualizado.'
+    };
+    showToast(messages[lang] || messages.pt, 'success');
   }
 }
 
@@ -191,7 +203,13 @@ function adicionarGasto() {
 
   if (!descricao || !valorStr || !data) {
     if (typeof showToast === 'function') {
-      showToast('Preencha todos os campos.', 'error');
+      const lang = localStorage.getItem('finai_language') || 'pt';
+      const messages = {
+        pt: 'Preencha todos os campos.',
+        en: 'Fill in all fields.',
+        es: 'Complete todos los campos.'
+      };
+      showToast(messages[lang] || messages.pt, 'error');
     } else {
       alert('Preencha todos os campos.');
     }
@@ -209,7 +227,13 @@ function adicionarGasto() {
   document.getElementById('valor').value = '';
 
   if (typeof showToast === 'function') {
-    showToast('Gasto registrado com sucesso!');
+    const lang = localStorage.getItem('finai_language') || 'pt';
+    const messages = {
+      pt: 'Gasto registrado com sucesso!',
+      en: 'Expense registered successfully!',
+      es: '¡Gasto registrado con éxito!'
+    };
+    showToast(messages[lang] || messages.pt);
   }
 }
 
@@ -219,7 +243,13 @@ function removerGasto(id) {
     salvarGastos();
     renderizarTudo();
     if (typeof showToast === 'function') {
-      showToast('Gasto removido.', 'success');
+      const lang = localStorage.getItem('finai_language') || 'pt';
+      const messages = {
+        pt: 'Gasto removido.',
+        en: 'Expense removed.',
+        es: 'Gasto eliminado.'
+      };
+      showToast(messages[lang] || messages.pt, 'success');
     }
   }
 }
@@ -635,7 +665,13 @@ async function gerarRelatorio() {
   renderizarConteudoRelatorio(dados.analise, container);
   
   if (typeof showToast === 'function') {
-    showToast('Relatório gerado com sucesso!');
+    const lang = localStorage.getItem('finai_language') || 'pt';
+    const messages = {
+      pt: 'Relatório gerado com sucesso!',
+      en: 'Report generated successfully!',
+      es: '¡Informe generado con éxito!'
+    };
+    showToast(messages[lang] || messages.pt);
   }
 }
 
@@ -645,10 +681,18 @@ async function enviarConsulta() {
   if (!pergunta) return;
 
   const container = document.getElementById('diagnostico');
+  const lang = localStorage.getItem('finai_language') || 'pt';
+  
+  const processingText = {
+    pt: 'Analisando dados reais...',
+    en: 'Analyzing real data...',
+    es: 'Analizando datos reales...'
+  };
+
   container.innerHTML = `
     <div class="flex items-center gap-2 py-3">
       <div class="w-3 h-3 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">Analisando dados reais...</p>
+      <p class="text-zinc-500 text-[9px] font-bold uppercase tracking-widest">${processingText[lang] || processingText.pt}</p>
     </div>
   `;
 
@@ -663,13 +707,19 @@ async function enviarConsulta() {
   const ehFinanceiro = keywordsFinancas.some(k => pergunta.toLowerCase().includes(k));
 
   if (!ehFinanceiro) {
+    const errorMessages = {
+      pt: 'Posso te ajudar com suas finanças. Tente perguntar sobre seus gastos ou planejamento.',
+      en: 'I can help you with your finances. Try asking about your spending or planning.',
+      es: 'Puedo ayudarte con tus finanzas. Intenta preguntar sobre tus gastos o planificación.'
+    };
+
     container.innerHTML = `
       <div class="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4 animate-fade-in">
         <div class="flex items-start gap-3">
           <div class="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 border border-white/5">
             <i class="fas fa-info-circle text-zinc-500 text-[10px]"></i>
           </div>
-          <p class="text-[11px] text-zinc-400 leading-relaxed pt-0.5">Posso te ajudar com suas finanças. Tente perguntar sobre seus gastos ou planejamento.</p>
+          <p class="text-[11px] text-zinc-400 leading-relaxed pt-0.5">${errorMessages[lang] || errorMessages.pt}</p>
         </div>
       </div>
     `;
@@ -695,21 +745,55 @@ async function enviarConsulta() {
     }
   });
 
+  const translationsIA = {
+    pt: {
+      none: "Nenhuma",
+      empty: "Ainda não identifiquei gastos registrados. Assim que você adicionar suas primeiras transações, poderei fazer uma análise precisa do seu perfil.",
+      overBudget: (val, cat) => `Atenção: Você ultrapassou seu orçamento mensal em R$ ${val}. Recomendo focar em reduzir gastos na categoria ${cat}, que é seu maior custo atualmente.`,
+      negativeBalance: (val, cat) => `Seu saldo está negativo em R$ ${val}. Analisei seus registros e vejo que ${cat} representa a maior fatia dos seus gastos. Podemos tentar economizar aqui?`,
+      highConcentration: (cat) => `Notei que ${cat} representa mais de 50% dos seus gastos totais. Uma sugestão seria diversificar ou revisar se esses custos são essenciais para manter seu equilíbrio.`,
+      solid: (val) => `Seu planejamento está sólido! Com R$ ${val} de saldo, você tem uma boa margem. Que tal investir 10% desse valor?`,
+      control: (cat) => `Vale observar que seu ritmo de gastos em ${cat} está sob controle. Se mantiver essa disciplina, fechará o mês com saldo positivo.`,
+      reserve: "Analisei seus registros e percebi que você está com um bom score. Uma estratégia eficiente agora seria focar em criar uma reserva de emergência."
+    },
+    en: {
+      none: "None",
+      empty: "I haven't identified any recorded expenses yet. Once you add your first transactions, I'll be able to provide an accurate analysis of your profile.",
+      overBudget: (val, cat) => `Attention: You have exceeded your monthly budget by R$ ${val}. I recommend focusing on reducing spending in the ${cat} category, which is currently your highest cost.`,
+      negativeBalance: (val, cat) => `Your balance is negative by R$ ${val}. I've analyzed your records and see that ${cat} represents the largest share of your spending. Can we try to save here?`,
+      highConcentration: (cat) => `I noticed that ${cat} represents more than 50% of your total spending. A suggestion would be to diversify or review if these costs are essential to maintain your balance.`,
+      solid: (val) => `Your planning is solid! With R$ ${val} in balance, you have a good margin. How about investing 10% of this amount?`,
+      control: (cat) => `It's worth noting that your spending pace in ${cat} is under control. If you maintain this discipline, you'll end the month with a positive balance.`,
+      reserve: "I've analyzed your records and noticed you have a good score. An efficient strategy now would be to focus on creating an emergency fund."
+    },
+    es: {
+      none: "Ninguna",
+      empty: "Aún no he identificado gastos registrados. Una vez que añadas tus primeras transacciones, podré realizar un análisis preciso de tu perfil.",
+      overBudget: (val, cat) => `Atención: Has superado tu presupuesto mensual en R$ ${val}. Recomiendo centrarse en reducir los gastos en la categoría ${cat}, que es tu mayor costo actualmente.`,
+      negativeBalance: (val, cat) => `Tu saldo es negativo en R$ ${val}. He analizado tus registros y veo que ${cat} representa la mayor parte de tus gastos. ¿Podemos intentar ahorrar aquí?`,
+      highConcentration: (cat) => `He notado que ${cat} representa más del 50% de tus gastos totales. Una sugerencia sería diversificar o revisar si estos costos son esenciales para mantener tu equilibrio.`,
+      solid: (val) => `¡Tu planificación es sólida! Con R$ ${val} de saldo, tienes un buen margen. ¿Qué tal si inviertes el 10% de esa cantidad?`,
+      control: (cat) => `Vale la pena observar que tu ritmo de gastos en ${cat} está bajo control. Si mantienes esa disciplina, terminarás el mes con un saldo positivo.`,
+      reserve: "He analizado tus registros y he notado que tienes un buen puntaje. Una estrategia eficiente ahora sería centrarse en crear una reserva de emergencia."
+    }
+  };
+
+  const tia = translationsIA[lang] || translationsIA.pt;
   let respostaIA = "";
   
   if (gastos.length === 0) {
-    respostaIA = "Ainda não identifiquei gastos registrados. Assim que você adicionar suas primeiras transações, poderei fazer uma análise precisa do seu perfil.";
+    respostaIA = tia.empty;
   } else if (total > orcamentoMensal) {
-    respostaIA = `Atenção: Você ultrapassou seu orçamento mensal em R$ ${(total - orcamentoMensal).toLocaleString('pt-BR')}. Recomendo focar em reduzir gastos na categoria ${maiorCategoria}, que é seu maior custo atualmente.`;
+    respostaIA = tia.overBudget((total - orcamentoMensal).toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), maiorCategoria);
   } else if (saldoDisponivel < 0) {
-    respostaIA = `Seu saldo está negativo em R$ ${Math.abs(saldoDisponivel).toLocaleString('pt-BR')}. Analisei seus registros e vejo que ${maiorCategoria} representa a maior fatia dos seus gastos. Podemos tentar economizar aqui?`;
+    respostaIA = tia.negativeBalance(Math.abs(saldoDisponivel).toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US'), maiorCategoria);
   } else if (maiorValor > (total * 0.5)) {
-    respostaIA = `Notei que ${maiorCategoria} representa mais de 50% dos seus gastos totais. Uma sugestão seria diversificar ou revisar se esses custos são essenciais para manter seu equilíbrio.`;
+    respostaIA = tia.highConcentration(maiorCategoria);
   } else {
     const variacoes = [
-      `Seu planejamento está sólido! Com R$ ${saldoDisponivel.toLocaleString('pt-BR')} de saldo, você tem uma boa margem. Que tal investir 10% desse valor?`,
-      `Vale observar que seu ritmo de gastos em ${maiorCategoria} está sob controle. Se mantiver essa disciplina, fechará o mês com saldo positivo.`,
-      `Analisei seus registros e percebi que você está com um bom score. Uma estratégia eficiente agora seria focar em criar uma reserva de emergência.`
+      tia.solid(saldoDisponivel.toLocaleString(lang === 'pt' ? 'pt-BR' : 'en-US')),
+      tia.control(maiorCategoria),
+      tia.reserve
     ];
     respostaIA = variacoes[Math.floor(Math.random() * variacoes.length)];
   }
@@ -726,7 +810,12 @@ async function enviarConsulta() {
   `;
 
   if (typeof showToast === 'function') {
-    showToast('Consulta finalizada.', 'success');
+    const messages = {
+      pt: 'Consulta finalizada.',
+      en: 'Inquiry finished.',
+      es: 'Consulta finalizada.'
+    };
+    showToast(messages[lang] || messages.pt, 'success');
   }
 
   input.value = '';
@@ -771,20 +860,14 @@ function logout() {
 }
 
 function changeLanguage(lang) {
+  // A lógica de tradução real está no dashboard.html para ter acesso a todo o DOM
+  // Esta função apenas sincroniza o localStorage e chama a função global
   localStorage.setItem('finai_language', lang);
   
-  // Sincronizar com o dashboard se a função existir lá
-  if (window.parent && typeof window.parent.changeLanguage === 'function') {
-    window.parent.changeLanguage(lang);
-  }
-  
-  if (typeof showToast === 'function') {
-    const messages = {
-      pt: 'Idioma alterado.',
-      en: 'Language changed.',
-      es: 'Idioma cambiado.'
-    };
-    showToast(messages[lang] || messages.pt, 'success');
+  if (typeof window.applyLanguage === 'function') {
+    window.applyLanguage(lang);
+  } else if (window.parent && typeof window.parent.applyLanguage === 'function') {
+    window.parent.applyLanguage(lang);
   }
 }
 
