@@ -859,17 +859,273 @@ function logout() {
   window.location.href = 'login.html';
 }
 
+const translations = {
+  pt: {
+    nav_title: 'Navegação',
+    nav_dashboard: 'Dashboard',
+    nav_financas: 'Finanças',
+    nav_relatorios: 'Relatórios',
+    nav_settings: 'Configurações',
+    btn_logout: 'Sair da conta',
+    empty_list_title: 'Nenhuma transação encontrada',
+    empty_list_desc: 'Registre seu primeiro gasto para começar o controle.',
+    empty_list_btn: 'Adicionar Gasto',
+    empty_chart_desc: 'Dados insuficientes para gerar o gráfico.',
+    toast_budget_upd: 'Teto de gastos atualizado.',
+    toast_balance_upd: 'Saldo inicial atualizado.',
+    toast_expense_add: 'Gasto registrado com sucesso!',
+    toast_expense_rem: 'Gasto removido.',
+    toast_report_gen: 'Relatório gerado com sucesso!',
+    toast_lang_upd: 'Idioma alterado.',
+    toast_error_fields: 'Preencha todos os campos.',
+    plan_free_title: 'Grátis',
+    plan_monthly_title: 'Mensal PRO',
+    plan_annual_title: 'Anual',
+    plan_family_title: 'Familiar PREMIUM',
+    plan_btn_choose: 'Escolher',
+    plan_btn_subscribe: 'Assinar',
+    plan_btn_annual: 'Escolher Anual',
+    plan_btn_family: 'Assinar Família',
+    plan_modal_title: 'Planos Disponíveis',
+    plan_modal_subtitle: 'Escolha seu nível',
+    plan_current: 'Plano Atual',
+    plan_free_sidebar: 'Plano Grátis',
+    plan_pro_sidebar: 'Plano PRO',
+    plan_upgrade: 'Fazer upgrade',
+    plan_manage: 'Gerenciar plano',
+    summary_volume: 'Volume de Despesas',
+    summary_balance: 'Saldo Disponível',
+    summary_score: 'Score Financeiro',
+    summary_initial: 'Inicial:',
+    summary_score_msg: 'Adicione dados para calcular.',
+    ai_analysis_title: 'Análise Preditiva',
+    ai_analysis_desc: 'Diagnóstico inteligente baseado em consumo',
+    ai_analysis_btn: 'Gerar Relatório',
+    ai_analysis_placeholder: 'Selecione "Gerar Relatório" para processar dados.',
+    ai_query_placeholder: 'Dúvida financeira...',
+    ai_query_btn: 'Consultar',
+    log_title: 'Log de Transações',
+    log_limit: 'Teto:',
+    table_id: 'Identificação',
+    table_cat: 'Classificação',
+    table_date: 'Data',
+    table_val: 'Valor',
+    table_op: 'Operação',
+    new_reg_title: 'Novo Registro',
+    new_reg_desc: 'Descrição',
+    new_reg_desc_placeholder: 'Ex: Assinatura Cloud',
+    new_reg_val: 'Valor Nominal',
+    new_reg_date: 'Data da Transação',
+    new_reg_btn: 'Confirmar Registro',
+    chart_title: 'Composição de Gastos',
+    onboarding_title: 'Bem-vindo ao FinAI!',
+    onboarding_desc: 'Para começar sua jornada de liberdade financeira, adicione seu primeiro registro de gasto no formulário ao lado.',
+    onboarding_btn: 'Começar Agora',
+    whatsapp_pro_title: 'Notificações inteligentes',
+    whatsapp_pro_desc: 'Receba análises automáticas e alertas estratégicos diretamente no seu WhatsApp.',
+    whatsapp_pro_btn: 'Ativar notificações',
+    whatsapp_pro_feedback: 'Notificações ativadas com sucesso',
+    whatsapp_pro_sim: 'Simulação de Mensagens',
+    referral_title: 'Indique e ganhe',
+    referral_desc: 'Ganhe 1 mês grátis indicando amigos para o FinAI.',
+    referral_btn: 'Convidar agora',
+    login_title: 'Entrar no Sistema',
+    login_btn: 'Entrar no Sistema',
+    config_title: 'Configurações',
+    config_save: 'Salvar alterações'
+  },
+  en: {
+    nav_title: 'Navigation',
+    nav_dashboard: 'Dashboard',
+    nav_financas: 'Finance',
+    nav_relatorios: 'Reports',
+    nav_settings: 'Settings',
+    btn_logout: 'Logout',
+    empty_list_title: 'No transactions found',
+    empty_list_desc: 'Register your first expense to start controlling.',
+    empty_list_btn: 'Add Expense',
+    empty_chart_desc: 'Insufficient data to generate chart.',
+    toast_budget_upd: 'Spending limit updated.',
+    toast_balance_upd: 'Initial balance updated.',
+    toast_expense_add: 'Expense registered successfully!',
+    toast_expense_rem: 'Expense removed.',
+    toast_report_gen: 'Report generated successfully!',
+    toast_lang_upd: 'Language changed.',
+    toast_error_fields: 'Fill in all fields.',
+    plan_free_title: 'Free',
+    plan_monthly_title: 'Monthly PRO',
+    plan_annual_title: 'Annual',
+    plan_family_title: 'Family PREMIUM',
+    plan_btn_choose: 'Choose',
+    plan_btn_subscribe: 'Subscribe',
+    plan_btn_annual: 'Choose Annual',
+    plan_btn_family: 'Subscribe Family',
+    plan_modal_title: 'Available Plans',
+    plan_modal_subtitle: 'Choose your level',
+    plan_current: 'Current Plan',
+    plan_free_sidebar: 'Free Plan',
+    plan_pro_sidebar: 'PRO Plan',
+    plan_upgrade: 'Upgrade now',
+    plan_manage: 'Manage plan',
+    summary_volume: 'Expense Volume',
+    summary_balance: 'Available Balance',
+    summary_score: 'Financial Score',
+    summary_initial: 'Initial:',
+    summary_score_msg: 'Add data to calculate.',
+    ai_analysis_title: 'Predictive Analysis',
+    ai_analysis_desc: 'Intelligent diagnosis based on consumption',
+    ai_analysis_btn: 'Generate Report',
+    ai_analysis_placeholder: 'Select "Generate Report" to process data.',
+    ai_query_placeholder: 'Financial question...',
+    ai_query_btn: 'Consult',
+    log_title: 'Transaction Log',
+    log_limit: 'Limit:',
+    table_id: 'Identification',
+    table_cat: 'Classification',
+    table_date: 'Date',
+    table_val: 'Value',
+    table_op: 'Operation',
+    new_reg_title: 'New Entry',
+    new_reg_desc: 'Description',
+    new_reg_desc_placeholder: 'Ex: Cloud Subscription',
+    new_reg_val: 'Nominal Value',
+    new_reg_date: 'Transaction Date',
+    new_reg_btn: 'Confirm Entry',
+    chart_title: 'Expense Composition',
+    onboarding_title: 'Welcome to FinAI!',
+    onboarding_desc: 'To start your journey of financial freedom, add your first expense entry in the form on the left.',
+    onboarding_btn: 'Start Now',
+    whatsapp_pro_title: 'Smart Notifications',
+    whatsapp_pro_desc: 'Receive automatic analyses and strategic alerts directly on your WhatsApp.',
+    whatsapp_pro_btn: 'Activate notifications',
+    whatsapp_pro_feedback: 'Notifications activated successfully',
+    whatsapp_pro_sim: 'Message Simulation',
+    referral_title: 'Refer and earn',
+    referral_desc: 'Earn 1 free month by referring friends to FinAI.',
+    referral_btn: 'Invite now',
+    login_title: 'Login to System',
+    login_btn: 'Login to System',
+    config_title: 'Settings',
+    config_save: 'Save Changes'
+  },
+  es: {
+    nav_title: 'Navegación',
+    nav_dashboard: 'Panel',
+    nav_financas: 'Finanzas',
+    nav_relatorios: 'Informes',
+    nav_settings: 'Ajustes',
+    btn_logout: 'Cerrar sesión',
+    empty_list_title: 'No se encontraron transacciones',
+    empty_list_desc: 'Registra tu primer gasto para empezar el control.',
+    empty_list_btn: 'Añadir Gasto',
+    empty_chart_desc: 'Datos insuficientes para generar el gráfico.',
+    toast_budget_upd: 'Límite de gastos actualizado.',
+    toast_balance_upd: 'Saldo inicial actualizado.',
+    toast_expense_add: '¡Gasto registrado con éxito!',
+    toast_expense_rem: 'Gasto eliminado.',
+    toast_report_gen: '¡Informe generado con éxito!',
+    toast_lang_upd: 'Idioma cambiado.',
+    toast_error_fields: 'Complete todos los campos.',
+    plan_free_title: 'Gratis',
+    plan_monthly_title: 'Mensual PRO',
+    plan_annual_title: 'Anual',
+    plan_family_title: 'Familiar PREMIUM',
+    plan_btn_choose: 'Elegir',
+    plan_btn_subscribe: 'Suscribir',
+    plan_btn_annual: 'Elegir Anual',
+    plan_btn_family: 'Suscribir Familia',
+    plan_modal_title: 'Planes Disponibles',
+    plan_modal_subtitle: 'Elige tu nivel',
+    plan_current: 'Plan Actual',
+    plan_free_sidebar: 'Plan Gratuito',
+    plan_pro_sidebar: 'Plan PRO',
+    plan_upgrade: 'Mejorar plan',
+    plan_manage: 'Gestionar plan',
+    summary_volume: 'Volumen de Gastos',
+    summary_balance: 'Saldo Disponible',
+    summary_score: 'Puntaje Financiero',
+    summary_initial: 'Inicial:',
+    summary_score_msg: 'Añade datos para calcular.',
+    ai_analysis_title: 'Análisis Predictivo',
+    ai_analysis_desc: 'Diagnóstico inteligente baseado en el consumo',
+    ai_analysis_btn: 'Generar Informe',
+    ai_analysis_placeholder: 'Selecciona "Generar Informe" para processar datos.',
+    ai_query_placeholder: 'Duda financiera...',
+    ai_query_btn: 'Consultar',
+    log_title: 'Log de Transacciones',
+    log_limit: 'Techo:',
+    table_id: 'Identificación',
+    table_cat: 'Clasificación',
+    table_date: 'Fecha',
+    table_val: 'Valor',
+    table_op: 'Operação',
+    new_reg_title: 'Nuevo Registro',
+    new_reg_desc: 'Descrição',
+    new_reg_desc_placeholder: 'Ej: Suscripción Cloud',
+    new_reg_val: 'Valor Nominal',
+    new_reg_date: 'Fecha de Transacción',
+    new_reg_btn: 'Confirmar Registro',
+    chart_title: 'Composición de Gastos',
+    onboarding_title: '¡Bienvenido a FinAI!',
+    onboarding_desc: 'Para comenzar tu viaje de libertad financiera, añade tu primer registro de gasto en el formulario de la izquierda.',
+    onboarding_btn: 'Empezar Ahora',
+    whatsapp_pro_title: 'Notificaciones Inteligentes',
+    whatsapp_pro_desc: 'Recibe análisis automáticos e alertas estratégicas directamente en tu WhatsApp.',
+    whatsapp_pro_btn: 'Activar notificaciones',
+    whatsapp_pro_feedback: 'Notificaciones activadas con éxito',
+    whatsapp_pro_sim: 'Simulación de Mensagens',
+    referral_title: 'Recomienda y gana',
+    referral_desc: 'Gana 1 mes gratis recomendando amigos a FinAI.',
+    referral_btn: 'Invitar ahora',
+    login_title: 'Entrar al Sistema',
+    login_btn: 'Entrar al Sistema',
+    config_title: 'Ajustes',
+    config_save: 'Guardar Cambios'
+  }
+};
+
 function changeLanguage(lang) {
-  // A lógica de tradução real está no dashboard.html para ter acesso a todo o DOM
-  // Esta função apenas sincroniza o localStorage e chama a função global
+  if (!lang) return;
   localStorage.setItem('finai_language', lang);
+  document.documentElement.lang = lang;
   
-  if (typeof window.applyLanguage === 'function') {
-    window.applyLanguage(lang);
-  } else if (window.parent && typeof window.parent.applyLanguage === 'function') {
-    window.parent.applyLanguage(lang);
+  console.log('Trocando idioma para:', lang);
+
+  // Sincronizar o select se ele existir
+  const selectIdioma = document.getElementById('selectIdioma');
+  if (selectIdioma) selectIdioma.value = lang;
+
+  const t = translations[lang];
+  if (t) {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+          el.placeholder = t[key];
+        } else {
+          el.textContent = t[key];
+        }
+      }
+    });
+
+    // Feedback visual (Toast) se a função existir
+    if (typeof showToast === 'function') {
+      const messages = {
+        pt: 'Idioma alterado.',
+        en: 'Language changed.',
+        es: 'Idioma cambiado.'
+      };
+      showToast(messages[lang] || messages.pt, 'success');
+    }
   }
 }
+
+// Inicializar idioma ao carregar qualquer página que use main.js
+document.addEventListener('DOMContentLoaded', () => {
+  const savedLang = localStorage.getItem('finai_language') || 'pt';
+  // Pequeno delay para garantir que outros scripts carregaram
+  setTimeout(() => changeLanguage(savedLang), 10);
+});
 
 function limparTodosDados() {
   if (confirm('Deseja realmente resetar seus dados? Todos os gastos e configurações deste usuário serão apagados.')) {

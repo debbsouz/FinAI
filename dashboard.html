@@ -164,7 +164,7 @@
       }, 1500);
     }
 
-    function applyLanguage(lang) {
+    function applyLanguage_DEPRECATED(lang) {
       if (!lang) return;
       localStorage.setItem('finai_language', lang);
       document.documentElement.lang = lang;
@@ -578,10 +578,6 @@
         toggleUpgradeModal();
       }
     }
-    document.addEventListener('DOMContentLoaded', () => {
-      const savedLang = localStorage.getItem('finai_language') || 'pt';
-      changeLanguage(savedLang);
-    });
   </script>
   <style>
     /* Estilos Premium e Glassmorphism */
@@ -1418,10 +1414,6 @@
   <script src="js/charts.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      // Aplicar idioma salvo
-      const savedLang = localStorage.getItem('finai_language') || 'pt';
-      changeLanguage(savedLang);
-      
       // Sincronizar dados do usuário
       const session = JSON.parse(localStorage.getItem('session'));
       if (session) {

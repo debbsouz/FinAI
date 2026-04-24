@@ -37,7 +37,7 @@
                 <a href="dashboard.html" class="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
                     <i class="fas fa-arrow-left"></i>
                 </a>
-                <h1 class="text-2xl font-black tracking-tight text-white">Configurações</h1>
+                <h1 class="text-2xl font-black tracking-tight text-white" data-i18n="config_title">Configurações</h1>
             </div>
         </div>
 
@@ -60,7 +60,7 @@
                 <div class="pt-4">
                     <button type="submit" id="submitBtn"
                         class="w-full bg-violet-600 hover:bg-violet-500 text-white font-bold py-4 rounded-2xl transition-all active:scale-[0.98] flex items-center justify-center gap-2">
-                        <span>Salvar alterações</span>
+                        <span data-i18n="config_save">Salvar alterações</span>
                         <i id="loader" class="fas fa-circle-notch fa-spin hidden"></i>
                     </button>
                 </div>
@@ -72,6 +72,7 @@
         </div>
     </div>
 
+    <script src="js/main.js"></script>
     <script>
         const user = JSON.parse(localStorage.getItem('session'));
         document.getElementById('nome').value = user.nome;
